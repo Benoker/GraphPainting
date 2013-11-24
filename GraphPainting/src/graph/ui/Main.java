@@ -6,6 +6,8 @@ import graph.items.connection.DirectLineConnection;
 import graph.items.connection.FilledArrowConnector;
 import graph.items.connection.FluentRectangularConnectionArray;
 import graph.items.connection.PointConnector;
+import graph.items.connection.SimpleRectangularConnectionArray;
+import graph.items.connection.UndirectedEndPoint;
 import graph.model.GraphItem;
 
 import java.awt.Color;
@@ -57,6 +59,19 @@ public class Main {
 		addLine( result, new DirectLineConnection( redArray, b ) );
 		addLine( result, new DirectLineConnection( redArray, c ) );
 		addLine( result, new DirectLineConnection( redArray, d ) );
+		
+		ColoredRectangle blue = new ColoredRectangle( Color.BLUE );
+		SimpleRectangularConnectionArray blueArray = new SimpleRectangularConnectionArray();
+		blue.setBoundaries( 400, 300, 150, 50 );
+		blue.add( blueArray );
+		result.add( blue );
+		
+		DirectLineConnection blueToRed = new DirectLineConnection( blueArray, redArray );
+		blueToRed.setSourcePoint( new UndirectedEndPoint() );
+		blueToRed.setTargetPoint( new UndirectedEndPoint() );
+		result.add( blueToRed );
+		result.add( new FilledArrowConnector( blueToRed.getSourceEndPoint() ));
+		result.add( new FilledArrowConnector( blueToRed.getTargetEndPoint() ));
 		
 		return result;
 	}

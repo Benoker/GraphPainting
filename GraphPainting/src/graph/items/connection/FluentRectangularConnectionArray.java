@@ -90,6 +90,14 @@ public class FluentRectangularConnectionArray implements ConnectionArray, Rectan
 		return locations.getAttachement( endPoint );
 	}
 	
+	@Override
+	public Point getLanding( EndPoint endPoint ) {
+		if( locations == null ){
+			locations = new CachedLocations();
+		}
+		return locations.getLanding( endPoint );
+	}
+	
 	private Geom.Side calcPosition( EndPoint endPoint ){
 		if( endPoint.getEndPointPosition() != EndPointPosition.AUTOMATIC ){
 			return Geom.toSide( endPoint.getEndPointPosition() );
@@ -161,7 +169,18 @@ public class FluentRectangularConnectionArray implements ConnectionArray, Rectan
 		}
 	}
 	
+	private static class Landing{
+		private Point point;
+		private Side side;
+		
+		public Landing( Point point, Side side ){
+			this.point = point;
+			this.side = side;
+		}
+	}
+	
 	private class CachedLocations{
+		private Map<EndPoint, Landing> landings = new HashMap<>();
 		private Map<EndPoint, EndPointAttachement> attachements = new HashMap<>();
 		
 		public CachedLocations(){
@@ -207,11 +226,28 @@ public class FluentRectangularConnectionArray implements ConnectionArray, Rectan
 			int d = 1;
 			for( EndPoint point : endPoints ){
 				Point landing = new Point( sx + d*dx, sy + d*dy );
-				Point approach = approach( landing, side );
-				attachements.put( point, new EndPointAttachement( approach, landing ) );
-				
+				landings.put( point, new Landing( landing, side ) );
 				d++;
 			}
+		}
+		
+		private EndPointAttachementSite endPointAttachementSite( final EndPoint endPoint, final Point landing, final Side side ){
+			return new EndPointAttachementSite() {
+				@Override
+				public Point getPointFarthestAwayFromLanding() {
+					return approach( landing, side );
+				}
+				
+				@Override
+				public Point getLanding() {
+					return landing;
+				}
+				
+				@Override
+				public Point getOtherLanding() {
+					return endPoint.getOtherEndPoint().getLanding();
+				}
+			};
 		}
 		
 		private Point approach( Point landing, Side side ){
@@ -233,8 +269,18 @@ public class FluentRectangularConnectionArray implements ConnectionArray, Rectan
 			return approach;
 		}
 		
+		public Point getLanding( EndPoint endPoint ){
+			return landings.get( endPoint ).point;
+		}
+		
 		public EndPointAttachement getAttachement( EndPoint endPoint ){
-			return attachements.get( endPoint );
+			EndPointAttachement result = attachements.get( endPoint );
+			if( result == null ){
+				Landing landing = landings.get( endPoint );
+				result = endPoint.getAttachement( endPointAttachementSite( endPoint, landing.point, landing.side ) );
+				attachements.put( endPoint, result );
+			}
+			return result;
 		}
 	}
 }

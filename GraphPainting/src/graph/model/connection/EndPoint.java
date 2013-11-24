@@ -1,9 +1,10 @@
 package graph.model.connection;
 
+import graph.items.connection.EndPointAttachementSite;
+import graph.model.GraphItem;
+
 import java.awt.Point;
 import java.awt.Rectangle;
-
-import graph.model.GraphItem;
 
 public interface EndPoint extends GraphItem{
 	public EndPointPosition getEndPointPosition();
@@ -19,4 +20,10 @@ public interface EndPoint extends GraphItem{
 	public Rectangle getArrayBoundaries();
 	
 	public EndPointAttachement getAttachement();
+	
+	public EndPointAttachement getAttachement( EndPointAttachementSite site );
+	
+	public Point getLanding();
+	
+	public Point getLanding( EndPointAttachementSite site );
 }

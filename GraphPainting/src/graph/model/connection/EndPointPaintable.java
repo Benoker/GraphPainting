@@ -17,12 +17,12 @@ public abstract class EndPointPaintable implements GraphItem, GraphPaintable{
 
 	@Override
 	public void paint( Graphics2D g ) {
-		
 		EndPointAttachement attachement = endPoint.getAttachement();
-		Point zero = attachement.getLanding();
-		Point approach = attachement.getApproach();
 		
-		double angle = Math.atan2( zero.x - approach.x, approach.y - zero.y );
+		Point zero = attachement.getLanding();
+		Point direction = attachement.getDirection();
+		
+		double angle = Math.atan2( -direction.x, direction.y );
 		
 		g.translate( zero.x, zero.y );
 		g.rotate( angle );

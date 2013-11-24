@@ -12,5 +12,7 @@ public interface ConnectionArray {
 	
 	public Rectangle getBoundaries();
 	
+	public Point getLanding( EndPoint endPoint );
+	
 	public EndPointAttachement getAttachement( EndPoint endPoint );
 }

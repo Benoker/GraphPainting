@@ -37,4 +37,9 @@ public class TextBox extends GraphLabel implements ConnectionArray{
 	public EndPointAttachement getAttachement( EndPoint endPoint ) {
 		return array.getAttachement( endPoint );
 	}
+	
+	@Override
+	public Point getLanding( EndPoint endPoint ) {
+		return array.getLanding( endPoint );
+	}
 }

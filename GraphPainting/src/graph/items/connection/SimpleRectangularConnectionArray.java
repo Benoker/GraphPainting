@@ -59,21 +59,54 @@ public class SimpleRectangularConnectionArray implements ConnectionArray, Rectan
 
 	@Override
 	public EndPointAttachement getAttachement( EndPoint endPoint ) {
-		Point hit = Geom.intersection( boundaries, getCenter(), endPoint.getOtherEndPoint().getArrayCenter() );
-		Point approach = new Point( hit );
-		
-		if( hit.x == boundaries.x ){
-			approach.x -= landingOffset;
-		}
-		else if( hit.x == boundaries.x + boundaries.width ){
-			approach.x += landingOffset;
-		}
-		else if( hit.y == boundaries.y ){
-			approach.y -= landingOffset;
-		}
-		else{
-			approach.y += landingOffset;
-		}
-		return new EndPointAttachement( approach, hit );
+		return endPoint.getAttachement( endPointAttachementSite( endPoint ));
+	}
+	
+	@Override
+	public Point getLanding( EndPoint endPoint ) {
+		return endPoint.getLanding( endPointAttachementSite( endPoint ));
+	}
+	
+	private EndPointAttachementSite endPointAttachementSite( final EndPoint endPoint ){
+		return new EndPointAttachementSite() {
+			private Point hit;
+			
+			private Point getHit(){
+				if( hit == null ){
+					hit = Geom.intersection( boundaries, getCenter(), endPoint.getOtherEndPoint().getArrayCenter() );
+				}
+				return hit;
+			}
+			
+			@Override
+			public Point getPointFarthestAwayFromLanding() {
+				Point hit = getHit();
+				Point approach = new Point( hit );
+				
+				if( hit.x == boundaries.x ){
+					approach.x -= landingOffset;
+				}
+				else if( hit.x == boundaries.x + boundaries.width ){
+					approach.x += landingOffset;
+				}
+				else if( hit.y == boundaries.y ){
+					approach.y -= landingOffset;
+				}
+				else{
+					approach.y += landingOffset;
+				}
+				return approach;
+			}
+			
+			@Override
+			public Point getOtherLanding() {
+				return endPoint.getOtherEndPoint().getLanding();
+			}
+			
+			@Override
+			public Point getLanding() {
+				return getHit();
+			}
+		};
 	}
 }
