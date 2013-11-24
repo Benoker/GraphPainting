@@ -27,10 +27,10 @@ public abstract class EndPointPaintable implements GraphItem, GraphPaintable{
 		g.translate( zero.x, zero.y );
 		g.rotate( angle );
 		
-		paintPointingUpwards( g );
+		paintPointingDownwards( g );
 	}
 	
-	protected abstract void paintPointingUpwards( Graphics2D g );
+	protected abstract void paintPointingDownwards( Graphics2D g );
 
 	@Override
 	public void set( GraphSite site ) {

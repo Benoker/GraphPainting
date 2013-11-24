@@ -1,4 +1,4 @@
-package graph.items.connection;
+package graph.items.uml;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -6,20 +6,18 @@ import java.awt.Graphics2D;
 import graph.model.connection.EndPoint;
 import graph.model.connection.EndPointPaintable;
 
-public class PointConnector extends EndPointPaintable{
-	private int size = 10;
+public class OpenArrow extends EndPointPaintable{
+	private int size = 20;
 	
-	public PointConnector( EndPoint endPoint ) {
+	public OpenArrow( EndPoint endPoint ){
 		super( endPoint );
 	}
 	
-	public void setSize( int size ) {
-		this.size = size;
-	}
-
 	@Override
 	protected void paintPointingDownwards( Graphics2D g ) {
 		g.setColor( Color.BLACK );
-		g.fillOval( -size/2, 0, size, size );
+		
+		g.drawLine( 0, 0, size/2, size );
+		g.drawLine( 0, 0, -size/2, size );
 	}
 }

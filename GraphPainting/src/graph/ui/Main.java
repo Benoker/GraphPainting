@@ -3,11 +3,13 @@ package graph.ui;
 import graph.items.ColoredRectangle;
 import graph.items.TextBox;
 import graph.items.connection.DirectLineConnection;
-import graph.items.connection.FilledArrowConnector;
 import graph.items.connection.FluentRectangularConnectionArray;
 import graph.items.connection.PointConnector;
 import graph.items.connection.SimpleRectangularConnectionArray;
 import graph.items.connection.UndirectedEndPoint;
+import graph.items.uml.Diamond;
+import graph.items.uml.FilledArrow;
+import graph.items.uml.OpenArrow;
 import graph.model.GraphItem;
 
 import java.awt.Color;
@@ -70,8 +72,8 @@ public class Main {
 		blueToRed.setSourcePoint( new UndirectedEndPoint() );
 		blueToRed.setTargetPoint( new UndirectedEndPoint() );
 		result.add( blueToRed );
-		result.add( new FilledArrowConnector( blueToRed.getSourceEndPoint() ));
-		result.add( new FilledArrowConnector( blueToRed.getTargetEndPoint() ));
+		result.add( new Diamond( blueToRed.getSourceEndPoint(), Color.GREEN ));
+		result.add( new OpenArrow( blueToRed.getTargetEndPoint() ));
 		
 		return result;
 	}
@@ -79,6 +81,6 @@ public class Main {
 	private static void addLine( List<GraphItem> result, DirectLineConnection connection ){
 		result.add( connection );
 		result.add( new PointConnector( connection.getTargetEndPoint() ) );
-		result.add( new FilledArrowConnector( connection.getSourceEndPoint() ) );
+		result.add( new FilledArrow( connection.getSourceEndPoint() ) );
 	}
 }
