@@ -65,6 +65,10 @@ public class AbstractConnection implements Connection{
 		this.site = site;
 	}
 	
+	protected GraphSite getSite() {
+		return site;
+	}
+	
 	@Override
 	public EndPoint getSourceEndPoint() {
 		return sourcePoint;

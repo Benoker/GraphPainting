@@ -2,6 +2,8 @@ package graph.ui;
 
 import graph.items.ColoredRectangle;
 import graph.items.TextBox;
+import graph.items.connection.AbstractConnection;
+import graph.items.connection.BezierLineConnection;
 import graph.items.connection.DirectLineConnection;
 import graph.items.connection.FluentRectangularConnectionArray;
 import graph.items.connection.PointConnector;
@@ -57,7 +59,7 @@ public class Main {
 		result.add( c );
 		result.add( d );
 		result.add( red );
-		addLine( result, new DirectLineConnection( redArray, a ) );
+		addLine( result, new BezierLineConnection( redArray, a ) );
 		addLine( result, new DirectLineConnection( redArray, b ) );
 		addLine( result, new DirectLineConnection( redArray, c ) );
 		addLine( result, new DirectLineConnection( redArray, d ) );
@@ -78,7 +80,7 @@ public class Main {
 		return result;
 	}
 	
-	private static void addLine( List<GraphItem> result, DirectLineConnection connection ){
+	private static void addLine( List<GraphItem> result, AbstractConnection connection ){
 		result.add( connection );
 		result.add( new PointConnector( connection.getTargetEndPoint() ) );
 		result.add( new FilledArrow( connection.getSourceEndPoint() ) );

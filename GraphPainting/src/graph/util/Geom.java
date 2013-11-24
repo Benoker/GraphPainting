@@ -122,10 +122,10 @@ public class Geom {
 		int sw = source.width;
 		int sh = source.height;
 		
-		double distNW = dist( smx, smy, tx, ty );
-		double distNE = dist( smx, smy, tx+tw, ty );
-		double distSW = dist( smx, smy, tx, ty+th );
-		double distSE = dist( smx, smy, tx+tw, ty+th );
+		double distNW = dist2( smx, smy, tx, ty );
+		double distNE = dist2( smx, smy, tx+tw, ty );
+		double distSW = dist2( smx, smy, tx, ty+th );
+		double distSE = dist2( smx, smy, tx+tw, ty+th );
 		
 		double min = Math.min( Math.min( distNW, distNE ), Math.min( distSW, distSE ) );
 		
@@ -197,9 +197,20 @@ public class Geom {
 		return (int)(d+0.5);
 	}
 	
-	private static double dist( double x1, double y1, double x2, double y2 ){
+	public static double dist2( double x1, double y1, double x2, double y2 ){
 		double dx = x1 - x2;
 		double dy = y1 - y2;
 		return dx*dx + dy*dy;
+	}
+
+	public static Point pointAt( Point start, Point dir, double dist ) {
+		if( dir.x == 0 && dir.y == 0 ){
+			return start;
+		}
+		
+		double dirDist = Math.sqrt( dist2( 0, 0, dir.x, dir.y ));
+		double factor = dist / dirDist;
+		
+		return new Point( round( start.x + factor * dir.x ), round( start.y + factor * dir.y ) );
 	}
 }
