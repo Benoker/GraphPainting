@@ -1,17 +1,18 @@
 package graph.ui;
 
+import graph.model.GraphItem;
+import graph.model.GraphPaintable;
+import graph.model.GraphSite;
+import graph.model.Regraphable;
+import graph.model.capability.CapabilityName;
+
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-
-import graph.model.GraphItem;
-import graph.model.GraphMoveable;
-import graph.model.GraphPaintable;
-import graph.model.GraphSite;
-import graph.model.Regraphable;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -19,21 +20,52 @@ import javax.swing.JPanel;
 public class GraphPanel extends JPanel{
 	private List<GraphPaintable> paintables = new ArrayList<>();
 	private List<Regraphable> regraphables = new ArrayList<>();
-	private GraphMoveableHandler moveableHandler;
 	
 	private GraphSite site = new DefaultGraphSite();
 	private boolean valid = false;
 	
+	private List<GraphItem> items = new LinkedList<>();
+	
 	public GraphPanel(){
-		moveableHandler = new GraphMoveableHandler( this );
-		
 		setLayout( null );
 		setBackground( Color.WHITE );
 		setOpaque( true );
+		setFocusable( true );
 	}
 	
-	public void add( GraphItem box ){
-		box.set( site );
+	/**
+	 * Adds another item to the graph.
+	 * @param item the new item, not <code>null</code>
+	 */
+	public void add( GraphItem item ){
+		item.set( site );
+		items.add( item );
+	}
+	
+	/**
+	 * Removes an item from the graph.
+	 * @param item the item to remove, not <code>null</code>
+	 */
+	public void remove( GraphItem item ){
+		items.remove( item );
+		item.set( null );
+	}
+	
+	/**
+	 * Iterates over all known {@link GraphItem}s and asks for their 
+	 * {@link GraphItem#getCapability(CapabilityName) capability} to support <code>name</code>.
+	 * @param name the capability to search
+	 * @return all the available capabilities
+	 */
+	public <T> List<T> getCapabilities( CapabilityName<T> name ){ 
+		List<T> result = new ArrayList<>();
+		for( GraphItem item : items ){
+			T capability = item.getCapability( name );
+			if( capability != null ){
+				result.add( capability );
+			}
+		}
+		return result;
 	}
 	
 	@Override
@@ -83,11 +115,6 @@ public class GraphPanel extends JPanel{
 		}
 		
 		@Override
-		public void add( GraphMoveable moveable ) {
-			moveableHandler.add( moveable );	
-		}
-		
-		@Override
 		public void add( Regraphable regraphable ) {
 			regraphables.add( regraphable );	
 		}
@@ -102,11 +129,6 @@ public class GraphPanel extends JPanel{
 		public void remove( JComponent component ) {
 			GraphPanel.this.remove( component );
 			regraph();
-		}
-		
-		@Override
-		public void remove( GraphMoveable moveable ) {
-			moveableHandler.remove( moveable );
 		}
 		
 		@Override

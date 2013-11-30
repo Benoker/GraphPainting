@@ -1,5 +1,6 @@
 package graph.model;
 
+import graph.model.capability.CapabilityName;
 import graph.ui.GraphPanel;
 
 /**
@@ -15,4 +16,13 @@ public interface GraphItem {
 	 * @param site the panel painting this box, or <code>null</code>
 	 */
 	public void set( GraphSite site );
+	
+	/**
+	 * Gets an optional capability of this item. The capabilities of an item may change during
+	 * its life time.
+	 * @param name the name of a capability
+	 * @return the capability <code>name</code> or <code>null</code> if this item does not support
+	 * <code>name</code>
+	 */
+	public <T> T getCapability( CapabilityName<T> name );
 }

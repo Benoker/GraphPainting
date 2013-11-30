@@ -1,7 +1,7 @@
 package graph.model;
 
-public interface GraphMoveableItem {
-	public boolean contains( int x, int y );
+public interface MoveableItem {
+	public boolean isMovingEnabledAt( int x, int y );
 
 	public int getX();
 	

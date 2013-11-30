@@ -1,27 +1,19 @@
 package graph.items;
 
-import java.awt.Rectangle;
-
 import graph.model.GraphItem;
-import graph.model.GraphMoveableItem;
-import graph.model.GraphSite;
+import graph.model.MoveableItem;
+import graph.model.capability.CapabilityName;
 import graph.model.connection.Rectangular;
 
-public abstract class MoveableRectangularGraphItem extends RectangularComposite implements GraphItem, GraphMoveableItem, Rectangular{
-	private GraphMoveableAdapter moveableAdapter;
-	
+import java.awt.Rectangle;
+
+public abstract class MoveableRectangularGraphItem extends RectangularComposite implements GraphItem, MoveableItem, Rectangular{
 	public MoveableRectangularGraphItem(){
-		moveableAdapter = new GraphMoveableAdapter( this );
+		setCapability( CapabilityName.MOVEABLE, new MoveableItemCapability( this ) );
 	}
 	
 	@Override
-	public void set( GraphSite site ) {
-		super.set( site );
-		moveableAdapter.set( site );
-	}
-	
-	@Override
-	public boolean contains( int x, int y ) {
+	public boolean isMovingEnabledAt( int x, int y ) {
 		return getBoundaries().contains( x, y );
 	}
 

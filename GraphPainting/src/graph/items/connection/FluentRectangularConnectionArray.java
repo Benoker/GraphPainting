@@ -1,5 +1,6 @@
 package graph.items.connection;
 
+import graph.items.AbstractGraphItem;
 import graph.model.GraphSite;
 import graph.model.Regraphable;
 import graph.model.connection.ConnectionArray;
@@ -19,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FluentRectangularConnectionArray implements ConnectionArray, Rectangular, Regraphable {
+public class FluentRectangularConnectionArray extends AbstractGraphItem implements ConnectionArray, Rectangular, Regraphable {
 	private List<EndPoint> endPoints = new ArrayList<>();
 	private Rectangle boundaries = new Rectangle();
 	private GraphSite site;

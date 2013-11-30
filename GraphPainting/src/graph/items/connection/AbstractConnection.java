@@ -1,11 +1,12 @@
 package graph.items.connection;
 
+import graph.items.AbstractGraphItem;
 import graph.model.GraphSite;
 import graph.model.connection.Connection;
 import graph.model.connection.ConnectionArray;
 import graph.model.connection.EndPoint;
 
-public class AbstractConnection implements Connection{
+public class AbstractConnection extends AbstractGraphItem implements Connection{
 	private ConnectionArray source;
 	private ConnectionArray target;
 	

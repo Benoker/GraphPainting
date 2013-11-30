@@ -1,5 +1,6 @@
 package graph.items.connection;
 
+import graph.items.AbstractGraphItem;
 import graph.model.GraphSite;
 import graph.model.connection.Connection;
 import graph.model.connection.ConnectionArray;
@@ -10,7 +11,7 @@ import graph.model.connection.EndPointPosition;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-public abstract class AbstractEndPoint implements EndPoint{
+public abstract class AbstractEndPoint extends AbstractGraphItem implements EndPoint{
 	private Connection connection;
 	private ConnectionArray array;
 	

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import graph.model.GraphSite;
+import graph.model.capability.CapabilityName;
 import graph.model.connection.ConnectionArray;
 import graph.model.connection.EndPoint;
 import graph.model.connection.EndPointAttachement;
@@ -32,6 +33,11 @@ public class SimpleRectangularConnectionArray implements ConnectionArray, Rectan
 	@Override
 	public void set( GraphSite site ) {
 		// ignore	
+	}
+	
+	@Override
+	public <T> T getCapability( CapabilityName<T> name ) {
+		return null;
 	}
 	
 	public void setLandingOffset( int landingOffset ) {

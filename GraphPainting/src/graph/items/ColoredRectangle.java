@@ -1,7 +1,6 @@
 package graph.items;
 
 import graph.model.GraphItem;
-import graph.model.GraphMoveableItem;
 import graph.model.GraphPaintable;
 import graph.model.GraphSite;
 import graph.model.connection.Rectangular;
@@ -10,7 +9,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
-public class ColoredRectangle extends MoveableRectangularGraphItem implements GraphItem, GraphPaintable, GraphMoveableItem, Rectangular{
+public class ColoredRectangle extends MoveableRectangularGraphItem implements GraphItem, GraphPaintable, Rectangular{
 	private GraphSite site;
 
 	private Color color;

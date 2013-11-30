@@ -9,7 +9,6 @@ import graph.items.connection.DirectLineConnection;
 import graph.items.connection.FluentRectangularConnectionArray;
 import graph.items.connection.PointConnector;
 import graph.items.connection.SimpleRectangularConnectionArray;
-import graph.items.connection.UndirectedEndPoint;
 import graph.items.uml.Diamond;
 import graph.items.uml.FilledArrow;
 import graph.items.uml.OpenArrow;
@@ -27,13 +26,13 @@ public class Main {
 		JFrame frame = new JFrame( "Graph" );
 		frame.setBounds( 20, 20, 800, 600 );
 		frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-		GraphPanel panel = new GraphPanel();
+		Graph graph = new Graph();
 		
 		for( GraphItem item : createTestItems() ){
-			panel.add( item );
+			graph.addItem( item );
 		}
 		
-		frame.add( panel );
+		frame.add( graph.getView() );
 		frame.setVisible( true );
 	}
 	

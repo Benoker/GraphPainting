@@ -7,7 +7,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RectangularComposite implements Rectangular{
+public class RectangularComposite extends AbstractGraphItem implements Rectangular{
 	private Rectangle boundaries = new Rectangle();
 	
 	private List<Rectangular> items = new ArrayList<>();

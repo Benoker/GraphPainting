@@ -23,6 +23,6 @@ public class DirectLineConnection extends PaintableConnection{
 		
 		int[] xs = { sl.x, sa.x, ta.x, tl.x };
 		int[] ys = { sl.y, sa.y, ta.y, tl.y };
-		g.drawPolygon( xs, ys, 4 );
+		g.drawPolyline( xs, ys, 4 );
 	}
 }

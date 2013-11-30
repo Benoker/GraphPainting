@@ -1,5 +1,6 @@
 package graph.model.connection;
 
+import graph.items.AbstractGraphItem;
 import graph.model.GraphItem;
 import graph.model.GraphPaintable;
 import graph.model.GraphSite;
@@ -7,7 +8,7 @@ import graph.model.GraphSite;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
-public abstract class EndPointPaintable implements GraphItem, GraphPaintable{
+public abstract class EndPointPaintable extends AbstractGraphItem implements GraphItem, GraphPaintable{
 	private EndPoint endPoint;
 	private GraphSite site;
 	

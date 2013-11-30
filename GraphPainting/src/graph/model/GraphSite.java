@@ -23,15 +23,11 @@ public interface GraphSite {
 	 */
 	public void add( JComponent component );
 	
-	public void add( GraphMoveable moveable );
-	
 	public void add( Regraphable regraphable );
 	
 	public void remove( GraphPaintable paintable );
 	
 	public void remove( JComponent component );
-	
-	public void remove( GraphMoveable moveable );
 	
 	public void remove( Regraphable regraphable );
 	
