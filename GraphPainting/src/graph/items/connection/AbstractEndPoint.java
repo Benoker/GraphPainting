@@ -1,7 +1,7 @@
 package graph.items.connection;
 
 import graph.items.AbstractGraphItem;
-import graph.model.connection.Connection;
+import graph.model.connection.GraphConnection;
 import graph.model.connection.ConnectionArray;
 import graph.model.connection.EndPoint;
 import graph.model.connection.EndPointAttachement;
@@ -11,11 +11,11 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 public abstract class AbstractEndPoint extends AbstractGraphItem implements EndPoint{
-	private Connection connection;
+	private GraphConnection connection;
 	private ConnectionArray array;
 	
 	@Override
-	public void setConnection( Connection connection ) {
+	public void setConnection( GraphConnection connection ) {
 		this.connection = connection;	
 	}
 	

@@ -11,7 +11,7 @@ public interface EndPoint extends GraphItem{
 	
 	public EndPoint getOtherEndPoint();
 	
-	public void setConnection( Connection connection );
+	public void setConnection( GraphConnection connection );
 	
 	public void setArray( ConnectionArray array );
 

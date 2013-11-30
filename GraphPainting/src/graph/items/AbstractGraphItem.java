@@ -35,7 +35,7 @@ public abstract class AbstractGraphItem implements GraphItem{
 	 * @param name the name of the capability
 	 * @param capability the capability, can be <code>null</code>
 	 */
-	protected <T> void setCapability( CapabilityName<T> name, T capability ){
+	public <T> void setCapability( CapabilityName<T> name, T capability ){
 		capabilities.put( name, capability );
 	}
 	
