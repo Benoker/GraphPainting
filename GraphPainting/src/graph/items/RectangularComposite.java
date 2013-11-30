@@ -34,6 +34,11 @@ public class RectangularComposite extends AbstractGraphItem implements Rectangul
 	}
 	
 	@Override
+	public boolean contains( int x, int y ) {
+		return boundaries.contains( x, y );
+	}
+	
+	@Override
 	public void setBoundaries( Rectangle boundaries ) {
 		for( Rectangular rectangular : items ){	
 			rectangular.setBoundaries( boundaries );

@@ -1,8 +1,8 @@
 package graph.ui;
 
 import graph.items.ColoredRectangle;
-import graph.items.RectangularComposite;
 import graph.items.RectangularSelection;
+import graph.items.ShapedGraphItemContextMenu;
 import graph.items.TextBox;
 import graph.items.connection.AbstractConnection;
 import graph.items.connection.BezierLineConnection;
@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
 
 public class Main {
 	public static void main( String[] args ) {
@@ -47,6 +48,10 @@ public class Main {
 		FluentRectangularConnectionArray redArray = new FluentRectangularConnectionArray();
 		red.setBoundaries( 200, 200, 50, 200 );
 		red.addChild( redArray );
+		ShapedGraphItemContextMenu redMenu = new ShapedGraphItemContextMenu( red );
+		red.addCapability( CapabilityName.CONTEXT_MENU, redMenu );
+		redMenu.getMenu().add( new JMenuItem( "Some action" ) );
+		redMenu.getMenu().add( new JMenuItem( "Another action" ) );
 		
 		TextBox a = new TextBox( "Alpha" );
 		TextBox b = new TextBox( "Beta" );

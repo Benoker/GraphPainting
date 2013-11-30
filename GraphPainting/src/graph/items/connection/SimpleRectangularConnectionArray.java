@@ -31,6 +31,11 @@ public class SimpleRectangularConnectionArray implements ConnectionArray, Rectan
 	}
 	
 	@Override
+	public boolean contains( int x, int y ) {
+		return boundaries.contains( x, y );
+	}
+	
+	@Override
 	public void set( GraphSite site ) {
 		// ignore	
 	}

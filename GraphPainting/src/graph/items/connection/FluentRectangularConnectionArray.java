@@ -39,6 +39,11 @@ public class FluentRectangularConnectionArray extends AbstractGraphItem implemen
 	public Rectangle getBoundaries() {
 		return new Rectangle( boundaries );
 	}
+	
+	@Override
+	public boolean contains( int x, int y ) {
+		return boundaries.contains( x, y );
+	}
 
 	@Override
 	protected void addTo( GraphSite site ) {

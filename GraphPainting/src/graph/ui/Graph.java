@@ -1,5 +1,6 @@
 package graph.ui;
 
+import graph.items.capability.ContextCapabilityHandler;
 import graph.items.capability.MoveableCapabilityHandler;
 import graph.items.capability.SelectableCapabilityHandler;
 import graph.model.GraphItem;
@@ -22,6 +23,7 @@ public class Graph {
 		capabilityController = new CapabilityController( panel );
 		capabilityController.register( CapabilityName.MOVEABLE, new MoveableCapabilityHandler() );
 		capabilityController.register( CapabilityName.SELECTABLE, new SelectableCapabilityHandler() );
+		capabilityController.register( CapabilityName.CONTEXT_MENU, new ContextCapabilityHandler() );
 	}
 	
 	/**

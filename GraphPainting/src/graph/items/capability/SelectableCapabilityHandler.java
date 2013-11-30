@@ -56,7 +56,6 @@ public class SelectableCapabilityHandler implements CapabilityHandler<Selectable
 		return new MouseAdapter() {
 			@Override
 			public void mousePressed( MouseEvent e ) {
-				
 				if( e.getButton() == MouseEvent.BUTTON1 ){
 					newlySelected = null;
 					
@@ -76,6 +75,11 @@ public class SelectableCapabilityHandler implements CapabilityHandler<Selectable
 						if( selectable != null ){
 							selectable.setSelected( new Selection( true, Importance.PRIMARY ) );
 						}
+					}
+				}
+				else if( !e.isControlDown() ){
+					if( (e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) == 0 ){
+						deselectAll();
 					}
 				}
 			}
