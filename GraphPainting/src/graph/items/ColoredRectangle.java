@@ -10,24 +10,27 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 public class ColoredRectangle extends MoveableRectangularGraphItem implements GraphItem, GraphPaintable, Rectangular{
-	private GraphSite site;
-
 	private Color color;
 	
 	public ColoredRectangle( Color color ){
 		this.color = color;
 	}
+
+	@Override
+	protected void addTo( GraphSite site ) {
+		site.add( this );
+		super.addTo( site );
+	}
 	
 	@Override
-	public void set( GraphSite site ) {
-		if( this.site != null ){
-			this.site.remove( this );
-		}
-		this.site = site;
-		super.set( site );
-		if( site != null ){
-			site.add( this );
-		}
+	protected void removeFrom( GraphSite site ) {
+		site.remove( this );
+		super.removeFrom( site );
+	}
+	
+	@Override
+	public void paintOverlay( Graphics2D g ) {
+		// ignore	
 	}
 	
 	@Override

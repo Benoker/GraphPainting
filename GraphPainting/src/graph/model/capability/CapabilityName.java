@@ -36,4 +36,9 @@ public class CapabilityName<T> {
 		CapabilityName<?> that = (CapabilityName<?>)obj;
 		return id.equals( that.id );
 	}
+	
+	@Override
+	public String toString() {
+		return id;
+	}
 }

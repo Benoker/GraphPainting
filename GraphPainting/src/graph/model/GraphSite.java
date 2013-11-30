@@ -1,5 +1,7 @@
 package graph.model;
 
+import graph.ui.Graph;
+
 import java.awt.Component;
 
 import javax.swing.JComponent;
@@ -30,6 +32,19 @@ public interface GraphSite {
 	public void remove( JComponent component );
 	
 	public void remove( Regraphable regraphable );
+	
+	/**
+	 * Adds <code>item</code> to the graph. The behavior of this method is equal to calling
+	 * {@link Graph#addItem(GraphItem)}.
+	 * @param item the new item
+	 */
+	public void addItem( GraphItem item );
+	
+	/**
+	 * Removes <code>item</code> from the graph.
+	 * @param item the item to remove
+	 */
+	public void removeItem( GraphItem item );
 	
 	/**
 	 * Recalculates and repaints the entire graph (asynchronous)

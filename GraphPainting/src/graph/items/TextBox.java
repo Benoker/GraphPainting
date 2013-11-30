@@ -14,7 +14,7 @@ public class TextBox extends GraphLabel implements ConnectionArray{
 		super( text );
 		
 		FluentRectangularConnectionArray array = new FluentRectangularConnectionArray();
-		add( array );
+		addChild( array );
 		this.array = array;
 	}
 

@@ -13,7 +13,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
 public class GraphLabel extends MoveableRectangularGraphItem implements GraphItem, Regraphable, Rectangular {
-	private GraphSite site;
 	private JLabel label;
 	
 	public GraphLabel( String text ){
@@ -43,21 +42,21 @@ public class GraphLabel extends MoveableRectangularGraphItem implements GraphIte
 	}
 	
 	@Override
-	public void set( GraphSite site ) {
-		if( this.site != null ){
-			this.site.remove( label );
-			this.site.remove( (Regraphable)this );
-		}
-		this.site = site;
-		if( site != null ){
-			site.add( label );
-			site.add( (Regraphable)this );
-		}
-		super.set( site );
+	protected void addTo( GraphSite site ) {
+		site.add( label );
+		site.add( (Regraphable)this );
+		super.addTo( site );
 	}
 	
 	@Override
-	public void regraph() {
+	protected void removeFrom( GraphSite site ) {
+		site.remove( label );
+		site.remove( (Regraphable)this );
+		super.removeFrom( site );
+	}
+	
+	@Override
+	public void regraphed() {
 		Rectangle bounds = getBoundaries();
 		bounds.setSize( label.getPreferredSize() );
 		setBoundaries( bounds );	

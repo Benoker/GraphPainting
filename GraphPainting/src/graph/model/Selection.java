@@ -6,6 +6,11 @@ package graph.model;
  */
 public class Selection {
 	/**
+	 * Not a selection.
+	 */
+	public static final Selection NO_SELECTION = new Selection( false, null );
+	
+	/**
 	 * The importance of a selection
 	 * @author Benjamin Sigg
 	 */

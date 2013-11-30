@@ -1,6 +1,7 @@
 package graph.ui;
 
 import graph.items.capability.MoveableCapabilityHandler;
+import graph.items.capability.SelectableCapabilityHandler;
 import graph.model.GraphItem;
 import graph.model.capability.CapabilityName;
 
@@ -20,6 +21,7 @@ public class Graph {
 		
 		capabilityController = new CapabilityController( panel );
 		capabilityController.register( CapabilityName.MOVEABLE, new MoveableCapabilityHandler() );
+		capabilityController.register( CapabilityName.SELECTABLE, new SelectableCapabilityHandler() );
 	}
 	
 	/**

@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CuttingEdgeLineConnection extends PaintableConnection implements Regraphable{
-	private GraphSite site;
 	private List<Point> line;
 	
 	public CuttingEdgeLineConnection( ConnectionArray source, ConnectionArray target ) {
@@ -20,19 +19,19 @@ public class CuttingEdgeLineConnection extends PaintableConnection implements Re
 	}
 	
 	@Override
-	public void set( GraphSite site ) {
-		if( this.site != null ){
-			this.site.remove( (Regraphable)this );
-		}
-		super.set( site );
-		this.site = site;
-		if( site != null ){
-			site.add( (Regraphable)this );
-		}
+	protected void addTo( GraphSite site ) {
+		super.addTo( site );
+		site.add( (Regraphable)this );
 	}
-
+	
 	@Override
-	public void regraph() {
+	protected void removeFrom( GraphSite site ) {
+		super.removeFrom( site );
+		site.remove( (Regraphable)this );
+	}
+	
+	@Override
+	public void regraphed() {
 		line = null;	
 	}
 	

@@ -1,5 +1,6 @@
 package graph.items;
 
+import graph.model.GraphItem;
 import graph.model.GraphSite;
 import graph.model.connection.Rectangular;
 
@@ -11,17 +12,16 @@ public class RectangularComposite extends AbstractGraphItem implements Rectangul
 	private Rectangle boundaries = new Rectangle();
 	
 	private List<Rectangular> items = new ArrayList<>();
-	private GraphSite site;
 	
-	public void add( Rectangular rectangular ){
-		items.add( rectangular );
-		rectangular.setBoundaries( getBoundaries() );
-		rectangular.set( site );
+	public void addChild( Rectangular item ) {
+		items.add( item );
+		item.setBoundaries( getBoundaries() );
+		addChild( (GraphItem)item );
 	}
 	
-	public void remove( Rectangular rectangular ){
-		items.remove( rectangular );
-		rectangular.set( null );
+	public void removeChild( Rectangular item ){
+		items.remove( item );
+		removeChild( (GraphItem)item );
 	}
 	
 	@Override
@@ -40,17 +40,17 @@ public class RectangularComposite extends AbstractGraphItem implements Rectangul
 		}
 		if( !getBoundaries().equals( boundaries )){
 			this.boundaries.setBounds( boundaries );
-			if( site != null ){
-				site.regraph();
-			}
+			regraph();
 		}
 	}
 	
 	@Override
-	public void set( GraphSite site ) {
-		this.site = site;
-		for( Rectangular item : items ){	
-			item.set( site );
-		}
+	protected void addTo( GraphSite site ) {
+		// ignore
+	}
+	
+	@Override
+	protected void removeFrom( GraphSite site ) {
+		// ignore	
 	}
 }

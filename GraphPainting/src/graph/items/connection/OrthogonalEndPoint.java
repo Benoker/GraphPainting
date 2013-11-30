@@ -1,11 +1,21 @@
 package graph.items.connection;
 
-import java.awt.Point;
-
+import graph.model.GraphSite;
 import graph.model.connection.EndPointAttachement;
 
-public class OrthogonalEndPoint extends AbstractEndPoint{
+import java.awt.Point;
 
+public class OrthogonalEndPoint extends AbstractEndPoint{
+	@Override
+	protected void addTo( GraphSite site ) {
+		// ignore
+	}
+	
+	@Override
+	protected void removeFrom( GraphSite site ) {
+		// ignore	
+	}
+	
 	@Override
 	public EndPointAttachement getAttachement( EndPointAttachementSite site ) {
 		Point landing = site.getLanding();

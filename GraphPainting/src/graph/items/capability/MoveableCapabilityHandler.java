@@ -58,11 +58,13 @@ public class MoveableCapabilityHandler implements CapabilityHandler<MoveableCapa
 				items.clear();
 				mousePressedPoint = null;
 				moving = false;
+				site.listening();
 			}
 		};
 	}
 	
 	private void initMove( int x, int y ){
+		site.triggered();
 		for( MoveableCapability item : site.getCapabilities() ){
 			if( item.isMovingEnabledAt( x, y )){
 				items.add( item );

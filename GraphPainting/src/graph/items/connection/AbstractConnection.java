@@ -1,20 +1,17 @@
 package graph.items.connection;
 
 import graph.items.AbstractGraphItem;
-import graph.model.GraphSite;
 import graph.model.connection.Connection;
 import graph.model.connection.ConnectionArray;
 import graph.model.connection.EndPoint;
 
-public class AbstractConnection extends AbstractGraphItem implements Connection{
+public abstract class AbstractConnection extends AbstractGraphItem implements Connection{
 	private ConnectionArray source;
 	private ConnectionArray target;
 	
 	private EndPoint sourcePoint;
 	private EndPoint targetPoint;
  
-	private GraphSite site;
-	
 	public AbstractConnection( ConnectionArray source, ConnectionArray target ){
 		this.source = source;
 		this.target = target;
@@ -25,15 +22,15 @@ public class AbstractConnection extends AbstractGraphItem implements Connection{
 	
 	public void setSourcePoint( EndPoint sourcePoint ) {
 		if( this.sourcePoint != null ){
+			removeChild( this.sourcePoint );
 			this.sourcePoint.setConnection( null );
-			this.sourcePoint.set( null );
 			source.remove( this.sourcePoint );
 		}
 		this.sourcePoint = sourcePoint;
 		if( this.sourcePoint != null ){
 			this.sourcePoint.setConnection( this );
-			this.sourcePoint.set( site );
 			source.add( this.sourcePoint );
+			addChild( sourcePoint );
 		}
 	}
 	
@@ -43,31 +40,20 @@ public class AbstractConnection extends AbstractGraphItem implements Connection{
 	
 	public void setTargetPoint( EndPoint targetPoint ) {
 		if( this.targetPoint != null ){
+			removeChild( this.targetPoint );
 			this.targetPoint.setConnection( null );
-			this.targetPoint.set( null );
 			target.remove( this.targetPoint );
 		}
 		this.targetPoint = targetPoint;
 		if( this.targetPoint != null ){
 			this.targetPoint.setConnection( this );
-			this.targetPoint.set( site );
 			target.add( this.targetPoint );
+			addChild( targetPoint );
 		}
 	}
 	
 	public EndPoint getTargetPoint() {
 		return targetPoint;
-	}
-	
-	@Override
-	public void set( GraphSite site ) {
-		targetPoint.set( site );
-		sourcePoint.set( site );
-		this.site = site;
-	}
-	
-	protected GraphSite getSite() {
-		return site;
 	}
 	
 	@Override

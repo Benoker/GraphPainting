@@ -11,37 +11,29 @@ import java.awt.Stroke;
 public abstract class PaintableConnection extends AbstractConnection implements GraphPaintable{
 	private Color color = Color.BLACK;
 	private Stroke stroke;
-	private GraphSite site;
 	
 	public PaintableConnection( ConnectionArray source, ConnectionArray target ){
 		super( source, target );
 	}
 	
 	@Override
-	public void set( GraphSite site ) {
-		super.set( site );
-		
-		if( this.site != null ){
-			this.site.remove( (GraphPaintable)this );
-		}
-		this.site = site;
-		if( site != null ){
-			site.add( (GraphPaintable)this );
-		}
+	protected void addTo( GraphSite site ) {
+		site.add( (GraphPaintable)this );
+	}
+	
+	@Override
+	protected void removeFrom( GraphSite site ) {
+		site.remove( (GraphPaintable)this );
 	}
 	
 	public void setColor( Color color ) {
 		this.color = color;
-		if( site != null ){
-			site.regraph();
-		}
+		regraph();
 	}
 	
 	public void setStroke( Stroke stroke ) {
 		this.stroke = stroke;
-		if( site != null ){
-			site.regraph();
-		}
+		regraph();
 	}
 	
 	@Override
@@ -51,6 +43,11 @@ public abstract class PaintableConnection extends AbstractConnection implements 
 			g.setStroke( stroke );
 		}
 		paintConnection( g );
+	}
+	
+	@Override
+	public void paintOverlay( Graphics2D g ) {
+		// ignore	
 	}
 	
 	protected abstract void paintConnection( Graphics2D g );

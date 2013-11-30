@@ -14,6 +14,12 @@ public interface SelectableCapability {
 	public void setSelected( Selection selection );
 	
 	/**
+	 * Tells whether this item is selected.
+	 * @return the selection state
+	 */
+	public Selection getSelected();
+	
+	/**
 	 * Tells whether this item contains the point <code>x/y</code>.
 	 * @param x x-coordinate
 	 * @param y y-coordinate

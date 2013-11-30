@@ -1,7 +1,6 @@
 package graph.items.connection;
 
 import graph.items.AbstractGraphItem;
-import graph.model.GraphSite;
 import graph.model.connection.Connection;
 import graph.model.connection.ConnectionArray;
 import graph.model.connection.EndPoint;
@@ -19,12 +18,6 @@ public abstract class AbstractEndPoint extends AbstractGraphItem implements EndP
 	public void setConnection( Connection connection ) {
 		this.connection = connection;	
 	}
-	
-	@Override
-	public void set( GraphSite site ) {
-		// ignore
-	}
-	
 	
 	@Override
 	public EndPointPosition getEndPointPosition() {

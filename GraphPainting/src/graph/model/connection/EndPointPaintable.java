@@ -10,12 +10,16 @@ import java.awt.Point;
 
 public abstract class EndPointPaintable extends AbstractGraphItem implements GraphItem, GraphPaintable{
 	private EndPoint endPoint;
-	private GraphSite site;
 	
 	public EndPointPaintable( EndPoint endPoint ){
 		this.endPoint = endPoint;
 	}
 
+	@Override
+	public void paintOverlay( Graphics2D g ) {
+		// ignore	
+	}
+	
 	@Override
 	public void paint( Graphics2D g ) {
 		EndPointAttachement attachement = endPoint.getAttachement();
@@ -34,13 +38,12 @@ public abstract class EndPointPaintable extends AbstractGraphItem implements Gra
 	protected abstract void paintPointingDownwards( Graphics2D g );
 
 	@Override
-	public void set( GraphSite site ) {
-		if( this.site != null ){
-			this.site.remove( this );
-		}
-		this.site = site;
-		if( this.site != null ){
-			this.site.add( this );
-		}
+	protected void addTo( GraphSite site ) {
+		site.add( this );
+	}
+	
+	@Override
+	protected void removeFrom( GraphSite site ) {
+		site.remove( this );
 	}
 }

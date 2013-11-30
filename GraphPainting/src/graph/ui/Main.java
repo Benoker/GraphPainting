@@ -1,6 +1,8 @@
 package graph.ui;
 
 import graph.items.ColoredRectangle;
+import graph.items.RectangularComposite;
+import graph.items.RectangularSelection;
 import graph.items.TextBox;
 import graph.items.connection.AbstractConnection;
 import graph.items.connection.BezierLineConnection;
@@ -13,6 +15,7 @@ import graph.items.uml.Diamond;
 import graph.items.uml.FilledArrow;
 import graph.items.uml.OpenArrow;
 import graph.model.GraphItem;
+import graph.model.capability.CapabilityName;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -43,12 +46,17 @@ public class Main {
 		// SimpleRectangularConnectionArray redArray = new SimpleRectangularConnectionArray();
 		FluentRectangularConnectionArray redArray = new FluentRectangularConnectionArray();
 		red.setBoundaries( 200, 200, 50, 200 );
-		red.add( redArray );
+		red.addChild( redArray );
 		
 		TextBox a = new TextBox( "Alpha" );
 		TextBox b = new TextBox( "Beta" );
 		TextBox c = new TextBox( "Gamma" );
 		TextBox d = new TextBox( "Delta" );
+		
+		a.addCapability( CapabilityName.SELECTABLE, new RectangularSelection( a ) );
+		b.addCapability( CapabilityName.SELECTABLE, new RectangularSelection( b ) );
+		c.addCapability( CapabilityName.SELECTABLE, new RectangularSelection( c ) );
+		d.addCapability( CapabilityName.SELECTABLE, new RectangularSelection( d ) );
 		
 		a.setLocation( 20, 20 );
 		b.setLocation( 20, 50 );
@@ -72,7 +80,7 @@ public class Main {
 		ColoredRectangle blue = new ColoredRectangle( Color.BLUE );
 		SimpleRectangularConnectionArray blueArray = new SimpleRectangularConnectionArray();
 		blue.setBoundaries( 400, 300, 150, 50 );
-		blue.add( blueArray );
+		blue.addChild( blueArray );
 		result.add( blue );
 		
 		CuttingEdgeLineConnection blueToRed = new CuttingEdgeLineConnection( blueArray, redArray );

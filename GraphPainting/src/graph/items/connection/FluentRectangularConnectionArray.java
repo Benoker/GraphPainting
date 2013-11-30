@@ -23,7 +23,6 @@ import java.util.Map;
 public class FluentRectangularConnectionArray extends AbstractGraphItem implements ConnectionArray, Rectangular, Regraphable {
 	private List<EndPoint> endPoints = new ArrayList<>();
 	private Rectangle boundaries = new Rectangle();
-	private GraphSite site;
 	private CachedLocations locations;
 	private int landingOffset = 30;
 	
@@ -42,18 +41,17 @@ public class FluentRectangularConnectionArray extends AbstractGraphItem implemen
 	}
 
 	@Override
-	public void set( GraphSite site ) {
-		if( this.site != null ){
-			this.site.remove( this );
-		}
-		this.site = site;
-		if( site != null ){
-			site.add( this );
-		}
+	protected void addTo( GraphSite site ) {
+		site.add( this );
 	}
-
+	
 	@Override
-	public void regraph() {
+	protected void removeFrom( GraphSite site ) {
+		site.remove( this );
+	}
+	
+	@Override
+	public void regraphed() {
 		locations = null;	
 	}
 	
@@ -62,18 +60,14 @@ public class FluentRectangularConnectionArray extends AbstractGraphItem implemen
 		endPoints.add( endPoint );
 		endPoint.setArray( this );
 		locations = null;
-		if( site != null ){
-			site.regraph();
-		}
+		regraph();
 	}
 
 	@Override
 	public void remove( EndPoint endPoint ) {
 		endPoints.remove( endPoint );
 		endPoint.setArray( null );
-		if( site != null ){
-			site.regraph();
-		}
+		regraph();
 	}
 
 	@Override

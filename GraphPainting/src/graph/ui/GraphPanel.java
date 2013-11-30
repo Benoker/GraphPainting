@@ -26,11 +26,60 @@ public class GraphPanel extends JPanel{
 	
 	private List<GraphItem> items = new LinkedList<>();
 	
+	private JPanel canvas;
+	private JPanel overlay;
+	
 	public GraphPanel(){
 		setLayout( null );
-		setBackground( Color.WHITE );
-		setOpaque( true );
-		setFocusable( true );
+		
+		canvas = createCanvas();
+		canvas.setLayout( null );
+		canvas.setBackground( Color.WHITE );
+		canvas.setOpaque( true );
+		canvas.setFocusable( true );
+		
+		overlay = createOverlay();
+		overlay.setOpaque( false );
+		overlay.setFocusable( false );
+
+		add( overlay );
+		add( canvas );
+	}
+	
+	private JPanel createCanvas(){
+		return new JPanel(){
+			@Override
+			protected void paintComponent( Graphics g ) {
+				super.paintComponent( g );
+				for( GraphPaintable paintable : paintables ){
+					Graphics2D g2 = (Graphics2D)g.create();
+					paintable.paint( g2 );
+					g2.dispose();
+				}
+			}
+		};
+	}
+	
+	private JPanel createOverlay(){
+		return new JPanel(){
+			@Override
+			protected void paintComponent( Graphics g ) {
+				for( GraphPaintable paintable : paintables ){
+					Graphics2D g2 = (Graphics2D)g.create();
+					paintable.paintOverlay( g2 );
+					g2.dispose();
+				}
+			}
+		};
+	}
+	
+	@Override
+	public void doLayout() {
+		int width = getWidth();
+		int height = getHeight();
+		
+		canvas.setBounds( 0, 0, width, height );
+		overlay.setBounds( 0, 0, width, height );
 	}
 	
 	/**
@@ -68,17 +117,6 @@ public class GraphPanel extends JPanel{
 		return result;
 	}
 	
-	@Override
-	protected void paintComponent( Graphics g ) {
-		super.paintComponent( g );
-		
-		for( GraphPaintable paintable : paintables ){
-			Graphics2D g2 = (Graphics2D)g.create();
-			paintable.paint( g2 );
-			g2.dispose();
-		}
-	}
-	
 	private void regraph(){
 		valid = false;
 		EventQueue.invokeLater( new Runnable() {
@@ -95,13 +133,23 @@ public class GraphPanel extends JPanel{
 		valid = true;
 		
 		for( Regraphable regraphable : regraphables ){
-			regraphable.regraph();
+			regraphable.regraphed();
 		}
 		
 		repaint();
 	}
 	
 	private class DefaultGraphSite implements GraphSite{
+		@Override
+		public void addItem( GraphItem item ) {
+			GraphPanel.this.add( item );	
+		}
+		
+		@Override
+		public void removeItem( GraphItem item ) {
+			GraphPanel.this.remove( item );
+		}
+		
 		@Override
 		public void add( GraphPaintable paintable ) {
 			paintables.add( paintable );
@@ -110,7 +158,7 @@ public class GraphPanel extends JPanel{
 		
 		@Override
 		public void add( JComponent component ) {
-			GraphPanel.this.add( component );
+			canvas.add( component );
 			regraph();
 		}
 		
@@ -127,7 +175,7 @@ public class GraphPanel extends JPanel{
 		
 		@Override
 		public void remove( JComponent component ) {
-			GraphPanel.this.remove( component );
+			canvas.remove( component );
 			regraph();
 		}
 		
