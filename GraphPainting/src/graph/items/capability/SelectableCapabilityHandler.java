@@ -16,6 +16,7 @@ import java.awt.event.MouseListener;
  */
 public class SelectableCapabilityHandler implements CapabilityHandler<SelectableCapability> {
 	private CapabilityHandlerSite<SelectableCapability> site;
+	private SelectableCapability newlySelected;
 
 	@Override
 	public void init( CapabilityHandlerSite<SelectableCapability> site ) {
@@ -55,17 +56,18 @@ public class SelectableCapabilityHandler implements CapabilityHandler<Selectable
 		return new MouseAdapter() {
 			@Override
 			public void mousePressed( MouseEvent e ) {
+				
 				if( e.getButton() == MouseEvent.BUTTON1 ){
+					newlySelected = null;
+					
 					SelectableCapability selectable = getSelectable( e.getX(), e.getY() );
 					
 					if( e.isControlDown() ){
 						if( selectable != null ){
-							if( selectable.getSelected().isSelected() ){
-								selectable.setSelected( Selection.NO_SELECTION );
-							}
-							else{
+							if( !selectable.getSelected().isSelected() ){
 								ensureNoPrimary();
 								selectable.setSelected( new Selection( true, Importance.PRIMARY ) );
+								newlySelected = selectable;
 							}
 						}
 					}
@@ -75,6 +77,21 @@ public class SelectableCapabilityHandler implements CapabilityHandler<Selectable
 							selectable.setSelected( new Selection( true, Importance.PRIMARY ) );
 						}
 					}
+				}
+			}
+			
+			@Override
+			public void mouseReleased( MouseEvent e ) {
+				if( e.getButton() == MouseEvent.BUTTON1 ){
+					if( e.isControlDown() ){
+						SelectableCapability selectable = getSelectable( e.getX(), e.getY() );
+						if( selectable != null && newlySelected != selectable ){
+							if( selectable.getSelected().isSelected() ){
+								selectable.setSelected( Selection.NO_SELECTION );
+							}
+						}
+					}
+					newlySelected = null;
 				}
 			}
 		};
