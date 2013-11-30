@@ -4,6 +4,7 @@ import graph.items.ColoredRectangle;
 import graph.items.TextBox;
 import graph.items.connection.AbstractConnection;
 import graph.items.connection.BezierLineConnection;
+import graph.items.connection.CuttingEdgeLineConnection;
 import graph.items.connection.DirectLineConnection;
 import graph.items.connection.FluentRectangularConnectionArray;
 import graph.items.connection.PointConnector;
@@ -70,9 +71,10 @@ public class Main {
 		blue.add( blueArray );
 		result.add( blue );
 		
-		DirectLineConnection blueToRed = new DirectLineConnection( blueArray, redArray );
-		blueToRed.setSourcePoint( new UndirectedEndPoint() );
-		blueToRed.setTargetPoint( new UndirectedEndPoint() );
+		CuttingEdgeLineConnection blueToRed = new CuttingEdgeLineConnection( blueArray, redArray );
+//		blueToRed.setSourcePoint( new UndirectedEndPoint() );
+//		blueToRed.setTargetPoint( new UndirectedEndPoint() );
+		
 		result.add( blueToRed );
 		result.add( new Diamond( blueToRed.getSourceEndPoint(), Color.GREEN ));
 		result.add( new OpenArrow( blueToRed.getTargetEndPoint() ));

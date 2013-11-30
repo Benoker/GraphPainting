@@ -63,6 +63,49 @@ public class Geom {
 		}
 	}
 	
+	public static Point intersection( Point a1, Point a2, Point b1, Point b2 ){
+		double x1 = a1.x;
+		double y1 = a1.y;
+		double x2 = a2.x;
+		double y2 = a2.y;
+		double x3 = b1.x;
+		double y3 = b1.y;
+		double x4 = b2.x;
+		double y4 = b2.y;
+		
+		double disc = (x1-x2)*(y3-y4) - (y1-y2)*(x3-x4);
+		if( round( disc ) == 0 ){
+			return null;
+		}
+		
+		double x = ((x1*y2-y1*x2)*(x3-x4) - (x1-x2)*(x3*y4-y3*x4)) / disc;
+		double y = ((x1*y2-y1*x2)*(y3-y4) - (y1-y2)*(x3*y4-y3*x4)) / disc;
+		
+		return new Point(round(x), round(y));
+	}
+	
+	public static boolean closingIn( Point a1, Point a2, Point b1, Point b2 ){
+		Point cut = intersection( a1, plus( a1, new Point( a2.y - a1.y, a1.x - a2.x )), b1, b2 );
+		
+		int cx = b1.x - cut.x;
+		int cy = b1.y - cut.y;
+		
+		int dx = b1.x - b2.x;
+		int dy = b1.y - b2.y;
+		
+		boolean sx = (cx < 0) == (dx < 0);
+		boolean sy = (cy < 0) == (dy < 0);
+		return sx && sy;
+	}
+	
+	public static Point middle( Point a, Point b ){
+		return new Point( round( (a.x + b.x ) / 2.0 ), round( (a.y + b.y) / 2 ) );
+	}
+	
+	public static Point plus( Point a, Point b ){
+		return new Point( a.x + b.x, a.y + b.y );
+	}
+	
 	public enum Side{
 		NORTH, SOUTH, EAST, WEST;
 	}

@@ -1,46 +1,20 @@
 package graph.items.connection;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.geom.CubicCurve2D;
-
-import graph.model.GraphPaintable;
-import graph.model.GraphSite;
 import graph.model.connection.ConnectionArray;
 import graph.model.connection.EndPointAttachement;
 import graph.util.Geom;
 
-public class BezierLineConnection extends AbstractConnection implements GraphPaintable {
-	private GraphSite site;
-	private Color color = Color.BLACK;
-	
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.geom.CubicCurve2D;
+
+public class BezierLineConnection extends PaintableConnection {
 	public BezierLineConnection( ConnectionArray source, ConnectionArray target ){
 		super( source, target );
 	}
-	
+
 	@Override
-	public void set( GraphSite site ) {
-		super.set( site );
-		
-		if( this.site != null ){
-			this.site.remove( (GraphPaintable)this );
-		}
-		this.site = site;
-		if( site != null ){
-			site.add( (GraphPaintable)this );
-		}
-	}
-	
-	public void setColor( Color color ) {
-		this.color = color;
-		if( site != null ){
-			site.regraph();
-		}
-	}
-	
-	@Override
-	public void paint( Graphics2D g ) {
+	protected void paintConnection( Graphics2D g ) {
 		EndPointAttachement source = getSourceEndPoint().getAttachement();
 		EndPointAttachement target = getTargetEndPoint().getAttachement();
 		
@@ -48,8 +22,6 @@ public class BezierLineConnection extends AbstractConnection implements GraphPai
 		Point sa = source.getApproach();
 		Point ta = target.getApproach();
 		Point tl = target.getLanding();
-		
-		g.setColor( color );
 		
 		if( sl.x != sa.x || sl.y != sa.y ){
 			g.drawLine( sl.x, sl.y, sa.x, sa.y );
