@@ -15,6 +15,7 @@ import graph.items.uml.FilledArrow;
 import graph.items.uml.OpenArrow;
 import graph.model.GraphItem;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +61,11 @@ public class Main {
 		result.add( c );
 		result.add( d );
 		result.add( red );
-		addLine( result, new BezierLineConnection( redArray, a ) );
+		
+		BezierLineConnection bezier = new BezierLineConnection( redArray, a );
+		bezier.setStroke( new BasicStroke( 1.0f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1.0f, new float[]{10.0f}, 1.0f ) );
+		
+		addLine( result, bezier );
 		addLine( result, new DirectLineConnection( redArray, b ) );
 		addLine( result, new DirectLineConnection( redArray, c ) );
 		addLine( result, new DirectLineConnection( redArray, d ) );

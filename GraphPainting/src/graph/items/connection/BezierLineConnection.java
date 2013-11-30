@@ -7,6 +7,8 @@ import graph.util.Geom;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.CubicCurve2D;
+import java.awt.geom.Line2D;
+import java.awt.geom.Path2D;
 
 public class BezierLineConnection extends PaintableConnection {
 	public BezierLineConnection( ConnectionArray source, ConnectionArray target ){
@@ -23,12 +25,8 @@ public class BezierLineConnection extends PaintableConnection {
 		Point ta = target.getApproach();
 		Point tl = target.getLanding();
 		
-		if( sl.x != sa.x || sl.y != sa.y ){
-			g.drawLine( sl.x, sl.y, sa.x, sa.y );
-		}
-		if( ta.x != tl.x || ta.y != tl.y ){
-			g.drawLine( ta.x, ta.y, tl.x, tl.y );
-		}
+		Line2D.Float lineS = new Line2D.Float( sl.x, sl.y, sa.x, sa.y );
+		Line2D.Float lineT = new Line2D.Float( ta.x, ta.y, tl.x, tl.y );
 		
 		double dist = Math.sqrt( Geom.dist2( sa.x, sa.y, ta.x, ta.y )) / 2;
 		Point ctrl1 = Geom.pointAt( sa, source.getDirection(), dist );
@@ -36,6 +34,10 @@ public class BezierLineConnection extends PaintableConnection {
 		
 		CubicCurve2D.Float cc = new CubicCurve2D.Float( sa.x, sa.y, ctrl1.x, ctrl1.y, ctrl2.x, ctrl2.y, ta.x, ta.y );
 		
-		g.draw( cc );
+		Path2D path = new Path2D.Float();
+		path.append( lineS, true );
+		path.append( cc, true );
+		path.append( lineT, true );
+		g.draw( path );
 	}
 }

@@ -21,14 +21,8 @@ public class DirectLineConnection extends PaintableConnection{
 		Point ta = target.getApproach();
 		Point tl = target.getLanding();
 		
-		if( sl.x != sa.x || sl.y != sa.y ){
-			g.drawLine( sl.x, sl.y, sa.x, sa.y );
-		}
-		if( sa.x != ta.x || sa.y != ta.y ){
-			g.drawLine( sa.x, sa.y, ta.x, ta.y );
-		}
-		if( ta.x != tl.x || ta.y != tl.y ){
-			g.drawLine( ta.x, ta.y, tl.x, tl.y );
-		}
+		int[] xs = { sl.x, sa.x, ta.x, tl.x };
+		int[] ys = { sl.y, sa.y, ta.y, tl.y };
+		g.drawPolygon( xs, ys, 4 );
 	}
 }

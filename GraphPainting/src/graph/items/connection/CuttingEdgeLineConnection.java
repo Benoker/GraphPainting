@@ -1,19 +1,59 @@
 package graph.items.connection;
 
+import graph.model.GraphSite;
+import graph.model.Regraphable;
 import graph.model.connection.ConnectionArray;
 import graph.model.connection.EndPointAttachement;
 import graph.util.Geom;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 
-public class CuttingEdgeLineConnection extends PaintableConnection{
+public class CuttingEdgeLineConnection extends PaintableConnection implements Regraphable{
+	private GraphSite site;
+	private List<Point> line;
+	
 	public CuttingEdgeLineConnection( ConnectionArray source, ConnectionArray target ) {
 		super( source, target );
 	}
+	
+	@Override
+	public void set( GraphSite site ) {
+		if( this.site != null ){
+			this.site.remove( (Regraphable)this );
+		}
+		super.set( site );
+		this.site = site;
+		if( site != null ){
+			site.add( (Regraphable)this );
+		}
+	}
 
 	@Override
+	public void regraph() {
+		line = null;	
+	}
+	
+	@Override
 	protected void paintConnection( Graphics2D g ) {
+		if( line == null ){
+			line = createLine();
+		}
+		int[] pointx = new int[ line.size() ];
+		int[] pointy = new int[ line.size() ];
+		for( int i = 0, n = line.size(); i<n;  i++ ){
+			Point p = line.get( i );
+			pointx[i] = p.x;
+			pointy[i] = p.y;
+		}
+		g.drawPolyline( pointx, pointy, line.size() );
+	}
+	
+	private List<Point> createLine(){
+		List<Point> line = new ArrayList<>();
+		
 		EndPointAttachement source = getSourceEndPoint().getAttachement();
 		EndPointAttachement target = getTargetEndPoint().getAttachement();
 		
@@ -23,16 +63,13 @@ public class CuttingEdgeLineConnection extends PaintableConnection{
 		Point tl = target.getLanding();
 		
 		if( sl.x != sa.x || sl.y != sa.y ){
-			g.drawLine( sl.x, sl.y, sa.x, sa.y );
+			line.add( sl );
 		}
-		if( ta.x != tl.x || ta.y != tl.y ){
-			g.drawLine( ta.x, ta.y, tl.x, tl.y );
-		}
+		line.add( sa );
 		
 		Point intersection = Geom.intersection( sa, sl, ta, tl );
 		if( intersection != null ){
-			g.drawLine( sa.x, sa.y, intersection.x, intersection.y );
-			g.drawLine( ta.x, ta.y, intersection.x, intersection.y );
+			line.add( intersection );
 		}
 		else{
 			Point middle = Geom.middle( sa, ta );
@@ -52,10 +89,15 @@ public class CuttingEdgeLineConnection extends PaintableConnection{
 				ms = Geom.intersection( sa, Geom.plus(  sa, os ), middle, Geom.plus( middle, ds ));
 				mt = Geom.intersection( ta, Geom.plus( ta, os ), middle, Geom.plus( middle, dt ));
 			}
-			g.drawLine( sa.x, sa.y, ms.x, ms.y );
-			g.drawLine( ms.x, ms.y, mt.x, mt.y );
-			g.drawLine( mt.x, mt.y, ta.x, ta.y );
-			
+			line.add( ms );
+			line.add( mt );
 		}
+		
+		line.add( ta );
+		if( ta.x != tl.x || ta.y != tl.y ){
+			line.add( tl );
+		}
+		
+		return line;
 	}
 }

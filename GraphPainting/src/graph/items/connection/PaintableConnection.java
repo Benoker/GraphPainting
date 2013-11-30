@@ -6,9 +6,11 @@ import graph.model.connection.ConnectionArray;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Stroke;
 
 public abstract class PaintableConnection extends AbstractConnection implements GraphPaintable{
-	private Color color;
+	private Color color = Color.BLACK;
+	private Stroke stroke;
 	private GraphSite site;
 	
 	public PaintableConnection( ConnectionArray source, ConnectionArray target ){
@@ -35,9 +37,19 @@ public abstract class PaintableConnection extends AbstractConnection implements 
 		}
 	}
 	
+	public void setStroke( Stroke stroke ) {
+		this.stroke = stroke;
+		if( site != null ){
+			site.regraph();
+		}
+	}
+	
 	@Override
 	public final void paint( Graphics2D g ){
 		g.setColor( color );
+		if( stroke != null ){
+			g.setStroke( stroke );
+		}
 		paintConnection( g );
 	}
 	
