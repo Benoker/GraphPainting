@@ -4,6 +4,7 @@ import graph.items.capability.ContextCapabilityHandler;
 import graph.items.capability.MoveableCapabilityHandler;
 import graph.items.capability.SelectableCapabilityHandler;
 import graph.model.GraphItem;
+import graph.model.capability.CapabilityHandler;
 import graph.model.capability.CapabilityName;
 
 import javax.swing.JComponent;
@@ -48,5 +49,14 @@ public class Graph {
 	 */
 	public void removeItem( GraphItem item ){
 		panel.remove( item );
+	}
+	
+	/**
+	 * Adds a new capability to this graph.
+	 * @param name the name of the capability
+	 * @param handler the new handler, may be <code>null</code> to remove an existing handler
+	 */
+	public <T> void setCapability( CapabilityName<T> name, CapabilityHandler<T> handler ){
+		capabilityController.register( name, handler );
 	}
 }

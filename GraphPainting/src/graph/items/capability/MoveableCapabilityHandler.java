@@ -31,7 +31,12 @@ public class MoveableCapabilityHandler implements CapabilityHandler<MoveableCapa
 		site.addMouseListener( mouseListener() );
 		site.addMouseMotionListener( mouseMotionListener() );
 	}
-
+	
+	@Override
+	public void dispose() {
+		// ignore
+	}
+	
 	@Override
 	public void setEnabled( boolean enabled ) {
 		if( !enabled ){

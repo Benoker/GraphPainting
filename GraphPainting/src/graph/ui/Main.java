@@ -74,13 +74,15 @@ public class Main {
 		result.add( d );
 		result.add( red );
 		
-		BezierLineConnection bezier = new BezierLineConnection( redArray, a );
+		BezierLineConnection bezier = new BezierLineConnection();
+		redArray.add( bezier.getSourceEndPoint() );
+		a.add( bezier.getTargetEndPoint() );
 		bezier.setStroke( new BasicStroke( 1.0f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1.0f, new float[]{10.0f}, 1.0f ) );
 		
 		addLine( result, bezier );
-		addLine( result, new DirectLineConnection( redArray, b ) );
-		addLine( result, new DirectLineConnection( redArray, c ) );
-		addLine( result, new DirectLineConnection( redArray, d ) );
+		addLine( result, DirectLineConnection.connect( redArray, b ) );
+		addLine( result, DirectLineConnection.connect( redArray, c ) );
+		addLine( result, DirectLineConnection.connect( redArray, d ) );
 		
 		ColoredRectangle blue = new ColoredRectangle( Color.BLUE );
 		SimpleRectangularConnectionArray blueArray = new SimpleRectangularConnectionArray();
@@ -88,9 +90,12 @@ public class Main {
 		blue.addChild( blueArray );
 		result.add( blue );
 		
-		CuttingEdgeLineConnection blueToRed = new CuttingEdgeLineConnection( blueArray, redArray );
+		CuttingEdgeLineConnection blueToRed = new CuttingEdgeLineConnection();
 //		blueToRed.setSourcePoint( new UndirectedEndPoint() );
 //		blueToRed.setTargetPoint( new UndirectedEndPoint() );
+		
+		blueArray.add( blueToRed.getSourceEndPoint() );
+		redArray.add( blueToRed.getTargetEndPoint() );
 		
 		result.add( blueToRed );
 		result.add( new Diamond( blueToRed.getSourceEndPoint(), Color.GREEN ));

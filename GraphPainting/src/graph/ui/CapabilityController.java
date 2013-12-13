@@ -13,6 +13,7 @@ import java.util.List;
 
 import javax.swing.event.EventListenerList;
 
+import graph.model.GraphItem;
 import graph.model.capability.CapabilityHandler;
 import graph.model.capability.CapabilityHandlerSite;
 import graph.model.capability.CapabilityName;
@@ -50,7 +51,18 @@ public class CapabilityController {
 	 * @param handler the new handler
 	 */
 	public <T> void register( CapabilityName<T> name, CapabilityHandler<T> handler ){
-		handlers.add( new Site<>( name, handler ) );
+		Iterator<Site<?>> handlers = this.handlers.iterator();
+		while( handlers.hasNext() ){
+			Site<?> site = handlers.next();
+			if( site.name.equals( name )){
+				handlers.remove();
+				site.dispose();
+			}
+		}
+		
+		if( handler != null ){
+			this.handlers.add( new Site<>( name, handler ) );
+		}
 	}
 	
 	private void updateAllEnabled(){
@@ -222,6 +234,10 @@ public class CapabilityController {
 			updateEnabled();
 		}
 		
+		public void dispose(){
+			handler.dispose();
+		}
+		
 		public <X extends EventListener> X[] getListeners(Class<X> type){
 			return eventListeners.getListeners( type );
 		}
@@ -279,6 +295,16 @@ public class CapabilityController {
 		@Override
 		public void removeKeyListener( KeyListener listener ) {
 			eventListeners.add( KeyListener.class, listener );
+		}
+		
+		@Override
+		public void addItem( GraphItem item ) {
+			graph.add( item );
+		}
+		
+		@Override
+		public void removeItem( GraphItem item ) {
+			graph.remove( item );
 		}
 	}
 }

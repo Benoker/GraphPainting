@@ -1,5 +1,7 @@
 package graph.model.capability;
 
+import graph.items.ConnectionableCapability;
+
 
 /**
  * Extendable enumeration describing capabilities of a {@link GraphSelectable}.
@@ -13,6 +15,9 @@ public class CapabilityName<T> {
 	
 	/** The name of the capability that allows items to show a context menu */
 	public static final CapabilityName<ContextCapability> CONTEXT_MENU = new CapabilityName<ContextCapability>( "context" );
+	
+	/** The name of the capability that allows items to be connected */
+	public static final CapabilityName<ConnectionableCapability> CONNECTABLE = new CapabilityName<ConnectionableCapability>( "connect" ); 
 	
 	private String id;
 	

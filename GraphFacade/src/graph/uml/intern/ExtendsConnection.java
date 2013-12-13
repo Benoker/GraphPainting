@@ -15,11 +15,14 @@ public class ExtendsConnection extends DefaultConnection implements Connection{
 	public ExtendsConnection( Graph graph, ConnectionArray source, ConnectionArray target ){
 		super( graph, source, target );
 		
-		CuttingEdgeLineConnection line = new CuttingEdgeLineConnection( source, target );
+		CuttingEdgeLineConnection line = new CuttingEdgeLineConnection();
 		addChild( line );
 		
-		FilledArrow arrow = new FilledArrow( line.getTargetPoint() );
+		FilledArrow arrow = new FilledArrow( line.getTargetEndPoint() );
 		addChild( arrow );
+		
+		source.add( line.getSourceEndPoint() );
+		target.add( line.getTargetEndPoint() );
 	}
 
 	@Override

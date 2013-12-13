@@ -40,6 +40,11 @@ public abstract class AbstractEndPoint extends AbstractGraphItem implements EndP
 	}
 	
 	@Override
+	public ConnectionArray getArray() {
+		return array;
+	}
+	
+	@Override
 	public EndPointAttachement getAttachement() {
 		return array.getAttachement( this );
 	}

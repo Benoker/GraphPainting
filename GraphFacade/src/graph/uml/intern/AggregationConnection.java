@@ -18,14 +18,17 @@ public class AggregationConnection extends DefaultConnection implements Connecti
 	public AggregationConnection( Graph graph, ConnectionArray source, ConnectionArray target ){
 		super( graph, source, target );
 		
-		CuttingEdgeLineConnection line = new CuttingEdgeLineConnection( source, target );
+		CuttingEdgeLineConnection line = new CuttingEdgeLineConnection();
 		addChild( line );
 		
-		Diamond diamond = new Diamond( line.getTargetPoint(), Color.WHITE );
+		Diamond diamond = new Diamond( line.getTargetEndPoint(), Color.WHITE );
 		addChild( diamond );
 		
 		OpenArrow arrow = new OpenArrow( line.getSourceEndPoint() );
 		addChild( arrow );
+		
+		source.add( line.getSourceEndPoint() );
+		target.add( line.getTargetEndPoint() );
 	}
 
 	@Override

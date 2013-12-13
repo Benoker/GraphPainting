@@ -25,6 +25,11 @@ public class SelectableCapabilityHandler implements CapabilityHandler<Selectable
 	}
 	
 	@Override
+	public void dispose() {
+		// ignore
+	}
+	
+	@Override
 	public void setEnabled( boolean enabled ) {
 		// ignore
 	}

@@ -1,6 +1,5 @@
 package graph.items.connection;
 
-import graph.model.connection.ConnectionArray;
 import graph.model.connection.EndPointAttachement;
 import graph.util.Geom;
 
@@ -11,10 +10,6 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 
 public class BezierLineConnection extends PaintableConnection {
-	public BezierLineConnection( ConnectionArray source, ConnectionArray target ){
-		super( source, target );
-	}
-
 	@Override
 	protected void paintConnection( Graphics2D g ) {
 		EndPointAttachement source = getSourceEndPoint().getAttachement();

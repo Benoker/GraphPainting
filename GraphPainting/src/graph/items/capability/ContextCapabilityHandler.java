@@ -29,6 +29,11 @@ public class ContextCapabilityHandler implements CapabilityHandler<ContextCapabi
 		site.addMouseListener( mouseListener() );
 	}
 	
+	@Override
+	public void dispose() {
+		// ignore
+	}
+	
 	private MouseListener mouseListener(){
 		return new MouseAdapter() {
 			@Override

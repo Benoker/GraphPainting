@@ -2,7 +2,6 @@ package graph.items.connection;
 
 import graph.model.GraphSite;
 import graph.model.Regraphable;
-import graph.model.connection.ConnectionArray;
 import graph.model.connection.EndPointAttachement;
 import graph.util.Geom;
 
@@ -13,10 +12,6 @@ import java.util.List;
 
 public class CuttingEdgeLineConnection extends PaintableConnection implements Regraphable{
 	private List<Point> line;
-	
-	public CuttingEdgeLineConnection( ConnectionArray source, ConnectionArray target ) {
-		super( source, target );
-	}
 	
 	@Override
 	protected void addTo( GraphSite site ) {

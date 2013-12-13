@@ -27,4 +27,11 @@ public interface CapabilityHandler<T> {
 	 * @param enabled whether this capability is enabled
 	 */
 	public void setEnabled( boolean enabled );
+
+	/**
+	 * Informs this handler that it is no longer used, and should release any resources it
+	 * keeps. Listeners that were added to the {@link CapabilityHandlerSite} will automatically
+	 * be discarded.
+	 */
+	public void dispose();
 }

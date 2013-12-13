@@ -17,14 +17,17 @@ public class ImplementsConnection extends DefaultConnection implements Connectio
 	public ImplementsConnection( Graph graph, ConnectionArray source, ConnectionArray target ){
 		super( graph, source, target );
 		
-		CuttingEdgeLineConnection line = new CuttingEdgeLineConnection( source, target );
+		CuttingEdgeLineConnection line = new CuttingEdgeLineConnection();
 		
 		float[] dash = {8.0f};
 		line.setStroke( new BasicStroke( 1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER, 1.0f, dash, 0.0f ) );
 		addChild( line );
 		
-		FilledArrow arrow = new FilledArrow( line.getTargetPoint() );
+		FilledArrow arrow = new FilledArrow( line.getTargetEndPoint() );
 		addChild( arrow );
+		
+		source.add( line.getSourceEndPoint() );
+		target.add( line.getTargetEndPoint() );
 	}
 
 	@Override

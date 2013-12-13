@@ -7,8 +7,17 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 
 public class DirectLineConnection extends PaintableConnection{
-	public DirectLineConnection( ConnectionArray source, ConnectionArray target ){
-		super( source, target );
+	/**
+	 * Creates an unconfigured connection between <code>source</code> and <code>target</code>.
+	 * @param source the source of the connection
+	 * @param target the target of the connection
+	 * @return the new connection
+	 */
+	public static DirectLineConnection connect( ConnectionArray source, ConnectionArray target ){
+		DirectLineConnection connection = new DirectLineConnection();
+		source.add( connection.getSourceEndPoint() );
+		target.add( connection.getTargetEndPoint() );
+		return connection;
 	}
 	
 	@Override

@@ -14,6 +14,8 @@ public interface EndPoint extends GraphItem{
 	public void setConnection( GraphConnection connection );
 	
 	public void setArray( ConnectionArray array );
+	
+	public ConnectionArray getArray();
 
 	public Point getArrayCenter();
 	

@@ -1,59 +1,59 @@
 package graph.items.connection;
 
 import graph.items.AbstractGraphItem;
-import graph.model.connection.GraphConnection;
 import graph.model.connection.ConnectionArray;
 import graph.model.connection.EndPoint;
+import graph.model.connection.GraphConnection;
 
 public abstract class AbstractConnection extends AbstractGraphItem implements GraphConnection{
-	private ConnectionArray source;
-	private ConnectionArray target;
-	
 	private EndPoint sourcePoint;
 	private EndPoint targetPoint;
  
-	public AbstractConnection( ConnectionArray source, ConnectionArray target ){
-		this.source = source;
-		this.target = target;
-		
+	public AbstractConnection(){
 		setSourcePoint( new OrthogonalEndPoint() );
 		setTargetPoint( new OrthogonalEndPoint() );
 	}
 	
 	public void setSourcePoint( EndPoint sourcePoint ) {
+		ConnectionArray array = null;
+		
 		if( this.sourcePoint != null ){
 			removeChild( this.sourcePoint );
+			array = this.sourcePoint.getArray();
+			if( array != null ){
+				array.remove( this.sourcePoint );
+			}
 			this.sourcePoint.setConnection( null );
-			source.remove( this.sourcePoint );
 		}
 		this.sourcePoint = sourcePoint;
 		if( this.sourcePoint != null ){
 			this.sourcePoint.setConnection( this );
-			source.add( this.sourcePoint );
 			addChild( sourcePoint );
+			if( array != null ){
+				array.add( this.sourcePoint );
+			}
 		}
 	}
 	
-	public EndPoint getSourcePoint() {
-		return sourcePoint;
-	}
-	
 	public void setTargetPoint( EndPoint targetPoint ) {
+		ConnectionArray array = null;
+		
 		if( this.targetPoint != null ){
 			removeChild( this.targetPoint );
+			array = this.targetPoint.getArray();
+			if( array != null ){
+				array.remove( this.targetPoint );
+			}
 			this.targetPoint.setConnection( null );
-			target.remove( this.targetPoint );
 		}
 		this.targetPoint = targetPoint;
 		if( this.targetPoint != null ){
 			this.targetPoint.setConnection( this );
-			target.add( this.targetPoint );
 			addChild( targetPoint );
+			if( array != null ){
+				array.add( this.targetPoint );
+			}
 		}
-	}
-	
-	public EndPoint getTargetPoint() {
-		return targetPoint;
 	}
 	
 	@Override

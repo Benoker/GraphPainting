@@ -88,4 +88,16 @@ public interface CapabilityHandlerSite<T> {
 	 * @param listener the listener to remove, not <code>null</code>
 	 */
 	public void removeKeyListener( KeyListener listener );
+
+	/**
+	 * Adds <code>item</code> to the list of items that are part of the graph.
+	 * @param item the new item, not <code>null</code>
+	 */
+	public void addItem( GraphItem item );
+	
+	/**
+	 * Removes <code>item</code> from the list of items that represent the graph.
+	 * @param item the item to remove
+	 */
+	public void removeItem( GraphItem item );
 }

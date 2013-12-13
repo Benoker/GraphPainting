@@ -18,14 +18,17 @@ public class CompositionConnection extends DefaultConnection implements Connecti
 	public CompositionConnection( Graph graph, ConnectionArray source, ConnectionArray target ){
 		super( graph, source, target );
 		
-		CuttingEdgeLineConnection line = new CuttingEdgeLineConnection( source, target );
+		CuttingEdgeLineConnection line = new CuttingEdgeLineConnection();
 		addChild( line );
 		
-		Diamond diamond = new Diamond( line.getTargetPoint(), Color.BLACK );
+		Diamond diamond = new Diamond( line.getTargetEndPoint(), Color.BLACK );
 		addChild( diamond );
 		
 		OpenArrow arrow = new OpenArrow( line.getSourceEndPoint() );
 		addChild( arrow );
+		
+		source.add( line.getSourceEndPoint() );
+		target.add( line.getTargetEndPoint() );
 	}
 
 	@Override
