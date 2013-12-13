@@ -16,13 +16,13 @@ public class CuttingEdgeLineConnection extends PaintableConnection implements Re
 	@Override
 	protected void addTo( GraphSite site ) {
 		super.addTo( site );
-		site.add( (Regraphable)this );
+		site.addRegraphable( (Regraphable)this );
 	}
 	
 	@Override
 	protected void removeFrom( GraphSite site ) {
 		super.removeFrom( site );
-		site.remove( (Regraphable)this );
+		site.removeRegraphable( (Regraphable)this );
 	}
 	
 	@Override

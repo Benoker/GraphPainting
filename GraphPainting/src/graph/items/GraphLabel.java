@@ -43,15 +43,15 @@ public class GraphLabel extends MoveableRectangularGraphItem implements GraphIte
 	
 	@Override
 	protected void addTo( GraphSite site ) {
-		site.add( label );
-		site.add( (Regraphable)this );
+		site.addComponent( label );
+		site.addRegraphable( (Regraphable)this );
 		super.addTo( site );
 	}
 	
 	@Override
 	protected void removeFrom( GraphSite site ) {
-		site.remove( label );
-		site.remove( (Regraphable)this );
+		site.removeComponent( label );
+		site.removeRegraphable( (Regraphable)this );
 		super.removeFrom( site );
 	}
 	

@@ -39,11 +39,11 @@ public abstract class EndPointPaintable extends AbstractGraphItem implements Gra
 
 	@Override
 	protected void addTo( GraphSite site ) {
-		site.add( this );
+		site.addPaintable( this );
 	}
 	
 	@Override
 	protected void removeFrom( GraphSite site ) {
-		site.remove( this );
+		site.removePaintable( this );
 	}
 }

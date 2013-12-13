@@ -54,12 +54,12 @@ public class RectangularSelection extends AbstractGraphItem implements Selectabl
 
 	@Override
 	protected void removeFrom( GraphSite site ) {
-		site.remove( this );
+		site.removePaintable( this );
 	}
 
 	@Override
 	protected void addTo( GraphSite site ) {
-		site.add( this );
+		site.addPaintable( this );
 	}
 	
 	@Override

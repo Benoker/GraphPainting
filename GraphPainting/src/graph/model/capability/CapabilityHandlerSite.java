@@ -1,6 +1,7 @@
 package graph.model.capability;
 
 import graph.model.GraphItem;
+import graph.model.GraphItemParent;
 import graph.ui.GraphPanel;
 
 import java.awt.Component;
@@ -20,7 +21,7 @@ import java.util.List;
  * </ul>
  * @author Benjamin Sigg
  */
-public interface CapabilityHandlerSite<T> {
+public interface CapabilityHandlerSite<T> extends GraphItemParent{
 	/**
 	 * Informs the application that the owning {@link CapabilityHandler} has been triggered. All the other
 	 * capabilities are disabled, and any {@link InputEvent}s are forwarded exclusively to the owning handler.<br>
@@ -88,16 +89,4 @@ public interface CapabilityHandlerSite<T> {
 	 * @param listener the listener to remove, not <code>null</code>
 	 */
 	public void removeKeyListener( KeyListener listener );
-
-	/**
-	 * Adds <code>item</code> to the list of items that are part of the graph.
-	 * @param item the new item, not <code>null</code>
-	 */
-	public void addItem( GraphItem item );
-	
-	/**
-	 * Removes <code>item</code> from the list of items that represent the graph.
-	 * @param item the item to remove
-	 */
-	public void removeItem( GraphItem item );
 }

@@ -9,6 +9,7 @@ import graph.items.ConnectionFlavor;
 import graph.items.ConnectionableCapability;
 import graph.items.capability.ConnectionFactory;
 import graph.items.capability.ConnectionableCapabilityHandler;
+import graph.items.capability.OpenEndedLineConnectionStrategy;
 import graph.items.connection.BezierLineConnection;
 import graph.items.connection.FluentRectangularConnectionArray;
 import graph.model.GraphItem;
@@ -30,6 +31,7 @@ public class ConnectionTest {
 		}
 		
 		ConnectionableCapabilityHandler connectability = new ConnectionableCapabilityHandler();
+		connectability.setOpenEnded( new OpenEndedLineConnectionStrategy() );
 		connectability.setFactory( factory() );
 		graph.setCapability( CapabilityName.CONNECTABLE, connectability );
 		

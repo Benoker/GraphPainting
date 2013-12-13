@@ -47,12 +47,12 @@ public class FluentRectangularConnectionArray extends AbstractGraphItem implemen
 
 	@Override
 	protected void addTo( GraphSite site ) {
-		site.add( this );
+		site.addRegraphable( this );
 	}
 	
 	@Override
 	protected void removeFrom( GraphSite site ) {
-		site.remove( this );
+		site.removeRegraphable( this );
 	}
 	
 	@Override

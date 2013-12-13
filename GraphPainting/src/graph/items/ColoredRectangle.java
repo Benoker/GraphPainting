@@ -18,13 +18,13 @@ public class ColoredRectangle extends MoveableRectangularGraphItem implements Gr
 
 	@Override
 	protected void addTo( GraphSite site ) {
-		site.add( this );
+		site.addPaintable( this );
 		super.addTo( site );
 	}
 	
 	@Override
 	protected void removeFrom( GraphSite site ) {
-		site.remove( this );
+		site.removePaintable( this );
 		super.removeFrom( site );
 	}
 	

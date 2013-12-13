@@ -4,6 +4,7 @@ import graph.items.capability.ContextCapabilityHandler;
 import graph.items.capability.MoveableCapabilityHandler;
 import graph.items.capability.SelectableCapabilityHandler;
 import graph.model.GraphItem;
+import graph.model.GraphItemParent;
 import graph.model.capability.CapabilityHandler;
 import graph.model.capability.CapabilityName;
 
@@ -14,7 +15,7 @@ import javax.swing.JComponent;
  * graphs.
  * @author Benjamin Sigg
  */
-public class Graph {
+public class Graph implements GraphItemParent{
 	private GraphPanel panel;
 	private CapabilityController capabilityController;
 	

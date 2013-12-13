@@ -24,6 +24,7 @@ import java.awt.event.MouseMotionListener;
 public class ConnectionableCapabilityHandler implements CapabilityHandler<ConnectionableCapability>{
 	private CapabilityHandlerSite<ConnectionableCapability> site;
 	private ConnectionFactory factory;
+	private OpenEndedConnectionStrategy openEnded = OpenEndedConnectionStrategy.NULL;
 	
 	/** the start of the connection that is currently manufactured */
 	private ConnectionableCapability sourceItem;
@@ -56,6 +57,23 @@ public class ConnectionableCapabilityHandler implements CapabilityHandler<Connec
 		}
 	}
 	
+	/**
+	 * Sets the strategy responsible for handling cases where there is target for
+	 * new connections
+	 * @param openEnded the new strategy, may be <code>null</code>
+	 */
+	public void setOpenEnded( OpenEndedConnectionStrategy openEnded ) {
+		if( openEnded == null ){
+			openEnded = OpenEndedConnectionStrategy.NULL;
+		}
+		
+		this.openEnded.endConnecting();
+		this.openEnded.setParent( null );
+		
+		this.openEnded = openEnded;
+		this.openEnded.setParent( site );
+	}
+	
 	@Override
 	public void init( CapabilityHandlerSite<ConnectionableCapability> site ) {
 		this.site = site;
@@ -66,11 +84,12 @@ public class ConnectionableCapabilityHandler implements CapabilityHandler<Connec
 		if( factory != null ){
 			site.triggered();
 		}
+		openEnded.setParent( site );
 	}
 
 	@Override
 	public void dispose() {
-		// ignore
+		cancelConnecting();
 	}
 	
 	@Override
@@ -91,6 +110,7 @@ public class ConnectionableCapabilityHandler implements CapabilityHandler<Connec
 		sourceX = x;
 		sourceY = y;
 		startConnectingAt( true );
+		openEnded.beginConnecting( connection, x, y, factory.getFlavor() );
 		continueConnectingAt( x, y );
 	}
 	
@@ -126,6 +146,7 @@ public class ConnectionableCapabilityHandler implements CapabilityHandler<Connec
 			sourceArray = null;
 			sourceItem = null;
 		}
+		openEnded.endConnecting();
 	}
 	
 	private void continueConnectingAt( int x, int y ){
@@ -147,6 +168,7 @@ public class ConnectionableCapabilityHandler implements CapabilityHandler<Connec
 				targetArray.remove( connection.getTargetEndPoint() );
 			}
 			if( nextTargetArray != null ){
+				openEnded.handleNotOpenEnded( x, y );
 				nextTargetArray.add( connection.getTargetEndPoint() );
 			}
 			
@@ -158,6 +180,9 @@ public class ConnectionableCapabilityHandler implements CapabilityHandler<Connec
 				sourceArray.remove( connection.getSourceEndPoint() );
 				site.removeItem( connection );
 			}
+		}
+		if( nextTargetArray == null ){
+			openEnded.handleOpenEndedAt( x, y );
 		}
 		
 		targetArray = nextTargetArray;		
@@ -179,6 +204,7 @@ public class ConnectionableCapabilityHandler implements CapabilityHandler<Connec
 		sourceArray = null;
 		targetArray = null;
 		sourceItem = null;
+		openEnded.endConnecting();
 	}
 	
 	private ConnectionableCapability getSourceCapability( int x, int y ){

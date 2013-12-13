@@ -151,36 +151,36 @@ public class GraphPanel extends JPanel{
 		}
 		
 		@Override
-		public void add( GraphPaintable paintable ) {
+		public void addPaintable( GraphPaintable paintable ) {
 			paintables.add( paintable );
 			regraph();
 		}
 		
 		@Override
-		public void add( JComponent component ) {
+		public void addComponent( JComponent component ) {
 			canvas.add( component );
 			regraph();
 		}
 		
 		@Override
-		public void add( Regraphable regraphable ) {
+		public void addRegraphable( Regraphable regraphable ) {
 			regraphables.add( regraphable );	
 		}
 		
 		@Override
-		public void remove( GraphPaintable paintable ) {
+		public void removePaintable( GraphPaintable paintable ) {
 			paintables.remove( paintable );
 			regraph();
 		}
 		
 		@Override
-		public void remove( JComponent component ) {
+		public void removeComponent( JComponent component ) {
 			canvas.remove( component );
 			regraph();
 		}
 		
 		@Override
-		public void remove( Regraphable regraphable ) {
+		public void removeRegraphable( Regraphable regraphable ) {
 			regraphables.remove( regraphable );
 		}
 		

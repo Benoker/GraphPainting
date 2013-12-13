@@ -1,6 +1,5 @@
 package graph.items;
 
-import graph.model.GraphItem;
 import graph.model.connection.ConnectionArray;
 import graph.model.connection.EndPoint;
 

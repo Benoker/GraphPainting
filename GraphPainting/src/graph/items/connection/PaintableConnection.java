@@ -13,12 +13,12 @@ public abstract class PaintableConnection extends AbstractConnection implements 
 	
 	@Override
 	protected void addTo( GraphSite site ) {
-		site.add( (GraphPaintable)this );
+		site.addPaintable( (GraphPaintable)this );
 	}
 	
 	@Override
 	protected void removeFrom( GraphSite site ) {
-		site.remove( (GraphPaintable)this );
+		site.removePaintable( (GraphPaintable)this );
 	}
 	
 	public void setColor( Color color ) {
