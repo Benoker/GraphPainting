@@ -2,11 +2,13 @@ package graph.uml.intern;
 
 import graph.items.connection.FluentRectangularConnectionArray;
 import graph.items.connection.SimpleRectangularConnectionArray;
+import graph.model.capability.CapabilityName;
 import graph.model.connection.ConnectionArray;
 import graph.ui.Graph;
 import graph.uml.CommentBox;
 import graph.uml.Connection;
 import graph.uml.TypeBox;
+import graph.uml.intern.tools.TypeConnectionableCapability;
 
 /**
  * Default implementation of a {@link TypeBox}
@@ -28,6 +30,8 @@ public class DefaultTypeBox extends DefaultBox implements TypeBox {
 		
 		getLabel().addChild( umlDiagramConnections );
 		getLabel().addChild( commentConnections );
+		
+		setCapability( CapabilityName.CONNECTABLE, new TypeConnectionableCapability( this ) );
 	}
 	
 	/**

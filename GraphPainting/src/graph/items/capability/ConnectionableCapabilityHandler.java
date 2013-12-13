@@ -33,6 +33,7 @@ public class ConnectionableCapabilityHandler implements CapabilityHandler<Connec
 	private int sourceY;
 	
 	/** the end of the connection that is currently manufactured */
+	private ConnectionableCapability targetItem;
 	private ConnectionArray targetArray;
 	
 	/** the connection that is currently manufactured */
@@ -55,6 +56,14 @@ public class ConnectionableCapabilityHandler implements CapabilityHandler<Connec
 				site.triggered();
 			}
 		}
+	}
+	
+	/**
+	 * Gets the factory that is currently used to build new connections.
+	 * @return the factory, can be <code>null</code>
+	 */
+	public ConnectionFactory getFactory() {
+		return factory;
 	}
 	
 	/**
@@ -141,12 +150,24 @@ public class ConnectionableCapabilityHandler implements CapabilityHandler<Connec
 			cancelConnecting();
 		}
 		else{
+			connected( connection, sourceItem, targetItem );
+			
 			connection = null;
 			targetArray = null;
 			sourceArray = null;
 			sourceItem = null;
 		}
 		openEnded.endConnecting();
+	}
+	
+	/**
+	 * Called if a connection was made. Subclasses may modify the connection at this point in time.
+	 * @param connection the connection that was made
+	 * @param sourceItem the source of the connection
+	 * @param targetItem the target of the connection
+	 */
+	protected void connected( GraphConnection connection, ConnectionableCapability sourceItem, ConnectionableCapability targetItem ){
+		// nothing
 	}
 	
 	private void continueConnectingAt( int x, int y ){
@@ -185,6 +206,7 @@ public class ConnectionableCapabilityHandler implements CapabilityHandler<Connec
 			openEnded.handleOpenEndedAt( x, y );
 		}
 		
+		targetItem = nextTargetItem;
 		targetArray = nextTargetArray;		
 	}
 	

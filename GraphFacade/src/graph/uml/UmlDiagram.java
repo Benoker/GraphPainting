@@ -11,4 +11,10 @@ public interface UmlDiagram {
 	 * @return the new, empty, invisible typebox
 	 */
 	public TypeBox createType();
+	
+	/**
+	 * Gets access to some tools that can be used to modify the graph.
+	 * @return all the tools
+	 */
+	public UmlDiagramTools getTools();
 }

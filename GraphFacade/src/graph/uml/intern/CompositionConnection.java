@@ -5,6 +5,7 @@ import graph.items.uml.Diamond;
 import graph.items.uml.OpenArrow;
 import graph.model.GraphSite;
 import graph.model.connection.ConnectionArray;
+import graph.model.connection.GraphConnection;
 import graph.ui.Graph;
 import graph.uml.Connection;
 
@@ -14,11 +15,23 @@ import java.awt.Color;
  * Describes a composition between two types
  * @author Benjamin Sigg
  */
-public class CompositionConnection extends DefaultConnection implements Connection{
+public class CompositionConnection extends AbstractConnection implements Connection{
+	private CuttingEdgeLineConnection line;
+	
 	public CompositionConnection( Graph graph, DefaultBox sourceBox, ConnectionArray source, DefaultBox targetBox, ConnectionArray target ){
-		super( graph, sourceBox, source, targetBox, target );
-		
-		CuttingEdgeLineConnection line = new CuttingEdgeLineConnection();
+		super( graph, sourceBox, targetBox );
+		initLine();
+		source.add( line.getSourceEndPoint() );
+		target.add( line.getTargetEndPoint() );
+	}
+	
+	public CompositionConnection( Graph graph ){
+		super( graph, null, null );
+		initLine();
+	}
+	
+	private void initLine(){
+		line = new CuttingEdgeLineConnection();
 		addChild( line );
 		
 		Diamond diamond = new Diamond( line.getTargetEndPoint(), Color.BLACK );
@@ -26,9 +39,6 @@ public class CompositionConnection extends DefaultConnection implements Connecti
 		
 		OpenArrow arrow = new OpenArrow( line.getSourceEndPoint() );
 		addChild( arrow );
-		
-		source.add( line.getSourceEndPoint() );
-		target.add( line.getTargetEndPoint() );
 	}
 
 	@Override
@@ -39,5 +49,10 @@ public class CompositionConnection extends DefaultConnection implements Connecti
 	@Override
 	protected void addTo( GraphSite site ) {
 		// ignore
+	}
+	
+	@Override
+	public GraphConnection getGraphConnection() {
+		return line;
 	}
 }

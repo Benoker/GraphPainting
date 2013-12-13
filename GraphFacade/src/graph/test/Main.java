@@ -17,6 +17,7 @@ public class Main {
 		frame.add( graph.getView() );
 		
 		DefaultUmlDiagram diagram = new DefaultUmlDiagram( graph );
+		diagram.getTools().applyAddInheritsFromTool();
 		
 		TypeBox a = diagram.createType();
 		a.setText( "alpha" );

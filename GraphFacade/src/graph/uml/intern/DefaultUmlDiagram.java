@@ -3,6 +3,7 @@ package graph.uml.intern;
 import graph.ui.Graph;
 import graph.uml.TypeBox;
 import graph.uml.UmlDiagram;
+import graph.uml.UmlDiagramTools;
 
 /**
  * Default implementation of {@link UmlDiagram}.
@@ -10,6 +11,7 @@ import graph.uml.UmlDiagram;
  */
 public class DefaultUmlDiagram implements UmlDiagram{
 	private Graph graph;
+	private UmlDiagramTools tools;
 
 	/**
 	 * Creates a new diagram
@@ -17,6 +19,20 @@ public class DefaultUmlDiagram implements UmlDiagram{
 	 */
 	public DefaultUmlDiagram( Graph graph ){
 		this.graph = graph;
+		tools = new DefaultUmlDiagramTools( this );
+	}
+	
+	/**
+	 * Gets the graph which is painting the items.
+	 * @return the graph
+	 */
+	public Graph getGraph() {
+		return graph;
+	}
+	
+	@Override
+	public UmlDiagramTools getTools() {
+		return tools;
 	}
 	
 	@Override
@@ -25,5 +41,4 @@ public class DefaultUmlDiagram implements UmlDiagram{
 		result.makeVisible();
 		return result;
 	}
-
 }

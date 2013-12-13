@@ -5,6 +5,7 @@ import graph.items.uml.Diamond;
 import graph.items.uml.OpenArrow;
 import graph.model.GraphSite;
 import graph.model.connection.ConnectionArray;
+import graph.model.connection.GraphConnection;
 import graph.ui.Graph;
 import graph.uml.Connection;
 
@@ -14,11 +15,13 @@ import java.awt.Color;
  * Describes an aggregation between two types
  * @author Benjamin Sigg
  */
-public class AggregationConnection extends DefaultConnection implements Connection{
+public class AggregationConnection extends AbstractConnection implements Connection{
+	private CuttingEdgeLineConnection line;
+	
 	public AggregationConnection( Graph graph, DefaultBox sourceBox, ConnectionArray source, DefaultBox targetBox, ConnectionArray target ){
-		super( graph, sourceBox, source, targetBox, target );
+		super( graph, sourceBox, targetBox );
 		
-		CuttingEdgeLineConnection line = new CuttingEdgeLineConnection();
+		line = new CuttingEdgeLineConnection();
 		addChild( line );
 		
 		Diamond diamond = new Diamond( line.getTargetEndPoint(), Color.WHITE );
@@ -39,5 +42,10 @@ public class AggregationConnection extends DefaultConnection implements Connecti
 	@Override
 	protected void addTo( GraphSite site ) {
 		// ignore
+	}
+	
+	@Override
+	public GraphConnection getGraphConnection() {
+		return line;
 	}
 }
