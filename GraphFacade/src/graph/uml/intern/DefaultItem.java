@@ -10,6 +10,7 @@ import graph.uml.Item;
  */
 public abstract class DefaultItem extends AbstractGraphItem implements Item{
 	private Graph graph;
+	private boolean disposed = false;
 	private boolean visible = false;
 	
 	/**
@@ -24,21 +25,38 @@ public abstract class DefaultItem extends AbstractGraphItem implements Item{
 		return graph;
 	}
 	
-	@Override
-	public void setVisible( boolean visible ) {
-		if( this.visible != visible ){
-			if( visible ){
-				graph.addItem( this );
-			}
-			else{
-				graph.removeItem( this );
-			}
-			this.visible = visible;
+	/**
+	 * Makes this item visible if it is not yet visible.
+	 */
+	public void makeVisible(){
+		if( !visible ){
+			visible = true;
+			graph.addItem( this );
 		}
 	}
 	
 	@Override
-	public boolean isVisible() {
-		return visible;
+	public void dispose() {
+		if( !disposed ){	
+			disposed = true;
+			disposeDependentItems();
+			graph.removeItem( this );
+		}
+	}
+	
+	protected abstract Iterable<Item> dependentItems();
+	
+	/**
+	 * Calls {@link #dispose()} on all the items that depend on this item.
+	 */
+	protected void disposeDependentItems(){
+		Iterable<Item> items = dependentItems();
+		if( items != null ){
+			for( Item item : items ){
+				if( item != null ){
+					item.dispose();
+				}
+			}
+		}
 	}
 }

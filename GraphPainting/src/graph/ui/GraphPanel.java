@@ -119,14 +119,16 @@ public class GraphPanel extends JPanel{
 	
 	private void regraph(){
 		valid = false;
-		EventQueue.invokeLater( new Runnable() {
-			@Override
-			public void run() {
-				if( !valid ){
-					resetGraph();
+		if( EventQueue.isDispatchThread() ){
+			EventQueue.invokeLater( new Runnable() {
+				@Override
+				public void run() {
+					if( !valid ){
+						resetGraph();
+					}
 				}
-			}
-		});
+			});
+		}
 	}
 	
 	private void resetGraph(){

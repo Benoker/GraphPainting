@@ -21,32 +21,27 @@ public class Main {
 		TypeBox a = diagram.createType();
 		a.setText( "alpha" );
 		a.setLocation( 50, 50 );
-		a.setVisible( true );
 		
 		TypeBox b = diagram.createType();
 		b.setText( "beta" );
 		b.setLocation( 350, 350 );
-		b.setVisible( true );
 		
 		TypeBox c = diagram.createType();
 		c.setText( "gamma" );
 		c.setLocation( 50, 450 );
-		c.setVisible( true );
 		
 		TypeBox d = diagram.createType();
 		d.setText( "delta" );
 		d.setLocation( 350, 70 );
-		d.setVisible( true );
 		
-		a.addInheritsFrom( b ).setVisible( true );
-		a.addImplementsFrom( c ).setVisible( true );
+		a.addInheritsFrom( b );
+		a.addImplementsFrom( c );
 		
-		b.addAggregation( d ).setVisible( true );
-		c.addComposition( d ).setVisible( true );
+		b.addAggregation( d );
+		c.addComposition( d );
 		
 		CommentBox co = a.addComment( "some comment text" );
 		co.setLocation( 250, 170 );
-		co.setVisible( true );
 		
 		frame.setVisible( true );
 	}

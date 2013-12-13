@@ -21,7 +21,9 @@ public class DefaultUmlDiagram implements UmlDiagram{
 	
 	@Override
 	public TypeBox createType() {
-		return new DefaultTypeBox( graph );
+		DefaultTypeBox result = new DefaultTypeBox( graph );
+		result.makeVisible();
+		return result;
 	}
 
 }

@@ -6,14 +6,7 @@ package graph.uml;
  */
 public interface Item {
 	/**
-	 * Tells whether this item is visible or not.
-	 * @return the visibility
+	 * Removes this item (and all items that depend on this item) from the graph.
 	 */
-	public boolean isVisible();
-	
-	/**
-	 * Sets the visibility of this item
-	 * @param visible whether the user can see this item or not
-	 */
-	public void setVisible( boolean visible );
+	public void dispose();
 }

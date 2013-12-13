@@ -15,8 +15,8 @@ import java.awt.Color;
  * @author Benjamin Sigg
  */
 public class CompositionConnection extends DefaultConnection implements Connection{
-	public CompositionConnection( Graph graph, ConnectionArray source, ConnectionArray target ){
-		super( graph, source, target );
+	public CompositionConnection( Graph graph, DefaultBox sourceBox, ConnectionArray source, DefaultBox targetBox, ConnectionArray target ){
+		super( graph, sourceBox, source, targetBox, target );
 		
 		CuttingEdgeLineConnection line = new CuttingEdgeLineConnection();
 		addChild( line );

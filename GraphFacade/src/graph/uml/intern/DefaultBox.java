@@ -8,8 +8,11 @@ import graph.model.capability.CapabilityName;
 import graph.model.connection.ConnectionArray;
 import graph.ui.Graph;
 import graph.uml.Box;
+import graph.uml.Item;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 /**
  * Default implementation of a {@link Box}. Offers a list of {@link ConnectionArray}s, for different kind of connections. 
  * @author Benjamin Sigg
@@ -22,6 +25,9 @@ public class DefaultBox extends DefaultItem implements Box{
 	private Color selectedSecondary = new Color( 200, 220, 200 );
 	
 	private BoxSelectionCapability selection;
+	
+	/** all the dependent items that are to be disposed together with this box */
+	private List<Item> dependent = new ArrayList<>();
 	
 	/**
 	 * Creates a new box.
@@ -107,5 +113,27 @@ public class DefaultBox extends DefaultItem implements Box{
 	@Override
 	protected void addTo( GraphSite site ) {
 		// ignore
+	}
+	
+	@Override
+	protected Iterable<Item> dependentItems() {
+		return new ArrayList<Item>( dependent );
+	}
+
+	/**
+	 * Adds <code>item</code> to this box, <code>item</code> will be {@link Item#dispose() disposed}
+	 * together this box.
+	 * @param item the item to dispose
+	 */
+	public void addDependent( Item item ) {
+		dependent.add( item );
+	}
+	
+	/**
+	 * Removes <code>item</code> from the list of items to dispose.
+	 * @param item the item to remove
+	 */
+	public void removeDependent( Item item ){
+		dependent.remove( item );
 	}
 }

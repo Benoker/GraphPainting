@@ -14,8 +14,8 @@ import graph.uml.Connection;
  * @author Benjamin Sigg
  */
 public class ImplementsConnection extends DefaultConnection implements Connection{
-	public ImplementsConnection( Graph graph, ConnectionArray source, ConnectionArray target ){
-		super( graph, source, target );
+	public ImplementsConnection( Graph graph, DefaultBox sourceBox, ConnectionArray source, DefaultBox targetBox, ConnectionArray target ){
+		super( graph, sourceBox, source, targetBox, target );
 		
 		CuttingEdgeLineConnection line = new CuttingEdgeLineConnection();
 		

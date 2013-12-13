@@ -10,8 +10,8 @@ import graph.uml.Connection;
 import java.awt.BasicStroke;
 
 public class CommentConnection extends DefaultConnection implements Connection{
-	public CommentConnection( Graph graph, ConnectionArray source, ConnectionArray target ){
-		super( graph, source, target );
+	public CommentConnection( Graph graph, DefaultBox sourceBox, ConnectionArray source, DefaultBox targetBox, ConnectionArray target ){
+		super( graph, sourceBox, source, targetBox, target );
 		
 		DirectLineConnection line = new DirectLineConnection();
 		float[] dash = {8.0f};

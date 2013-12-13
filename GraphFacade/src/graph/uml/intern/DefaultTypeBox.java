@@ -51,7 +51,9 @@ public class DefaultTypeBox extends DefaultBox implements TypeBox {
 		ConnectionArray target = ((DefaultTypeBox)superType).getUmlDiagramConnections();
 		ConnectionArray source = getUmlDiagramConnections();
 		
-		return new ExtendsConnection( getGraph(), source, target );
+		ExtendsConnection result = new ExtendsConnection( getGraph(), this, source, (DefaultTypeBox)superType, target );
+		result.makeVisible();
+		return result;
 	}
 	
 	@Override
@@ -59,7 +61,9 @@ public class DefaultTypeBox extends DefaultBox implements TypeBox {
 		ConnectionArray target = ((DefaultTypeBox)interfaceType).getUmlDiagramConnections();
 		ConnectionArray source = getUmlDiagramConnections();
 		
-		return new ImplementsConnection( getGraph(), source, target );
+		ImplementsConnection result = new ImplementsConnection( getGraph(), this, source, (DefaultTypeBox)interfaceType, target );
+		result.makeVisible();
+		return result;
 	}
 	
 	@Override
@@ -67,7 +71,9 @@ public class DefaultTypeBox extends DefaultBox implements TypeBox {
 		ConnectionArray target = ((DefaultTypeBox)parentType).getUmlDiagramConnections();
 		ConnectionArray source = getUmlDiagramConnections();
 		
-		return new AggregationConnection( getGraph(), source, target );
+		AggregationConnection result = new AggregationConnection( getGraph(), this, source, (DefaultTypeBox)parentType, target );
+		result.makeVisible();
+		return result;
 	}
 	
 	@Override
@@ -75,13 +81,16 @@ public class DefaultTypeBox extends DefaultBox implements TypeBox {
 		ConnectionArray target = ((DefaultTypeBox)parentType).getUmlDiagramConnections();
 		ConnectionArray source = getUmlDiagramConnections();
 		
-		return new CompositionConnection( getGraph(), source, target );
+		CompositionConnection result = new CompositionConnection( getGraph(), this, source, (DefaultTypeBox)parentType, target );
+		result.makeVisible();
+		return result;
 	}
 	
 	@Override
 	public CommentBox addComment( String text ) {
 		DefaultCommentBox box = new DefaultCommentBox( getGraph(), this );
 		box.setText( text );
+		box.makeVisible();
 		return box;
 	}
 }

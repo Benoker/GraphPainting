@@ -15,8 +15,8 @@ import java.awt.Color;
  * @author Benjamin Sigg
  */
 public class AggregationConnection extends DefaultConnection implements Connection{
-	public AggregationConnection( Graph graph, ConnectionArray source, ConnectionArray target ){
-		super( graph, source, target );
+	public AggregationConnection( Graph graph, DefaultBox sourceBox, ConnectionArray source, DefaultBox targetBox, ConnectionArray target ){
+		super( graph, sourceBox, source, targetBox, target );
 		
 		CuttingEdgeLineConnection line = new CuttingEdgeLineConnection();
 		addChild( line );
