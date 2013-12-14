@@ -2,7 +2,6 @@ package graph.uml.intern;
 
 import graph.model.connection.EndPoint;
 import graph.model.connection.GraphConnection;
-import graph.ui.Graph;
 import graph.uml.Connection;
 import graph.uml.Item;
 
@@ -14,8 +13,8 @@ public abstract class AbstractConnection extends DefaultItem implements Connecti
 	private DefaultBox sourceItem;
 	private DefaultBox targetItem;
 	
-	public AbstractConnection( Graph graph, DefaultBox sourceItem, DefaultBox targetItem ){
-		super( graph );
+	public AbstractConnection( DefaultUmlDiagram diagram, DefaultBox sourceItem, DefaultBox targetItem ){
+		super( diagram );
 		
 		setSourceItem( sourceItem );
 		setTargetItem( targetItem );
@@ -54,6 +53,11 @@ public abstract class AbstractConnection extends DefaultItem implements Connecti
 		super.dispose();
 		sourceItem.removeDependent( this );
 		targetItem.removeDependent( this );
+	}
+	
+	@Override
+	public boolean isContextMenuEnabledAt( int x, int y ) {
+		return false;
 	}
 	
 	@Override

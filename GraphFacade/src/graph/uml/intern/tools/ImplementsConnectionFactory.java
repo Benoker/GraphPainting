@@ -2,7 +2,7 @@ package graph.uml.intern.tools;
 
 import graph.items.ConnectionFlavor;
 import graph.model.connection.GraphConnection;
-import graph.ui.Graph;
+import graph.uml.intern.DefaultUmlDiagram;
 import graph.uml.intern.ImplementsConnection;
 
 /**
@@ -10,14 +10,14 @@ import graph.uml.intern.ImplementsConnection;
  * @author Benjamin Sigg
  */
 public class ImplementsConnectionFactory extends AbstractUmlConnectionFactory{
-	private Graph graph;
+	private DefaultUmlDiagram diagram;
 	
 	/**
 	 * Creates a new factory.
-	 * @param graph the graph to which new items will be added
+	 * @param diagram the diagram to which new items will be added
 	 */
-	public ImplementsConnectionFactory( Graph graph ){
-		this.graph = graph;
+	public ImplementsConnectionFactory( DefaultUmlDiagram diagram ){
+		this.diagram = diagram;
 	}
 	
 	@Override
@@ -27,6 +27,6 @@ public class ImplementsConnectionFactory extends AbstractUmlConnectionFactory{
 	
 	@Override
 	public GraphConnection createConnection() {
-		return new ImplementsConnection( graph );
+		return new ImplementsConnection( diagram );
 	}
 }

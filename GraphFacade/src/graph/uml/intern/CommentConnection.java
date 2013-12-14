@@ -5,7 +5,6 @@ import graph.items.connection.UndirectedEndPoint;
 import graph.model.GraphSite;
 import graph.model.connection.ConnectionArray;
 import graph.model.connection.GraphConnection;
-import graph.ui.Graph;
 import graph.uml.Connection;
 
 import java.awt.BasicStroke;
@@ -13,15 +12,15 @@ import java.awt.BasicStroke;
 public class CommentConnection extends AbstractConnection implements Connection{
 	private DirectLineConnection line;
 	
-	public CommentConnection( Graph graph, DefaultBox sourceBox, ConnectionArray source, DefaultBox targetBox, ConnectionArray target ){
-		super( graph, sourceBox, targetBox );
+	public CommentConnection( DefaultUmlDiagram diagram, DefaultBox sourceBox, ConnectionArray source, DefaultBox targetBox, ConnectionArray target ){
+		super( diagram, sourceBox, targetBox );
 		initLine();
 		source.add( line.getSourceEndPoint() );
 		target.add( line.getTargetEndPoint() );
 	}
 	
-	public CommentConnection( Graph graph ){
-		super( graph, null, null );
+	public CommentConnection( DefaultUmlDiagram diagram ){
+		super( diagram, null, null );
 		initLine();
 	}
 	

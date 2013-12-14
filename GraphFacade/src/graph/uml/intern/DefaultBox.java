@@ -6,7 +6,6 @@ import graph.model.GraphSite;
 import graph.model.Selection.Importance;
 import graph.model.capability.CapabilityName;
 import graph.model.connection.ConnectionArray;
-import graph.ui.Graph;
 import graph.uml.Box;
 import graph.uml.Item;
 
@@ -33,13 +32,15 @@ public class DefaultBox extends DefaultItem implements Box{
 	 * Creates a new box.
 	 * @param graph the graph which shows this box
 	 */
-	public DefaultBox( Graph graph ){
-		super( graph );
+	public DefaultBox( DefaultUmlDiagram diagram ){
+		super( diagram );
 		label = new GraphLabel("");
+		label.setCapability( CapabilityName.SELECTABLE, null );
+		
 		addChild( label );
 
 		selection = new BoxSelectionCapability( this );
-		label.setCapability( CapabilityName.SELECTABLE, selection );
+		setCapability( CapabilityName.SELECTABLE, selection );
 		
 		MoveableItemCapability moveable = new MoveableItemCapability( label );
 		label.setMoveableIfSelected( true );
@@ -113,6 +114,11 @@ public class DefaultBox extends DefaultItem implements Box{
 	@Override
 	protected void addTo( GraphSite site ) {
 		// ignore
+	}
+	
+	@Override
+	public boolean isContextMenuEnabledAt( int x, int y ) {
+		return label.contains( x, y );
 	}
 	
 	@Override

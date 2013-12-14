@@ -5,7 +5,6 @@ import graph.items.capability.ConnectionableCapabilityHandler;
 import graph.items.capability.OpenEndedLineConnectionStrategy;
 import graph.model.capability.CapabilityName;
 import graph.model.connection.GraphConnection;
-import graph.ui.Graph;
 import graph.uml.Connection;
 import graph.uml.UmlDiagramTools;
 import graph.uml.intern.tools.AggregationConnectionFactory;
@@ -20,7 +19,7 @@ import graph.uml.intern.tools.UmlConnectionableCapability;
  * @author Benjamin Sigg
  */
 public class DefaultUmlDiagramTools implements UmlDiagramTools{
-	private Graph graph;
+	private DefaultUmlDiagram diagram;
 	private ConnectionableCapabilityHandler connecting;
 	
 	/**
@@ -28,7 +27,7 @@ public class DefaultUmlDiagramTools implements UmlDiagramTools{
 	 * @param diagram the diagram to which the tools will be applied
 	 */
 	public DefaultUmlDiagramTools( DefaultUmlDiagram diagram ){
-		this.graph = diagram.getGraph();
+		this.diagram = diagram;
 		
 		connecting = new ConnectionableCapabilityHandler(){
 			@Override
@@ -41,27 +40,27 @@ public class DefaultUmlDiagramTools implements UmlDiagramTools{
 			}
 		};
 		connecting.setOpenEnded( new OpenEndedLineConnectionStrategy() );
-		graph.setCapability( CapabilityName.CONNECTABLE, connecting );
+		diagram.getGraph().setCapability( CapabilityName.CONNECTABLE, connecting );
 	}
 	
 	@Override
 	public void applyAddInheritsFromTool() {
-		connecting.setFactory( new ExtendsConnectionFactory( graph ) );
+		connecting.setFactory( new ExtendsConnectionFactory( diagram ) );
 	}
 	
 	@Override
 	public void applyAddImplementsFromTool() {
-		connecting.setFactory( new ImplementsConnectionFactory( graph ) );	
+		connecting.setFactory( new ImplementsConnectionFactory( diagram ) );	
 	}
 	
 	@Override
 	public void applyAggregationTool() {
-		connecting.setFactory( new AggregationConnectionFactory( graph ) );
+		connecting.setFactory( new AggregationConnectionFactory( diagram ) );
 	}
 	
 	@Override
 	public void applyCompositionTool() {
-		connecting.setFactory( new CompositionConnectionFactory( graph ) );
+		connecting.setFactory( new CompositionConnectionFactory( diagram ) );
 	}
 	
 	@Override

@@ -2,22 +2,22 @@ package graph.uml.intern.tools;
 
 import graph.items.ConnectionFlavor;
 import graph.model.connection.GraphConnection;
-import graph.ui.Graph;
 import graph.uml.intern.CompositionConnection;
+import graph.uml.intern.DefaultUmlDiagram;
 
 /**
  * A factory that creates new {@link CompositionConnection}s.
  * @author Benjamin Sigg
  */
 public class CompositionConnectionFactory extends AbstractUmlConnectionFactory{
-	private Graph graph;
+	private DefaultUmlDiagram diagram;
 	
 	/**
 	 * Creates a new factory
-	 * @param graph the graph to which new items will be added
+	 * @param diagram the diagram to which new items will be added
 	 */
-	public CompositionConnectionFactory( Graph graph ){
-		this.graph = graph;
+	public CompositionConnectionFactory( DefaultUmlDiagram diagram ){
+		this.diagram = diagram;
 	}
 	
 	@Override
@@ -27,6 +27,6 @@ public class CompositionConnectionFactory extends AbstractUmlConnectionFactory{
 	
 	@Override
 	public GraphConnection createConnection() {
-		return new CompositionConnection( graph );
+		return new CompositionConnection( diagram );
 	}
 }

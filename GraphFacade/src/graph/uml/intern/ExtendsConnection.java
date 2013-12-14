@@ -6,7 +6,6 @@ import graph.items.uml.FilledArrow;
 import graph.model.GraphSite;
 import graph.model.connection.ConnectionArray;
 import graph.model.connection.GraphConnection;
-import graph.ui.Graph;
 import graph.uml.Connection;
 
 /**
@@ -17,15 +16,15 @@ public class ExtendsConnection extends AbstractConnection implements Connection{
 	public static ConnectionFlavor EXTENDS = new ConnectionFlavor( "extends" );
 	private CuttingEdgeLineConnection line;
 	
-	public ExtendsConnection( Graph graph, DefaultBox sourceBox, ConnectionArray source, DefaultBox targetBox, ConnectionArray target ){
-		super( graph, sourceBox, targetBox );
+	public ExtendsConnection( DefaultUmlDiagram diagram, DefaultBox sourceBox, ConnectionArray source, DefaultBox targetBox, ConnectionArray target ){
+		super( diagram, sourceBox, targetBox );
 		initLine();
 		source.add( line.getSourceEndPoint() );
 		target.add( line.getTargetEndPoint() );
 	}
 	
-	public ExtendsConnection( Graph graph ){
-		super( graph, null, null );
+	public ExtendsConnection( DefaultUmlDiagram diagram ){
+		super( diagram, null, null );
 		initLine();
 	}
 	

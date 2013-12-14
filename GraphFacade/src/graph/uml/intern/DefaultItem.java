@@ -1,28 +1,39 @@
 package graph.uml.intern;
 
 import graph.items.AbstractGraphItem;
+import graph.model.capability.CapabilityName;
 import graph.ui.Graph;
 import graph.uml.Item;
+import graph.uml.ItemContextListener;
+import graph.uml.intern.tools.DefaultItemContextCapability;
 
 /**
  * Implementation of an {@link Item}.
  * @author Benjamin Sigg
  */
 public abstract class DefaultItem extends AbstractGraphItem implements Item{
-	private Graph graph;
+	private DefaultUmlDiagram diagram;
 	private boolean disposed = false;
 	private boolean visible = false;
+	private DefaultItemContextCapability contextCapability;
 	
 	/**
 	 * Creates a new item.
 	 * @param graph the graph to which this item belongs
 	 */
-	public DefaultItem( Graph graph ){
-		this.graph = graph;
+	public DefaultItem( DefaultUmlDiagram diagram ){
+		this.diagram = diagram;
+		
+		contextCapability = new DefaultItemContextCapability( diagram, this );
+		setCapability( CapabilityName.CONTEXT_MENU, contextCapability );
 	}
 	
 	public Graph getGraph() {
-		return graph;
+		return diagram.getGraph();
+	}
+	
+	public DefaultUmlDiagram getDiagram() {
+		return diagram;
 	}
 	
 	/**
@@ -31,7 +42,7 @@ public abstract class DefaultItem extends AbstractGraphItem implements Item{
 	public void makeVisible(){
 		if( !visible ){
 			visible = true;
-			graph.addItem( this );
+			getGraph().addItem( this );
 		}
 	}
 	
@@ -40,8 +51,26 @@ public abstract class DefaultItem extends AbstractGraphItem implements Item{
 		if( !disposed ){	
 			disposed = true;
 			disposeDependentItems();
-			graph.removeItem( this );
+			getGraph().removeItem( this );
 		}
+	}
+	
+	/**
+	 * Tells whether this item can have a context menu at <code>x/y</code>
+	 * @param x the x-coordinate of the mouse
+	 * @param y the y-coordinate of the mouse
+	 * @return whether a context menu is available
+	 */
+	public abstract boolean isContextMenuEnabledAt( int x, int y );
+	
+	@Override
+	public void addItemContextListener( ItemContextListener listener ) {
+		contextCapability.addListener( listener );
+	}
+	
+	@Override
+	public void removeItemContextListener( ItemContextListener listener ) {
+		contextCapability.removeListener( listener );
 	}
 	
 	protected abstract Iterable<Item> dependentItems();

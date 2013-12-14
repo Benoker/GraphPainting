@@ -11,25 +11,35 @@ import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+/**
+ * A panel that shows some {@link GraphItem}s. Clients should not interact directly with
+ * {@link GraphPanel}, instead they should interact with {@link Graph} that provides a cleaner
+ * interface and is able to fire event.
+ * @author Benjamin Sigg
+ */
 public class GraphPanel extends JPanel{
+	private Graph graph;
+	
 	private List<GraphPaintable> paintables = new ArrayList<>();
 	private List<Regraphable> regraphables = new ArrayList<>();
 	
 	private GraphSite site = new DefaultGraphSite();
 	private boolean valid = false;
 	
-	private List<GraphItem> items = new LinkedList<>();
-	
 	private JPanel canvas;
 	private JPanel overlay;
-	
-	public GraphPanel(){
+
+	/**
+	 * Creates a new panel
+	 * @param graph the graph that is painted on this panel
+	 */
+	public GraphPanel( Graph graph ){
+		this.graph = graph;
 		setLayout( null );
 		
 		canvas = createCanvas();
@@ -44,6 +54,22 @@ public class GraphPanel extends JPanel{
 
 		add( overlay );
 		add( canvas );
+		
+		graph.addGraphListener( graphListener() );
+	}
+	
+	private GraphListener graphListener(){
+		return new GraphListener() {
+			@Override
+			public void itemRemoved( Graph source, GraphItem item ) {
+				item.set( null );	
+			}
+			
+			@Override
+			public void itemAdded( Graph source, GraphItem item ) {
+				item.set( site );
+			}
+		};
 	}
 	
 	private JPanel createCanvas(){
@@ -73,6 +99,10 @@ public class GraphPanel extends JPanel{
 		};
 	}
 	
+	public Graph getGraph() {
+		return graph;
+	}
+	
 	@Override
 	public void doLayout() {
 		int width = getWidth();
@@ -83,24 +113,6 @@ public class GraphPanel extends JPanel{
 	}
 	
 	/**
-	 * Adds another item to the graph.
-	 * @param item the new item, not <code>null</code>
-	 */
-	public void add( GraphItem item ){
-		item.set( site );
-		items.add( item );
-	}
-	
-	/**
-	 * Removes an item from the graph.
-	 * @param item the item to remove, not <code>null</code>
-	 */
-	public void remove( GraphItem item ){
-		items.remove( item );
-		item.set( null );
-	}
-	
-	/**
 	 * Iterates over all known {@link GraphItem}s and asks for their 
 	 * {@link GraphItem#getCapability(CapabilityName) capability} to support <code>name</code>.
 	 * @param name the capability to search
@@ -108,7 +120,7 @@ public class GraphPanel extends JPanel{
 	 */
 	public <T> List<T> getCapabilities( CapabilityName<T> name ){ 
 		List<T> result = new ArrayList<>();
-		for( GraphItem item : items ){
+		for( GraphItem item : graph.getItems() ){
 			T capability = item.getCapability( name );
 			if( capability != null ){
 				result.add( capability );
@@ -144,12 +156,12 @@ public class GraphPanel extends JPanel{
 	private class DefaultGraphSite implements GraphSite{
 		@Override
 		public void addItem( GraphItem item ) {
-			GraphPanel.this.add( item );	
+			graph.addItem( item );
 		}
 		
 		@Override
 		public void removeItem( GraphItem item ) {
-			GraphPanel.this.remove( item );
+			graph.removeItem( item );
 		}
 		
 		@Override

@@ -1,5 +1,9 @@
 package graph.ui;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import graph.items.capability.ContextCapabilityHandler;
 import graph.items.capability.MoveableCapabilityHandler;
 import graph.items.capability.SelectableCapabilityHandler;
@@ -18,14 +22,36 @@ import javax.swing.JComponent;
 public class Graph implements GraphItemParent{
 	private GraphPanel panel;
 	private CapabilityController capabilityController;
+	private List<GraphListener> listeners = new ArrayList<>();
+	private List<GraphItem> items = new ArrayList<>();
 	
 	public Graph(){
-		panel = new GraphPanel();
+		panel = new GraphPanel( this );
 		
 		capabilityController = new CapabilityController( panel );
 		capabilityController.register( CapabilityName.MOVEABLE, new MoveableCapabilityHandler() );
 		capabilityController.register( CapabilityName.SELECTABLE, new SelectableCapabilityHandler() );
 		capabilityController.register( CapabilityName.CONTEXT_MENU, new ContextCapabilityHandler() );
+	}
+	
+	/**
+	 * Adds the observer <code>listener</code> to this graph.
+	 * @param listener a new observer, not <code>null</code>
+	 */
+	public void addGraphListener( GraphListener listener ){
+		listeners.add( listener );
+	}
+
+	/**
+	 * Removes the observer <code>listener</code> from this graph.
+	 * @param listener the observer to remove
+	 */
+	public void removeGraphListener( GraphListener listener ){
+		listeners.remove( listener );
+	}
+	
+	private GraphListener[] listeners(){
+		return listeners.toArray( new GraphListener[ listeners.size() ] );
 	}
 	
 	/**
@@ -41,7 +67,10 @@ public class Graph implements GraphItemParent{
 	 * @param item the new item
 	 */
 	public void addItem( GraphItem item ){
-		panel.add( item );
+		items.add( item );
+		for( GraphListener listener : listeners() ){
+			listener.itemAdded( this, item );
+		}
 	}
 	
 	/**
@@ -49,7 +78,19 @@ public class Graph implements GraphItemParent{
 	 * @param item the item to remove
 	 */
 	public void removeItem( GraphItem item ){
-		panel.remove( item );
+		items.remove( item );
+		for( GraphListener listener : listeners() ){
+			listener.itemRemoved( this, item );
+		}
+	}
+	
+	/**
+	 * Gets an unmodifiable view on the items of this {@link Graph}. Adding or removing
+	 * items on the graph will affect the list.
+	 * @return the list of root-items of this graph
+	 */
+	public List<GraphItem> getItems(){
+		return Collections.unmodifiableList( items );
 	}
 	
 	/**

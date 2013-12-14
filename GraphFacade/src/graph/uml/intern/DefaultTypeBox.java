@@ -4,7 +4,6 @@ import graph.items.connection.FluentRectangularConnectionArray;
 import graph.items.connection.SimpleRectangularConnectionArray;
 import graph.model.capability.CapabilityName;
 import graph.model.connection.ConnectionArray;
-import graph.ui.Graph;
 import graph.uml.CommentBox;
 import graph.uml.Connection;
 import graph.uml.TypeBox;
@@ -20,10 +19,10 @@ public class DefaultTypeBox extends DefaultBox implements TypeBox {
 	
 	/**
 	 * Creates a new {@link TypeBox}.
-	 * @param graph the graph on which this box will be displayed
+	 * @param diagram the diagram on which this box will be displayed
 	 */
-	public DefaultTypeBox( Graph graph ) {
-		super( graph );
+	public DefaultTypeBox( DefaultUmlDiagram diagram ) {
+		super( diagram );
 		
 		umlDiagramConnections = new FluentRectangularConnectionArray();
 		commentConnections = new SimpleRectangularConnectionArray();
@@ -55,7 +54,7 @@ public class DefaultTypeBox extends DefaultBox implements TypeBox {
 		ConnectionArray target = ((DefaultTypeBox)superType).getUmlDiagramConnections();
 		ConnectionArray source = getUmlDiagramConnections();
 		
-		ExtendsConnection result = new ExtendsConnection( getGraph(), this, source, (DefaultTypeBox)superType, target );
+		ExtendsConnection result = new ExtendsConnection( getDiagram(), this, source, (DefaultTypeBox)superType, target );
 		result.makeVisible();
 		return result;
 	}
@@ -65,7 +64,7 @@ public class DefaultTypeBox extends DefaultBox implements TypeBox {
 		ConnectionArray target = ((DefaultTypeBox)interfaceType).getUmlDiagramConnections();
 		ConnectionArray source = getUmlDiagramConnections();
 		
-		ImplementsConnection result = new ImplementsConnection( getGraph(), this, source, (DefaultTypeBox)interfaceType, target );
+		ImplementsConnection result = new ImplementsConnection( getDiagram(), this, source, (DefaultTypeBox)interfaceType, target );
 		result.makeVisible();
 		return result;
 	}
@@ -75,7 +74,7 @@ public class DefaultTypeBox extends DefaultBox implements TypeBox {
 		ConnectionArray target = ((DefaultTypeBox)parentType).getUmlDiagramConnections();
 		ConnectionArray source = getUmlDiagramConnections();
 		
-		AggregationConnection result = new AggregationConnection( getGraph(), this, source, (DefaultTypeBox)parentType, target );
+		AggregationConnection result = new AggregationConnection( getDiagram(), this, source, (DefaultTypeBox)parentType, target );
 		result.makeVisible();
 		return result;
 	}
@@ -85,14 +84,14 @@ public class DefaultTypeBox extends DefaultBox implements TypeBox {
 		ConnectionArray target = ((DefaultTypeBox)parentType).getUmlDiagramConnections();
 		ConnectionArray source = getUmlDiagramConnections();
 		
-		CompositionConnection result = new CompositionConnection( getGraph(), this, source, (DefaultTypeBox)parentType, target );
+		CompositionConnection result = new CompositionConnection( getDiagram(), this, source, (DefaultTypeBox)parentType, target );
 		result.makeVisible();
 		return result;
 	}
 	
 	@Override
 	public CommentBox addComment( String text ) {
-		DefaultCommentBox box = new DefaultCommentBox( getGraph(), this );
+		DefaultCommentBox box = new DefaultCommentBox( getDiagram(), this );
 		box.setText( text );
 		box.makeVisible();
 		return box;

@@ -299,12 +299,12 @@ public class CapabilityController {
 		
 		@Override
 		public void addItem( GraphItem item ) {
-			graph.add( item );
+			graph.getGraph().addItem( item );
 		}
 		
 		@Override
 		public void removeItem( GraphItem item ) {
-			graph.remove( item );
+			graph.getGraph().removeItem( item );
 		}
 	}
 }

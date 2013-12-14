@@ -61,6 +61,10 @@ public class SelectableCapabilityHandler implements CapabilityHandler<Selectable
 		return new MouseAdapter() {
 			@Override
 			public void mousePressed( MouseEvent e ) {
+				if( e.isPopupTrigger() ){
+					return;
+				}
+				
 				if( e.getButton() == MouseEvent.BUTTON1 ){
 					newlySelected = null;
 					
@@ -91,6 +95,10 @@ public class SelectableCapabilityHandler implements CapabilityHandler<Selectable
 			
 			@Override
 			public void mouseReleased( MouseEvent e ) {
+				if( e.isPopupTrigger() ){
+					return;
+				}
+				
 				if( e.getButton() == MouseEvent.BUTTON1 ){
 					if( e.isControlDown() ){
 						SelectableCapability selectable = getSelectable( e.getX(), e.getY() );

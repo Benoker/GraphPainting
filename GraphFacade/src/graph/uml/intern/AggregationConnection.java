@@ -7,7 +7,6 @@ import graph.items.uml.OpenArrow;
 import graph.model.GraphSite;
 import graph.model.connection.ConnectionArray;
 import graph.model.connection.GraphConnection;
-import graph.ui.Graph;
 import graph.uml.Connection;
 
 import java.awt.Color;
@@ -20,15 +19,15 @@ public class AggregationConnection extends AbstractConnection implements Connect
 	public static final ConnectionFlavor AGGREGATION = new ConnectionFlavor( "aggregation" );
 	private CuttingEdgeLineConnection line;
 	
-	public AggregationConnection( Graph graph, DefaultBox sourceBox, ConnectionArray source, DefaultBox targetBox, ConnectionArray target ){
-		super( graph, sourceBox, targetBox );
+	public AggregationConnection( DefaultUmlDiagram diagram, DefaultBox sourceBox, ConnectionArray source, DefaultBox targetBox, ConnectionArray target ){
+		super( diagram, sourceBox, targetBox );
 		initLine();
 		source.add( line.getSourceEndPoint() );
 		target.add( line.getTargetEndPoint() );
 	}
 	
-	public AggregationConnection( Graph graph ){
-		super( graph, null, null );
+	public AggregationConnection( DefaultUmlDiagram diagram ){
+		super( diagram, null, null );
 		initLine();
 	}
 	

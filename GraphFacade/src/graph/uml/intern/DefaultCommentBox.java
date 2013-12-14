@@ -1,10 +1,9 @@
 package graph.uml.intern;
 
-import java.awt.Color;
-
 import graph.items.connection.SimpleRectangularConnectionArray;
-import graph.ui.Graph;
 import graph.uml.CommentBox;
+
+import java.awt.Color;
 
 /**
  * Default implementation of a {@link CommentBox}
@@ -15,8 +14,8 @@ public class DefaultCommentBox extends DefaultBox implements CommentBox{
 	private CommentConnection connection;
 	private SimpleRectangularConnectionArray connectionArray;
 	
-	public DefaultCommentBox( Graph graph, DefaultTypeBox type ){
-		super( graph );
+	public DefaultCommentBox( DefaultUmlDiagram diagram, DefaultTypeBox type ){
+		super( diagram );
 		this.type = type;
 		
 		setBackground( new Color( 255, 255, 150 ) );
@@ -26,7 +25,7 @@ public class DefaultCommentBox extends DefaultBox implements CommentBox{
 		connectionArray = new SimpleRectangularConnectionArray();
 		getLabel().addChild( connectionArray );
 		
-		connection = new CommentConnection( graph, this, connectionArray, type, type.getCommentConnections() );
+		connection = new CommentConnection( diagram, this, connectionArray, type, type.getCommentConnections() );
 		type.addDependent( this );
 	}
 	
