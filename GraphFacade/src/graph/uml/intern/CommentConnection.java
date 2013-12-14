@@ -1,19 +1,23 @@
 package graph.uml.intern;
 
+import graph.items.PathedGraphConnection;
 import graph.items.connection.DirectLineConnection;
 import graph.items.connection.UndirectedEndPoint;
 import graph.model.GraphSite;
 import graph.model.connection.ConnectionArray;
-import graph.model.connection.GraphConnection;
 import graph.uml.Connection;
+import graph.uml.Item;
 
 import java.awt.BasicStroke;
+import java.util.Arrays;
 
 public class CommentConnection extends AbstractConnection implements Connection{
 	private DirectLineConnection line;
+	private DefaultCommentBox comment;
 	
-	public CommentConnection( DefaultUmlDiagram diagram, DefaultBox sourceBox, ConnectionArray source, DefaultBox targetBox, ConnectionArray target ){
+	public CommentConnection( DefaultUmlDiagram diagram, DefaultCommentBox sourceBox, ConnectionArray source, DefaultBox targetBox, ConnectionArray target ){
 		super( diagram, sourceBox, targetBox );
+		this.comment = sourceBox;
 		initLine();
 		source.add( line.getSourceEndPoint() );
 		target.add( line.getTargetEndPoint() );
@@ -22,6 +26,11 @@ public class CommentConnection extends AbstractConnection implements Connection{
 	public CommentConnection( DefaultUmlDiagram diagram ){
 		super( diagram, null, null );
 		initLine();
+	}
+	
+	@Override
+	protected Iterable<Item> dependentItems() {
+		return Arrays.<Item>asList( comment );
 	}
 	
 	private void initLine(){
@@ -45,7 +54,7 @@ public class CommentConnection extends AbstractConnection implements Connection{
 	}
 	
 	@Override
-	public GraphConnection getGraphConnection() {
+	public PathedGraphConnection getGraphConnection() {
 		return line;
 	}
 }

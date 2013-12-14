@@ -23,8 +23,10 @@ public interface SelectableCapability {
 	 * Tells whether this item contains the point <code>x/y</code>.
 	 * @param x x-coordinate
 	 * @param y y-coordinate
-	 * @return whether x/y is part of this selectable item
+	 * @return whether x/y is part of this item. A value that is <code>0.f</code> or lower means no,
+	 * a value that is between <code>0.f</code> and <code>1.f</code> means "close", and a value of
+	 * <code>1.f</code> or higher means yes
 	 */
-	public boolean contains( int x, int y );
+	public float contains( int x, int y );
 
 }

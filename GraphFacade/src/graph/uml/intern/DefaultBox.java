@@ -118,7 +118,7 @@ public class DefaultBox extends DefaultItem implements Box{
 	
 	@Override
 	public boolean isContextMenuEnabledAt( int x, int y ) {
-		return label.contains( x, y );
+		return label.contains( x, y ) >= 1;
 	}
 	
 	@Override

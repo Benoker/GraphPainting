@@ -48,8 +48,13 @@ public class RectangularSelection extends AbstractGraphItem implements Selectabl
 	}
 
 	@Override
-	public boolean contains( int x, int y ) {
-		return parent.getBoundaries().contains( x, y );
+	public float contains( int x, int y ) {
+		if( parent.getBoundaries().contains( x, y ) ){
+			return 1.f;
+		}
+		else{
+			return 0.f;
+		}
 	}
 
 	@Override

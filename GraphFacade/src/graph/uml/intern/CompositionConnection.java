@@ -1,12 +1,12 @@
 package graph.uml.intern;
 
 import graph.items.ConnectionFlavor;
+import graph.items.PathedGraphConnection;
 import graph.items.connection.CuttingEdgeLineConnection;
 import graph.items.uml.Diamond;
 import graph.items.uml.OpenArrow;
 import graph.model.GraphSite;
 import graph.model.connection.ConnectionArray;
-import graph.model.connection.GraphConnection;
 import graph.uml.Connection;
 
 import java.awt.Color;
@@ -53,7 +53,7 @@ public class CompositionConnection extends AbstractConnection implements Connect
 	}
 	
 	@Override
-	public GraphConnection getGraphConnection() {
+	public PathedGraphConnection getGraphConnection() {
 		return line;
 	}
 }

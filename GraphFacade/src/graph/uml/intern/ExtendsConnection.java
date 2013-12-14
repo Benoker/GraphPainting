@@ -1,11 +1,11 @@
 package graph.uml.intern;
 
 import graph.items.ConnectionFlavor;
+import graph.items.PathedGraphConnection;
 import graph.items.connection.CuttingEdgeLineConnection;
 import graph.items.uml.FilledArrow;
 import graph.model.GraphSite;
 import graph.model.connection.ConnectionArray;
-import graph.model.connection.GraphConnection;
 import graph.uml.Connection;
 
 /**
@@ -47,7 +47,7 @@ public class ExtendsConnection extends AbstractConnection implements Connection{
 	}
 	
 	@Override
-	public GraphConnection getGraphConnection() {
+	public PathedGraphConnection getGraphConnection() {
 		return line;
 	}
 }

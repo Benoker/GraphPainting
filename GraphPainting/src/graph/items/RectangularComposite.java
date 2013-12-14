@@ -34,8 +34,13 @@ public class RectangularComposite extends AbstractGraphItem implements Rectangul
 	}
 	
 	@Override
-	public boolean contains( int x, int y ) {
-		return boundaries.contains( x, y );
+	public float contains( int x, int y ) {
+		if( boundaries.contains( x, y ) ){
+			return 1;
+		}
+		else{
+			return 0;
+		}
 	}
 	
 	@Override

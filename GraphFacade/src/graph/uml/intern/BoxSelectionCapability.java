@@ -32,7 +32,7 @@ public class BoxSelectionCapability implements SelectableCapability{
 	}
 
 	@Override
-	public boolean contains( int x, int y ) {
+	public float contains( int x, int y ) {
 		return box.getLabel().contains( x, y );
 	}
 }

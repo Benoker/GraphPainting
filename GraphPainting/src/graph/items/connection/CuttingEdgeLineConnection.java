@@ -1,5 +1,6 @@
 package graph.items.connection;
 
+import graph.items.PathedGraphConnection;
 import graph.model.GraphSite;
 import graph.model.Regraphable;
 import graph.model.connection.EndPointAttachement;
@@ -7,42 +8,78 @@ import graph.util.Geom;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.Line2D;
+import java.awt.geom.Path2D;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class CuttingEdgeLineConnection extends PaintableConnection implements Regraphable{
-	private List<Point> line;
+public class CuttingEdgeLineConnection extends PaintableConnection implements Regraphable, PathedGraphConnection{
+	private Path2D path;
+	private Path2D closedPath;
 	
 	@Override
 	protected void addTo( GraphSite site ) {
 		super.addTo( site );
-		site.addRegraphable( (Regraphable)this );
+		site.addRegraphable( this );
 	}
 	
 	@Override
 	protected void removeFrom( GraphSite site ) {
 		super.removeFrom( site );
-		site.removeRegraphable( (Regraphable)this );
+		site.removeRegraphable( this );
 	}
 	
 	@Override
 	public void regraphed() {
-		line = null;	
+		path = null;
+		closedPath = null;
 	}
 	
 	@Override
 	protected void paintConnection( Graphics2D g ) {
-		if( line == null ){
-			line = createLine();
+		createPaths();
+		g.draw( path );
+	}
+	
+	@Override
+	public Path2D getClosedConnectionPath() {
+		createPaths();
+		return closedPath;
+	}
+	
+	private void createPaths(){
+		if( path == null ){
+			path = new Path2D.Float();
+			closedPath = new Path2D.Float();
+			
+			Iterator<Point> line = createLine().iterator();
+			if( line.hasNext() ){
+				
+				Point previous = line.next();
+				
+				List<Line2D> lines = new ArrayList<>();
+				List<Line2D> reverse = new ArrayList<>();
+				
+				while( line.hasNext() ){
+					Point current = line.next();
+					
+					lines.add( new Line2D.Float( previous.x, previous.y, current.x, current.y ) );
+					reverse.add( new Line2D.Float( current.x, current.y, previous.x, previous.y ) );
+					
+					previous = current;
+				}
+				
+				for( Line2D l : lines ){
+					path.append( l, true );
+					closedPath.append( l, true );
+				}
+				
+				for( int i = reverse.size()-1; i >= 0; i-- ){
+					closedPath.append( reverse.get( i ), true );
+				}
+			}
 		}
-		int[] pointx = new int[ line.size() ];
-		int[] pointy = new int[ line.size() ];
-		for( int i = 0, n = line.size(); i<n;  i++ ){
-			Point p = line.get( i );
-			pointx[i] = p.x;
-			pointy[i] = p.y;
-		}
-		g.drawPolyline( pointx, pointy, line.size() );
 	}
 	
 	private List<Point> createLine(){

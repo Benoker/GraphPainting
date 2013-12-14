@@ -96,12 +96,7 @@ public class ConnectionTest {
 			
 			@Override
 			public float containsConnectionable( int x, int y ) {
-				if( array.contains( x, y )){
-					return 1.0f;
-				}
-				else{
-					return 0.0f;
-				}
+				return array.contains( x, y );
 			}
 			
 			@Override

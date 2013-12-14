@@ -35,12 +35,17 @@ public class SelectableCapabilityHandler implements CapabilityHandler<Selectable
 	}
 	
 	private SelectableCapability getSelectable( int x, int y ){
+		float best = 0.f;
+		SelectableCapability result = null;
+		
 		for( SelectableCapability selectable : site.getCapabilities() ){
-			if( selectable.contains( x, y )){
-				return selectable;
+			float contains = selectable.contains( x, y );
+			if( contains >= best && contains > 0 ){
+				best = contains;
+				result = selectable;
 			}
 		}
-		return null;
+		return result;
 	}
 	
 	private void deselectAll(){
@@ -61,11 +66,7 @@ public class SelectableCapabilityHandler implements CapabilityHandler<Selectable
 		return new MouseAdapter() {
 			@Override
 			public void mousePressed( MouseEvent e ) {
-				if( e.isPopupTrigger() ){
-					return;
-				}
-				
-				if( e.getButton() == MouseEvent.BUTTON1 ){
+				if( e.getButton() == MouseEvent.BUTTON1 || e.isPopupTrigger() ){
 					newlySelected = null;
 					
 					SelectableCapability selectable = getSelectable( e.getX(), e.getY() );

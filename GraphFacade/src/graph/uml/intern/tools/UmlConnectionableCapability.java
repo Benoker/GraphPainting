@@ -28,11 +28,6 @@ public abstract class UmlConnectionableCapability implements ConnectionableCapab
 	
 	@Override
 	public float containsConnectionable( int x, int y ) {
-		if( box.getLabel().contains( x, y )){
-			return 1.0f;
-		}
-		else{
-			return 0.0f;
-		}
+		return box.getLabel().contains( x, y );
 	}
 }

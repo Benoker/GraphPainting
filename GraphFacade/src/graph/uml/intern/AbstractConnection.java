@@ -1,5 +1,12 @@
 package graph.uml.intern;
 
+import java.awt.geom.Path2D;
+
+import graph.items.PathSelection;
+import graph.items.PathedGraphConnection;
+import graph.model.capability.CapabilityName;
+import graph.model.capability.SelectableCapability;
+import graph.model.connection.ConnectionArray;
 import graph.model.connection.EndPoint;
 import graph.model.connection.GraphConnection;
 import graph.uml.Connection;
@@ -9,7 +16,7 @@ import graph.uml.Item;
  * Describes a connection between two boxes.
  * @author Benjamin Sigg
  */
-public abstract class AbstractConnection extends DefaultItem implements Connection, GraphConnection{
+public abstract class AbstractConnection extends DefaultItem implements Connection, GraphConnection, PathedGraphConnection{
 	private DefaultBox sourceItem;
 	private DefaultBox targetItem;
 	
@@ -18,6 +25,8 @@ public abstract class AbstractConnection extends DefaultItem implements Connecti
 		
 		setSourceItem( sourceItem );
 		setTargetItem( targetItem );
+		
+		addCapability( CapabilityName.SELECTABLE, new PathSelection( this ) );
 	}
 	
 	/**
@@ -53,11 +62,29 @@ public abstract class AbstractConnection extends DefaultItem implements Connecti
 		super.dispose();
 		sourceItem.removeDependent( this );
 		targetItem.removeDependent( this );
+		
+		dispose( getSourceEndPoint() );
+		dispose( getTargetEndPoint() );
+	}
+	
+	private void dispose( EndPoint endPoint ){
+		if( endPoint != null ){
+			ConnectionArray array = endPoint.getArray();
+			if( array != null ){
+				array.remove( endPoint );
+			}
+		}
 	}
 	
 	@Override
 	public boolean isContextMenuEnabledAt( int x, int y ) {
-		return false;
+		SelectableCapability selection = getCapability( CapabilityName.SELECTABLE );
+		if( selection != null ){
+			return selection.contains( x, y ) >= 1.f;
+		}
+		else{
+			return false;
+		}
 	}
 	
 	@Override
@@ -69,7 +96,12 @@ public abstract class AbstractConnection extends DefaultItem implements Connecti
 	 * Gets the internal representation of this connection.
 	 * @return the internal representation, not <code>null</code>
 	 */
-	public abstract GraphConnection getGraphConnection();
+	public abstract PathedGraphConnection getGraphConnection();
+	
+	@Override
+	public Path2D getClosedConnectionPath() {
+		return getGraphConnection().getClosedConnectionPath();
+	}
 	
 	@Override
 	public EndPoint getSourceEndPoint() {

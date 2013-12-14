@@ -31,8 +31,13 @@ public class SimpleRectangularConnectionArray implements ConnectionArray, Rectan
 	}
 	
 	@Override
-	public boolean contains( int x, int y ) {
-		return boundaries.contains( x, y );
+	public float contains( int x, int y ) {
+		if( boundaries.contains( x, y ) ){
+			return 1.f;
+		}
+		else{
+			return 0.f;
+		}
 	}
 	
 	@Override
