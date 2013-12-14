@@ -9,16 +9,14 @@ import graph.model.GraphItem;
  */
 public interface GraphListener {
 	/**
-	 * Called after <code>item</code> has been added to <code>source</code>. This method is
-	 * only called for root items.
+	 * Called after <code>item</code> has been added to <code>source</code>.
 	 * @param source the source of the event
 	 * @param item the new item
 	 */
 	public void itemAdded( Graph source, GraphItem item );
 	
 	/**
-	 * Called after <code>item</code> has been removed from <code>source</code>. This method
-	 * is only called for root items.
+	 * Called after <code>item</code> has been removed from <code>source</code>.
 	 * @param source the source of the event
 	 * @param item the item that was removed
 	 */

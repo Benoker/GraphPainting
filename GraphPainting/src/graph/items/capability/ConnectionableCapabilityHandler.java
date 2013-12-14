@@ -118,13 +118,13 @@ public class ConnectionableCapabilityHandler implements CapabilityHandler<Connec
 		}
 		sourceX = x;
 		sourceY = y;
+		connection = factory.createConnection();
 		startConnectingAt( true );
 		openEnded.beginConnecting( connection, x, y, factory.getFlavor() );
 		continueConnectingAt( x, y );
 	}
 	
 	private void startConnectingAt( boolean constructing ){
-		connection = factory.createConnection();
 		ConnectionFlavor flavor = factory.getFlavor();
 		ConnectionArray array = sourceItem.getSourceArray( sourceX, sourceY, flavor, constructing );
 		
