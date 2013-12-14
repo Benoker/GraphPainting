@@ -80,7 +80,7 @@ public abstract class AbstractConnection extends DefaultItem implements Connecti
 	public boolean isContextMenuEnabledAt( int x, int y ) {
 		SelectableCapability selection = getCapability( CapabilityName.SELECTABLE );
 		if( selection != null ){
-			return selection.contains( x, y ) >= 1.f;
+			return selection.contains( x, y ) > 0.f;
 		}
 		else{
 			return false;
