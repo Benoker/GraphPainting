@@ -59,9 +59,10 @@ public abstract class DefaultItem extends AbstractGraphItem implements Item{
 	 * Tells whether this item can have a context menu at <code>x/y</code>
 	 * @param x the x-coordinate of the mouse
 	 * @param y the y-coordinate of the mouse
-	 * @return whether a context menu is available
+	 * @return whether a context menu is available, a value below <code>0.f</code> means no,
+	 * a value greater than <code>1.f</code> means yes
 	 */
-	public abstract boolean isContextMenuEnabledAt( int x, int y );
+	public abstract float isContextMenuEnabledAt( int x, int y );
 	
 	@Override
 	public void addItemContextListener( ItemContextListener listener ) {

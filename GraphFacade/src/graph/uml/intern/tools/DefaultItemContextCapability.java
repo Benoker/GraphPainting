@@ -55,9 +55,9 @@ public class DefaultItemContextCapability implements ContextCapability{
 	}
 	
 	@Override
-	public boolean isContextMenuEnabledAt( int x, int y ) {
+	public float isContextMenuEnabledAt( int x, int y ) {
 		if( listeners.isEmpty() ){
-			return false;
+			return 0.f;
 		}
 		return item.isContextMenuEnabledAt( x, y );
 	}

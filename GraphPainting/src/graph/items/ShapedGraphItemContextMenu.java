@@ -20,8 +20,8 @@ public class ShapedGraphItemContextMenu extends AbstractGraphItem implements Con
 	}
 
 	@Override
-	public boolean isContextMenuEnabledAt( int x, int y ) {
-		return item.contains( x, y ) >= 1.f;
+	public float isContextMenuEnabledAt( int x, int y ) {
+		return item.contains( x, y );
 	}
 
 	@Override

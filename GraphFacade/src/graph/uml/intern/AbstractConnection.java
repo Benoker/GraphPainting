@@ -77,13 +77,13 @@ public abstract class AbstractConnection extends DefaultItem implements Connecti
 	}
 	
 	@Override
-	public boolean isContextMenuEnabledAt( int x, int y ) {
+	public float isContextMenuEnabledAt( int x, int y ) {
 		SelectableCapability selection = getCapability( CapabilityName.SELECTABLE );
 		if( selection != null ){
-			return selection.contains( x, y ) > 0.f;
+			return selection.contains( x, y );
 		}
 		else{
-			return false;
+			return 0.f;
 		}
 	}
 	

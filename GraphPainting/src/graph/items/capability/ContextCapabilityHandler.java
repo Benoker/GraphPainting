@@ -68,12 +68,25 @@ public class ContextCapabilityHandler implements CapabilityHandler<ContextCapabi
 	}
 	
 	private void popup( int x, int y, Component invoker ){
+		ContextCapability item = getContext( x, y );
+		if( item != null ){
+			item.context( site( x, y, invoker ) );
+		}
+	}
+	
+	private ContextCapability getContext( int x, int y ){
+		float best = 0.f;
+		ContextCapability result = null;
+		
 		for( ContextCapability item : site.getCapabilities() ){
-			if( item.isContextMenuEnabledAt( x, y )){
-				item.context( site( x, y, invoker ) );
-				return;
+			float value = item.isContextMenuEnabledAt( x, y );
+			if( value >= best && value > 0.f ){
+				best = value;
+				result = item;
 			}
 		}
+		
+		return result;
 	}
 	
 	private ContextSite site( final int x, final int y, final Component invoker ){
