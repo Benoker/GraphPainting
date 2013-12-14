@@ -1,5 +1,6 @@
 package graph.uml.intern;
 
+import graph.items.ConnectionFlavor;
 import graph.items.connection.CuttingEdgeLineConnection;
 import graph.items.uml.Diamond;
 import graph.items.uml.OpenArrow;
@@ -16,6 +17,7 @@ import java.awt.Color;
  * @author Benjamin Sigg
  */
 public class CompositionConnection extends AbstractConnection implements Connection{
+	public static final ConnectionFlavor COMPOSITION = new ConnectionFlavor( "composition" );
 	private CuttingEdgeLineConnection line;
 	
 	public CompositionConnection( Graph graph, DefaultBox sourceBox, ConnectionArray source, DefaultBox targetBox, ConnectionArray target ){

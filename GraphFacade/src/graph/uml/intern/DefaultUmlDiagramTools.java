@@ -8,7 +8,10 @@ import graph.model.connection.GraphConnection;
 import graph.ui.Graph;
 import graph.uml.Connection;
 import graph.uml.UmlDiagramTools;
+import graph.uml.intern.tools.AggregationConnectionFactory;
+import graph.uml.intern.tools.CompositionConnectionFactory;
 import graph.uml.intern.tools.ExtendsConnectionFactory;
+import graph.uml.intern.tools.ImplementsConnectionFactory;
 import graph.uml.intern.tools.UmlConnectionFactory;
 import graph.uml.intern.tools.UmlConnectionableCapability;
 
@@ -44,6 +47,21 @@ public class DefaultUmlDiagramTools implements UmlDiagramTools{
 	@Override
 	public void applyAddInheritsFromTool() {
 		connecting.setFactory( new ExtendsConnectionFactory( graph ) );
+	}
+	
+	@Override
+	public void applyAddImplementsFromTool() {
+		connecting.setFactory( new ImplementsConnectionFactory( graph ) );	
+	}
+	
+	@Override
+	public void applyAggregationTool() {
+		connecting.setFactory( new AggregationConnectionFactory( graph ) );
+	}
+	
+	@Override
+	public void applyCompositionTool() {
+		connecting.setFactory( new CompositionConnectionFactory( graph ) );
 	}
 	
 	@Override

@@ -1,5 +1,6 @@
 package graph.uml.intern;
 
+import graph.items.ConnectionFlavor;
 import graph.items.connection.CuttingEdgeLineConnection;
 import graph.items.uml.FilledArrow;
 import graph.model.GraphSite;
@@ -15,6 +16,7 @@ import java.awt.BasicStroke;
  * @author Benjamin Sigg
  */
 public class ImplementsConnection extends AbstractConnection implements Connection{
+	public static ConnectionFlavor IMPLEMENTS = new ConnectionFlavor( "implements" );
 	private CuttingEdgeLineConnection line;
 	
 	public ImplementsConnection( Graph graph, DefaultBox sourceBox, ConnectionArray source, DefaultBox targetBox, ConnectionArray target ){

@@ -17,4 +17,23 @@ public interface UmlDiagramTools {
 	 * self references.
 	 */
 	public void applyAddInheritsFromTool();
+	
+	/**
+	 * Applies a tool that creates new {@link Connection}s between {@link TypeBox}, just 
+	 * as if a call to {@link TypeBox#addImplementsFrom(TypeBox)} was made. The tool prevents
+	 * self references.
+	 */
+	public void applyAddImplementsFromTool();
+	
+	/**
+	 * Applies a tool that creates new {@link Connection}s between {@link TypeBox}, just 
+	 * as if a call to {@link TypeBox#addAggregation(TypeBox)} was made.
+	 */
+	public void applyAggregationTool();
+	
+	/**
+	 * Applies a tool that creates new {@link Connection}s between {@link TypeBox}, just 
+	 * as if a call to {@link TypeBox#addComposition(TypeBox)} was made.
+	 */
+	public void applyCompositionTool();
 }
