@@ -5,4 +5,12 @@ package graph.uml;
  * @author Benjamin Sigg
  */
 public interface Connection extends Item{
+	@Override
+	public ItemKey<Connection> getKey();
+	
+	/**
+	 * Tells what kind of {@link Connection} this is.
+	 * @return the kind of connection, not <code>null</code>
+	 */
+	public ConnectionType getConnectionType();
 }

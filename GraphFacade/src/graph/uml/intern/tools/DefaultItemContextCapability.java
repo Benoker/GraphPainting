@@ -22,7 +22,7 @@ import javax.swing.JPopupMenu;
  */
 public class DefaultItemContextCapability implements ContextCapability{
 	private DefaultUmlDiagram diagram;
-	private DefaultItem item;
+	private DefaultItem<?> item;
 	private List<ItemContextListener> listeners = new ArrayList<>( 1 );
 	
 	/**
@@ -30,7 +30,7 @@ public class DefaultItemContextCapability implements ContextCapability{
 	 * @param diagram the diagram that contains all the items
 	 * @param item the item which is enriched by this capability
 	 */
-	public DefaultItemContextCapability( DefaultUmlDiagram diagram, DefaultItem item ){
+	public DefaultItemContextCapability( DefaultUmlDiagram diagram, DefaultItem<?> item ){
 		this.diagram = diagram;
 		this.item = item;
 	}

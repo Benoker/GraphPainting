@@ -11,17 +11,19 @@ import graph.model.connection.EndPoint;
 import graph.model.connection.GraphConnection;
 import graph.uml.Connection;
 import graph.uml.Item;
+import graph.uml.ItemKey;
+import graph.uml.intern.keys.ConnectionKey;
 
 /**
  * Describes a connection between two boxes.
  * @author Benjamin Sigg
  */
-public abstract class AbstractConnection extends DefaultItem implements Connection, GraphConnection, PathedGraphConnection{
-	private DefaultBox sourceItem;
-	private DefaultBox targetItem;
+public abstract class AbstractConnection extends DefaultItem<Connection> implements Connection, GraphConnection, PathedGraphConnection{
+	private DefaultBox<?> sourceItem;
+	private DefaultBox<?> targetItem;
 	
-	public AbstractConnection( DefaultUmlDiagram diagram, DefaultBox sourceItem, DefaultBox targetItem ){
-		super( diagram );
+	public AbstractConnection( DefaultUmlDiagram diagram, DefaultBox<?> sourceItem, DefaultBox<?> targetItem, ItemKey<Connection> key ){
+		super( diagram, key );
 		
 		setSourceItem( sourceItem );
 		setTargetItem( targetItem );
@@ -29,11 +31,16 @@ public abstract class AbstractConnection extends DefaultItem implements Connecti
 		addCapability( CapabilityName.SELECTABLE, new PathSelection( this ) );
 	}
 	
+	@Override
+	protected ItemKey<Connection> createKey( DefaultUmlDiagram diagram ) {
+		return new ConnectionKey( diagram );
+	}
+	
 	/**
 	 * Sets the source of this connection
 	 * @param sourceItem the source, may be <code>null</code>
 	 */
-	public void setSourceItem( DefaultBox sourceItem ) {
+	public void setSourceItem( DefaultBox<?> sourceItem ) {
 		if( this.sourceItem != null ){
 			this.sourceItem.removeDependent( this );
 		}
@@ -43,11 +50,15 @@ public abstract class AbstractConnection extends DefaultItem implements Connecti
 		}
 	}
 	
+	public DefaultBox<?> getSourceItem() {
+		return sourceItem;
+	}
+	
 	/**
 	 * Sets the target of this connection
 	 * @param targetItem the target, may be <code>null</code>
 	 */
-	public void setTargetItem( DefaultBox targetItem ) {
+	public void setTargetItem( DefaultBox<?> targetItem ) {
 		if( this.targetItem != null ){
 			this.targetItem.removeDependent( this );
 		}
@@ -55,6 +66,10 @@ public abstract class AbstractConnection extends DefaultItem implements Connecti
 		if( this.targetItem != null ){
 			this.targetItem.addDependent( this );
 		}
+	}
+	
+	public DefaultBox<?> getTargetItem() {
+		return targetItem;
 	}
 	
 	@Override

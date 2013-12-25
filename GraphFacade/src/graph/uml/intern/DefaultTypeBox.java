@@ -6,14 +6,16 @@ import graph.model.capability.CapabilityName;
 import graph.model.connection.ConnectionArray;
 import graph.uml.CommentBox;
 import graph.uml.Connection;
+import graph.uml.ItemKey;
 import graph.uml.TypeBox;
+import graph.uml.intern.keys.TypeKey;
 import graph.uml.intern.tools.TypeConnectionableCapability;
 
 /**
  * Default implementation of a {@link TypeBox}
  * @author Benjamin Sigg
  */
-public class DefaultTypeBox extends DefaultBox implements TypeBox {
+public class DefaultTypeBox extends DefaultBox<TypeBox> implements TypeBox {
 	private FluentRectangularConnectionArray umlDiagramConnections;
 	private SimpleRectangularConnectionArray commentConnections;
 	
@@ -22,7 +24,11 @@ public class DefaultTypeBox extends DefaultBox implements TypeBox {
 	 * @param diagram the diagram on which this box will be displayed
 	 */
 	public DefaultTypeBox( DefaultUmlDiagram diagram ) {
-		super( diagram );
+		this( diagram, null );
+	}
+	
+	public DefaultTypeBox( DefaultUmlDiagram diagram, ItemKey<TypeBox> key ) {
+		super( diagram, key );
 		
 		umlDiagramConnections = new FluentRectangularConnectionArray();
 		commentConnections = new SimpleRectangularConnectionArray();
@@ -31,6 +37,11 @@ public class DefaultTypeBox extends DefaultBox implements TypeBox {
 		getLabel().addChild( commentConnections );
 		
 		setCapability( CapabilityName.CONNECTABLE, new TypeConnectionableCapability( this ) );
+	}
+	
+	@Override
+	protected ItemKey<TypeBox> createKey( DefaultUmlDiagram diagram ) {
+		return new TypeKey( diagram );
 	}
 	
 	/**

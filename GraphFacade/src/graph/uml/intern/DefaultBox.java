@@ -8,6 +8,7 @@ import graph.model.capability.CapabilityName;
 import graph.model.connection.ConnectionArray;
 import graph.uml.Box;
 import graph.uml.Item;
+import graph.uml.ItemKey;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.List;
  * Default implementation of a {@link Box}. Offers a list of {@link ConnectionArray}s, for different kind of connections. 
  * @author Benjamin Sigg
  */
-public class DefaultBox extends DefaultItem implements Box{
+public abstract class DefaultBox<T extends Box> extends DefaultItem<T> implements Box{
 	private GraphLabel label;
 	
 	private Color background = new Color( 200, 200, 200 );
@@ -33,7 +34,11 @@ public class DefaultBox extends DefaultItem implements Box{
 	 * @param graph the graph which shows this box
 	 */
 	public DefaultBox( DefaultUmlDiagram diagram ){
-		super( diagram );
+		this( diagram, null );
+	}
+	
+	public DefaultBox( DefaultUmlDiagram diagram, ItemKey<T> key ){
+		super( diagram, key );
 		label = new GraphLabel("");
 		label.setCapability( CapabilityName.SELECTABLE, null );
 		
@@ -104,6 +109,10 @@ public class DefaultBox extends DefaultItem implements Box{
 	public void setText( String text ) {
 		label.getLabel().setText( text );
 		regraph();
+	}
+	
+	public String getText(){
+		return label.getLabel().getText();
 	}
 
 	@Override

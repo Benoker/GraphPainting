@@ -11,6 +11,14 @@ public interface Item {
 	public void dispose();
 	
 	/**
+	 * Gets a unique identifier that is tied to this <code>Item</code>. The key
+	 * is neither <code>null</code>, nor does it change. Keys remain unique even if
+	 * the Item is {@link #dispose() disposed}.
+	 * @return a unique identifier for this item
+	 */
+	public ItemKey<? extends Item> getKey();
+	
+	/**
 	 * Adds <code>listener</code> to this item, the observer will receive an event
 	 * if the user right clicks onto this item.<br>
 	 * It is possible to add more than one {@link ItemContextListener} to an {@link Item},

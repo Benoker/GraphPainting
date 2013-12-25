@@ -41,4 +41,7 @@ public interface TypeBox extends Box{
 	 * @return the newly created comment
 	 */
 	public CommentBox addComment( String text );
+	
+	@Override
+	public ItemKey<TypeBox> getKey();
 }

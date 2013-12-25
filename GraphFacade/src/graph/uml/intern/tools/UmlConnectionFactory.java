@@ -15,5 +15,5 @@ public interface UmlConnectionFactory extends ConnectionFactory{
 	 * @param source the source of the connection
 	 * @param target the target of the connection
 	 */
-	public void finalize( Connection connection, DefaultBox source, DefaultBox target );
+	public void finalize( Connection connection, DefaultBox<?> source, DefaultBox<?> target );
 }

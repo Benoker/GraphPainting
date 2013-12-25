@@ -5,16 +5,20 @@ import graph.model.capability.CapabilityName;
 import graph.model.capability.SelectableCapability;
 import graph.ui.Graph;
 import graph.ui.GraphListener;
+import graph.uml.Box;
 import graph.uml.Item;
 import graph.uml.ItemContextListener;
+import graph.uml.ItemKey;
 import graph.uml.TypeBox;
 import graph.uml.UmlDiagram;
 import graph.uml.UmlDiagramListener;
 import graph.uml.UmlDiagramTools;
+import graph.uml.intern.keys.DefaultItemKey;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Default implementation of {@link UmlDiagram}.
@@ -25,6 +29,7 @@ public class DefaultUmlDiagram implements UmlDiagram{
 	private UmlDiagramTools tools;
 	private DefaultItemContextListener itemContextListener;
 	private List<UmlDiagramListener> umlDiagramListeners = new ArrayList<>();
+	private AtomicInteger nextUniqueId = new AtomicInteger( 1 );
 
 	/**
 	 * Creates a new diagram
@@ -112,6 +117,34 @@ public class DefaultUmlDiagram implements UmlDiagram{
 		return Collections.unmodifiableList( result );
 	}
 	
+	/**
+	 * Gets all the {@link DefaultItem}s that are stored in this diagram.
+	 * @return the items
+	 */
+	@SuppressWarnings( { "unchecked", "rawtypes" } )
+	public List<DefaultItem<?>> getDefaultItems(){
+		// all the Items are DefaultItems
+		return (List)getItems();
+	}
+	
+	@SuppressWarnings( "unchecked" )
+	@Override
+	public <T extends Item> T getItem( ItemKey<T> key ) {
+		for( GraphItem item : graph.getItems() ){
+			if( item instanceof Item ){
+				if( ((Item)item).getKey().equals( key )){
+					return (T) item;
+				}
+			}
+		}
+		return null;
+	}
+
+	@SuppressWarnings( "unchecked" )
+	public <T extends Box> DefaultBox<T> getDefaultBox( ItemKey<T> key ){
+		return (DefaultBox<T>)getItem( key );
+	}
+	
 	@Override
 	public void addItemContextListener( ItemContextListener listener ) {
 		itemContextListener.addItemContextListener( listener );
@@ -133,6 +166,31 @@ public class DefaultUmlDiagram implements UmlDiagram{
 	@Override
 	public void removeUmlDiagramListener( UmlDiagramListener listener ) {
 		umlDiagramListeners.remove( listener );
+	}
+	
+	/**
+	 * Gets a unique identifier (in the scope of this {@link DefaultUmlDiagram}) that can be used
+	 * to create new {@link DefaultItemKey}s.
+	 * @return the next unique id
+	 */
+	public int nextUniqueId(){
+		return nextUniqueId.getAndIncrement();
+	}
+	
+	/**
+	 * Gets the unique identifier that will be used for the next {@link ItemKey} that is being generated.
+	 * @return the unique identifier
+	 */
+	public int currentUniqueId(){
+		return nextUniqueId.get();
+	}
+	
+	/**
+	 * Sets the unique identifier that will be used for the next {@link ItemKey} that is generated.
+	 * @param id the unique identifier
+	 */
+	public void setCurrentUniqueId( int id ){
+		nextUniqueId.set( id );
 	}
 }
 

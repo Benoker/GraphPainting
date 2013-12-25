@@ -2,6 +2,8 @@ package graph.uml.intern;
 
 import graph.items.connection.SimpleRectangularConnectionArray;
 import graph.uml.CommentBox;
+import graph.uml.ItemKey;
+import graph.uml.intern.keys.CommentKey;
 
 import java.awt.Color;
 
@@ -9,14 +11,17 @@ import java.awt.Color;
  * Default implementation of a {@link CommentBox}
  * @author Benjamin Sigg
  */
-public class DefaultCommentBox extends DefaultBox implements CommentBox{
-	private DefaultTypeBox type;
+public class DefaultCommentBox extends DefaultBox<CommentBox> implements CommentBox{
+	private DefaultBox<?> type;
 	private CommentConnection connection;
 	private SimpleRectangularConnectionArray connectionArray;
 	
 	public DefaultCommentBox( DefaultUmlDiagram diagram, DefaultTypeBox type ){
-		super( diagram );
-		this.type = type;
+		this( diagram, type, null );
+	}
+	
+	public DefaultCommentBox( DefaultUmlDiagram diagram, DefaultTypeBox type, ItemKey<CommentBox> key ){
+		super( diagram, key );
 		
 		setBackground( new Color( 255, 255, 150 ) );
 		setSelectedPrimary( new Color( 255, 255, 200 ) );
@@ -24,9 +29,26 @@ public class DefaultCommentBox extends DefaultBox implements CommentBox{
 		
 		connectionArray = new SimpleRectangularConnectionArray();
 		getLabel().addChild( connectionArray );
-		
-		connection = new CommentConnection( diagram, this, connectionArray, type, type.getCommentConnections() );
-		type.addDependent( this );
+
+		if( type != null ){
+			this.type = type;
+			connection = new CommentConnection( diagram, this, connectionArray, type, type.getCommentConnections() );
+			type.addDependent( this );
+		}
+	}
+	
+	public void setConnection( CommentConnection connection ) {
+		if( this.connection != null ){
+			throw new IllegalStateException( "connection is already set" );
+		}
+		this.connection = connection;
+		this.type = connection.getTargetItem();
+		this.type.addDependent( this );
+	}
+	
+	@Override
+	protected ItemKey<CommentBox> createKey( DefaultUmlDiagram diagram ) {
+		return new CommentKey( diagram );
 	}
 	
 	@Override

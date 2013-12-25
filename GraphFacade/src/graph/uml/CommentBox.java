@@ -5,5 +5,12 @@ package graph.uml;
  * @author Benjamin Sigg
  */
 public interface CommentBox extends Box{
-
+	@Override
+	public ItemKey<CommentBox> getKey();
+	
+	/**
+	 * Gets the text that is written in this box.
+	 * @return the text
+	 */
+	public String getText();
 }

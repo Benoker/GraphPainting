@@ -8,13 +8,13 @@ import graph.uml.intern.DefaultBox;
  * @author Benjamin Sigg
  */
 public abstract class UmlConnectionableCapability implements ConnectionableCapability{
-	private DefaultBox box;
+	private DefaultBox<?> box;
 	
 	/**
 	 * Creates a new capability
 	 * @param box the box represented by this capability
 	 */
-	public UmlConnectionableCapability( DefaultBox box ){
+	public UmlConnectionableCapability( DefaultBox<?> box ){
 		this.box = box;
 	}
 	
@@ -22,7 +22,7 @@ public abstract class UmlConnectionableCapability implements ConnectionableCapab
 	 * Gets the box that is described by this capability.
 	 * @return the box
 	 */
-	public DefaultBox getBox(){
+	public DefaultBox<?> getBox(){
 		return box;
 	}
 	

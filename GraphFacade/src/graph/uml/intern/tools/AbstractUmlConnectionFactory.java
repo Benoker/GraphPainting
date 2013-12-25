@@ -11,7 +11,7 @@ import graph.uml.intern.DefaultBox;
  */
 public abstract class AbstractUmlConnectionFactory implements UmlConnectionFactory{
 	@Override
-	public void finalize( Connection connection, DefaultBox source, DefaultBox target ) {
+	public void finalize( Connection connection, DefaultBox<?> source, DefaultBox<?> target ) {
 		AbstractConnection con = (AbstractConnection)connection;
 		con.setSourceItem( source );
 		con.setTargetItem( target );

@@ -29,6 +29,13 @@ public interface UmlDiagram {
 	public List<Item> getItems();
 	
 	/**
+	 * Searches for the one {@link Item} whose {@link Item#getKey()} equals <code>key</code>.
+	 * @param key the identifier of the item to search
+	 * @return the item or <code>null</code> if not found
+	 */
+	public <T extends Item> T getItem( ItemKey<T> key );
+	
+	/**
 	 * Gets access to some tools that can be used to modify the graph.
 	 * @return all the tools
 	 */
