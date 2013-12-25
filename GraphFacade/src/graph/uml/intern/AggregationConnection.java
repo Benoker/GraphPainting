@@ -67,4 +67,9 @@ public class AggregationConnection extends AbstractConnection implements Connect
 	public ConnectionType getConnectionType() {
 		return ConnectionType.AGGREGATION;
 	}
+
+	@Override
+	public ConnectionFlavor getFlavor() {
+		return AGGREGATION;
+	}
 }

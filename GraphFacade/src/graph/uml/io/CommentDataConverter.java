@@ -4,6 +4,7 @@ import graph.uml.CommentBox;
 import graph.uml.ItemKey;
 import graph.uml.intern.DefaultCommentBox;
 import graph.uml.intern.DefaultUmlDiagram;
+import graph.uml.intern.keys.CommentKey;
 
 /**
  * Converter for {@link DefaultCommentBox}es.
@@ -33,5 +34,15 @@ public class CommentDataConverter extends BoxDataConverter<CommentBox, CommentDa
 	@Override
 	protected DefaultCommentBox createEmptyBox( ItemKey<CommentBox> key, DefaultUmlDiagram diagram ) {
 		return new DefaultCommentBox( diagram, null, key );
+	}
+	
+	@Override
+	public boolean isKey( String uniqueId ) {
+		return CommentKey.isKey( uniqueId );
+	}
+	
+	@Override
+	public ItemKey<CommentBox> readKey( String uniqueId ) {
+		return CommentKey.readKey( uniqueId );
 	}
 }

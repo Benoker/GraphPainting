@@ -14,40 +14,40 @@ import graph.uml.intern.ImplementsConnection;
  * The capability allowing {@link TypeBox}es to be connected to other boxes.
  * @author Benjamin Sigg
  */
-public class TypeConnectionableCapability extends UmlConnectionableCapability{
+public class TypeConnectionableCapability extends UmlConnectionableCapability {
 	private DefaultTypeBox box;
-	
+
 	public TypeConnectionableCapability( DefaultTypeBox box ) {
 		super( box );
 		this.box = box;
 	}
 
-	private boolean isTypeFlavor( ConnectionFlavor flavor ){
-		if( flavor.equals( ExtendsConnection.EXTENDS )){
+	private boolean isTypeFlavor( ConnectionFlavor flavor ) {
+		if( flavor.equals( ExtendsConnection.EXTENDS ) ) {
 			return true;
 		}
-		if( flavor.equals( ImplementsConnection.IMPLEMENTS )){
+		if( flavor.equals( ImplementsConnection.IMPLEMENTS ) ) {
 			return true;
 		}
-		if( flavor.equals( CompositionConnection.COMPOSITION )){
+		if( flavor.equals( CompositionConnection.COMPOSITION ) ) {
 			return true;
 		}
-		if( flavor.equals( AggregationConnection.AGGREGATION )){
-			return true;
-		}
-		return false;
-	}
-	
-	private boolean allowSelfReference( ConnectionFlavor flavor ){
-		if( flavor.equals( CompositionConnection.COMPOSITION )){
-			return true;
-		}
-		if( flavor.equals( AggregationConnection.AGGREGATION )){
+		if( flavor.equals( AggregationConnection.AGGREGATION ) ) {
 			return true;
 		}
 		return false;
 	}
-	
+
+	private boolean allowSelfReference( ConnectionFlavor flavor ) {
+		if( flavor.equals( CompositionConnection.COMPOSITION ) ) {
+			return true;
+		}
+		if( flavor.equals( AggregationConnection.AGGREGATION ) ) {
+			return true;
+		}
+		return false;
+	}
+
 	@Override
 	public boolean isSource( ConnectionFlavor flavor ) {
 		return isTypeFlavor( flavor );
@@ -70,7 +70,7 @@ public class TypeConnectionableCapability extends UmlConnectionableCapability{
 
 	@Override
 	public ConnectionArray getSourceArray( int x, int y, ConnectionFlavor flavor, boolean constructing ) {
-		if( isTypeFlavor( flavor ) ){
+		if( isTypeFlavor( flavor ) ) {
 			return box.getUmlDiagramConnections();
 		}
 		return null;
@@ -78,9 +78,23 @@ public class TypeConnectionableCapability extends UmlConnectionableCapability{
 
 	@Override
 	public ConnectionArray getTargetArray( int x, int y, ConnectionFlavor flavor, boolean constructing ) {
-		if( isTypeFlavor( flavor ) ){
+		if( isTypeFlavor( flavor ) ) {
 			return box.getUmlDiagramConnections();
 		}
 		return null;
-	}	
+	}
+
+	@Override
+	public ConnectionArray getSourceArray( ConnectionFlavor flavor ) {
+		return box.getUmlDiagramConnections();
+	}
+
+	@Override
+	public ConnectionArray getTargetArray( ConnectionFlavor flavor ) {
+		if( isTypeFlavor( flavor ) ) {
+			return box.getUmlDiagramConnections();
+		} else {
+			return box.getCommentConnections();
+		}
+	}
 }

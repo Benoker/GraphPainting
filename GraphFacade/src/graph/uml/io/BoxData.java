@@ -7,7 +7,7 @@ import graph.uml.ItemKey;
  * Some data describing a {@link Box}.
  * @author Benjamin Sigg
  */
-public class BoxData<T extends Box> extends Data<T> {
+public abstract class BoxData<T extends Box> extends Data<T> {
 	private int x;
 	private int y;
 	private int width;

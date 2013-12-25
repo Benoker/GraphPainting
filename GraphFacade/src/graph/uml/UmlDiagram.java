@@ -3,7 +3,8 @@ package graph.uml;
 import java.util.List;
 
 /**
- * Contains all the methods required to build and modify an UML diagram.
+ * Contains all the methods required to build and modify an UML diagram.<br>
+ * 
  * @author Benjamin Sigg
  */
 public interface UmlDiagram {
@@ -34,12 +35,6 @@ public interface UmlDiagram {
 	 * @return the item or <code>null</code> if not found
 	 */
 	public <T extends Item> T getItem( ItemKey<T> key );
-	
-	/**
-	 * Gets access to some tools that can be used to modify the graph.
-	 * @return all the tools
-	 */
-	public UmlDiagramTools getTools();
 	
 	/**
 	 * Adds an observer that will be informed when {@link Item}s are added or removed from this diagram.

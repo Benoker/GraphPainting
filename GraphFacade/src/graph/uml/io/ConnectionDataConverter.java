@@ -1,5 +1,8 @@
 package graph.uml.io;
 
+import graph.items.ConnectionableCapability;
+import graph.model.capability.CapabilityName;
+import graph.model.connection.ConnectionArray;
 import graph.uml.Connection;
 import graph.uml.ConnectionType;
 import graph.uml.ItemKey;
@@ -7,9 +10,11 @@ import graph.uml.intern.AbstractConnection;
 import graph.uml.intern.AggregationConnection;
 import graph.uml.intern.CommentConnection;
 import graph.uml.intern.CompositionConnection;
+import graph.uml.intern.DefaultBox;
 import graph.uml.intern.DefaultUmlDiagram;
 import graph.uml.intern.ExtendsConnection;
 import graph.uml.intern.ImplementsConnection;
+import graph.uml.intern.keys.ConnectionKey;
 
 /**
  * Converter for {@link Connection}s.
@@ -29,8 +34,20 @@ public class ConnectionDataConverter implements DataConverter<Connection, Connec
 	public AbstractConnection toItem( ConnectionData data, DefaultUmlDiagram diagram ) {
 		AbstractConnection connection = connection( data.getConnectionType(), data.getKey(), diagram );
 		
-		connection.setSourceItem( diagram.getDefaultBox( data.getSource() ) );
-		connection.setTargetItem( diagram.getDefaultBox( data.getTarget() ) );
+		DefaultBox<?> source = diagram.getDefaultBox( data.getSource() );
+		DefaultBox<?> target = diagram.getDefaultBox( data.getTarget() );
+		
+		connection.setSourceItem( source );
+		connection.setTargetItem( target );
+		
+		ConnectionableCapability sourceConnectionable = source.getCapability( CapabilityName.CONNECTABLE );
+		ConnectionableCapability targetConnectionable = target.getCapability( CapabilityName.CONNECTABLE );
+		
+		ConnectionArray sourceArray = sourceConnectionable.getSourceArray( connection.getFlavor() );
+		ConnectionArray targetArray = targetConnectionable.getTargetArray( connection.getFlavor() );
+		
+		sourceArray.add( connection.getSourceEndPoint() );
+		targetArray.add( connection.getTargetEndPoint() );
 		
 		return connection;
 	}
@@ -50,5 +67,15 @@ public class ConnectionDataConverter implements DataConverter<Connection, Connec
 			default:
 				throw new IllegalStateException( "unknown enumeration constant: " + type );
 		}
+	}
+	
+	@Override
+	public boolean isKey( String uniqueId ) {
+		return ConnectionKey.isKey( uniqueId );
+	}
+	
+	@Override
+	public ItemKey<Connection> readKey( String uniqueId ) {
+		return ConnectionKey.readKey( uniqueId );
 	}
 }

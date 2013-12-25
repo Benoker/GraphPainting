@@ -25,7 +25,7 @@ import graph.model.capability.CapabilityName;
  */
 public class CapabilityController {
 	/** {@link Component} to which this controller can add input listeners */
-	private GraphPanel graph;
+	private GraphPanel panel;
 	
 	/** All the handlers known to this manager */
 	private List<Site<?>> handlers = new ArrayList<>();
@@ -38,7 +38,7 @@ public class CapabilityController {
 	 * @param graph the {@link GraphPanel} for which this controller will be used
 	 */
 	public CapabilityController( GraphPanel graph ){
-		this.graph = graph;
+		this.panel = graph;
 		
 		graph.addMouseListener( new ForwardingMouseListener() );
 		graph.addMouseMotionListener( new ForwardingMouseMotionListener() );
@@ -264,7 +264,7 @@ public class CapabilityController {
 
 		@Override
 		public List<T> getCapabilities() {
-			return graph.getCapabilities( name );
+			return panel.getCapabilities( name );
 		}
 
 		@Override
@@ -299,12 +299,12 @@ public class CapabilityController {
 		
 		@Override
 		public void addItem( GraphItem item ) {
-			graph.getGraph().addItem( item );
+			panel.getGraph().addItem( item );
 		}
 		
 		@Override
 		public void removeItem( GraphItem item ) {
-			graph.getGraph().removeItem( item );
+			panel.getGraph().removeItem( item );
 		}
 	}
 }

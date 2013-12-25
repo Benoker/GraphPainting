@@ -55,4 +55,9 @@ public class ConnectionData extends Data<Connection> {
 			throw new IllegalStateException( "target must not be null" );
 		}
 	}
+	
+	@Override
+	public void visit( DataVisitor visitor ) {
+		visitor.visit( this );	
+	}
 }

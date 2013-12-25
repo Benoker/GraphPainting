@@ -21,4 +21,9 @@ public class CommentData extends BoxData<CommentBox> {
 	public void setText( String text ) {
 		this.text = text;
 	}
+	
+	@Override
+	public void visit( DataVisitor visitor ) {
+		visitor.visit( this );	
+	}
 }

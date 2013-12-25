@@ -1,9 +1,11 @@
 package graph.uml.intern;
 
 import graph.items.connection.SimpleRectangularConnectionArray;
+import graph.model.capability.CapabilityName;
 import graph.uml.CommentBox;
 import graph.uml.ItemKey;
 import graph.uml.intern.keys.CommentKey;
+import graph.uml.intern.tools.CommentConnectionableCapability;
 
 import java.awt.Color;
 
@@ -27,6 +29,8 @@ public class DefaultCommentBox extends DefaultBox<CommentBox> implements Comment
 		setSelectedPrimary( new Color( 255, 255, 200 ) );
 		setSelectedSecondary( new Color( 255, 255, 175 ) );
 		
+		setCapability( CapabilityName.CONNECTABLE, new CommentConnectionableCapability( this ) );
+		
 		connectionArray = new SimpleRectangularConnectionArray();
 		getLabel().addChild( connectionArray );
 
@@ -37,13 +41,19 @@ public class DefaultCommentBox extends DefaultBox<CommentBox> implements Comment
 		}
 	}
 	
+	public SimpleRectangularConnectionArray getConnectionArray() {
+		return connectionArray;
+	}
+	
 	public void setConnection( CommentConnection connection ) {
-		if( this.connection != null ){
-			throw new IllegalStateException( "connection is already set" );
+		if( connection.getTargetItem() != null ){
+			if( this.connection != null ){
+				throw new IllegalStateException( "connection is already set" );
+			}
+			this.connection = connection;
+			this.type = connection.getTargetItem();
+			this.type.addDependent( this );
 		}
-		this.connection = connection;
-		this.type = connection.getTargetItem();
-		this.type.addDependent( this );
 	}
 	
 	@Override
@@ -54,7 +64,9 @@ public class DefaultCommentBox extends DefaultBox<CommentBox> implements Comment
 	@Override
 	public void makeVisible() {
 		super.makeVisible();
-		connection.makeVisible();
+		if( connection != null ){
+			connection.makeVisible();
+		}
 	}
 	
 	@Override

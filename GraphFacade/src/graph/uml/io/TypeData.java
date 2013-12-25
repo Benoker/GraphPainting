@@ -21,4 +21,9 @@ public class TypeData extends BoxData<TypeBox>{
 	public String getText() {
 		return text;
 	}
+	
+	@Override
+	public void visit( DataVisitor visitor ) {
+		visitor.visit( this );
+	}
 }

@@ -9,7 +9,21 @@ import graph.uml.intern.DefaultUmlDiagram;
  * @author Benjamin Sigg
  */
 public class CommentKey extends DefaultItemKey<CommentBox>{
+	private static final String COMMENT = "comment";
+	
+	public static boolean isKey( String uniqueString ){
+		return isKey( uniqueString, COMMENT );
+	}
+	
+	public static CommentKey readKey( String uniqueString ){
+		return new CommentKey( uniqueString );
+	}
+	
 	public CommentKey( DefaultUmlDiagram diagram ) {
-		super( diagram, "comment" );
+		super( diagram, COMMENT );
+	}
+	
+	private CommentKey( String uniqueString ){
+		super( uniqueString, COMMENT );
 	}
 }

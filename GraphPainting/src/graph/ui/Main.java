@@ -36,7 +36,10 @@ public class Main {
 			graph.addItem( item );
 		}
 		
-		frame.add( graph.getView() );
+		GraphPanel panel = new GraphPanel();
+		panel.setGraph( graph );
+		
+		frame.add( panel );
 		frame.setVisible( true );
 	}
 	

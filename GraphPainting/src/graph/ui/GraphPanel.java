@@ -1,15 +1,21 @@
 package graph.ui;
 
+import graph.items.capability.ContextCapabilityHandler;
+import graph.items.capability.MoveableCapabilityHandler;
+import graph.items.capability.SelectableCapabilityHandler;
 import graph.model.GraphItem;
 import graph.model.GraphPaintable;
 import graph.model.GraphSite;
 import graph.model.Regraphable;
+import graph.model.capability.CapabilityHandler;
 import graph.model.capability.CapabilityName;
 
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,185 +28,246 @@ import javax.swing.JPanel;
  * interface and is able to fire event.
  * @author Benjamin Sigg
  */
-public class GraphPanel extends JPanel{
+public class GraphPanel extends JPanel {
 	private Graph graph;
-	
+	private GraphListener graphListener;
+
 	private List<GraphPaintable> paintables = new ArrayList<>();
 	private List<Regraphable> regraphables = new ArrayList<>();
-	
+
 	private GraphSite site = new DefaultGraphSite();
 	private boolean valid = false;
-	
+
 	private JPanel canvas;
 	private JPanel overlay;
 
+	private CapabilityController capabilityController;
+
 	/**
 	 * Creates a new panel
-	 * @param graph the graph that is painted on this panel
 	 */
-	public GraphPanel( Graph graph ){
-		this.graph = graph;
+	public GraphPanel() {
 		setLayout( null );
-		
+
 		canvas = createCanvas();
 		canvas.setLayout( null );
 		canvas.setBackground( Color.WHITE );
 		canvas.setOpaque( true );
 		canvas.setFocusable( true );
-		
+
 		overlay = createOverlay();
 		overlay.setOpaque( false );
 		overlay.setFocusable( false );
 
 		add( overlay );
 		add( canvas );
-		
-		graph.addGraphListener( graphListener() );
+
+		graphListener = graphListener();
+
+		capabilityController = new CapabilityController( this );
+		capabilityController.register( CapabilityName.MOVEABLE, new MoveableCapabilityHandler() );
+		capabilityController.register( CapabilityName.SELECTABLE, new SelectableCapabilityHandler() );
+		capabilityController.register( CapabilityName.CONTEXT_MENU, new ContextCapabilityHandler() );
+
+		addComponentListener( new ComponentAdapter() {
+			@Override
+			public void componentResized( ComponentEvent e ) {
+				regraph();
+			}
+
+			public void componentShown( ComponentEvent e ) {
+				regraph();
+			}
+		} );
 	}
-	
-	private GraphListener graphListener(){
+
+	private GraphListener graphListener() {
 		return new GraphListener() {
 			@Override
 			public void itemRemoved( Graph source, GraphItem item ) {
-				item.set( null );	
+				item.set( null );
 			}
-			
+
 			@Override
 			public void itemAdded( Graph source, GraphItem item ) {
 				item.set( site );
 			}
 		};
 	}
-	
-	private JPanel createCanvas(){
-		return new JPanel(){
+
+	private JPanel createCanvas() {
+		return new JPanel() {
 			@Override
 			protected void paintComponent( Graphics g ) {
 				super.paintComponent( g );
-				for( GraphPaintable paintable : paintables ){
-					Graphics2D g2 = (Graphics2D)g.create();
+				for( GraphPaintable paintable : paintables ) {
+					Graphics2D g2 = (Graphics2D) g.create();
 					paintable.paint( g2 );
 					g2.dispose();
 				}
 			}
 		};
 	}
-	
-	private JPanel createOverlay(){
-		return new JPanel(){
+
+	private JPanel createOverlay() {
+		return new JPanel() {
 			@Override
 			protected void paintComponent( Graphics g ) {
-				for( GraphPaintable paintable : paintables ){
-					Graphics2D g2 = (Graphics2D)g.create();
+				for( GraphPaintable paintable : paintables ) {
+					Graphics2D g2 = (Graphics2D) g.create();
 					paintable.paintOverlay( g2 );
 					g2.dispose();
 				}
 			}
 		};
 	}
-	
+
 	public Graph getGraph() {
 		return graph;
 	}
-	
+
+	public void setGraph( Graph graph ) {
+		if( this.graph != graph ) {
+			if( this.graph != null ) {
+				disconnect();
+			}
+
+			this.graph = graph;
+
+			if( this.graph != null ) {
+				connect();
+			}
+
+			regraph();
+		}
+	}
+
+	private void connect() {
+		graph.addGraphListener( graphListener );
+		for( GraphItem item : items() ) {
+			graphListener.itemAdded( graph, item );
+		}
+	}
+
+	private void disconnect() {
+		graph.removeGraphListener( graphListener );
+		for( GraphItem item : items() ) {
+			graphListener.itemRemoved( graph, item );
+		}
+	}
+
+	private GraphItem[] items() {
+		List<GraphItem> items = graph.getItems();
+		return items.toArray( new GraphItem[items.size()] );
+	}
+
 	@Override
 	public void doLayout() {
 		int width = getWidth();
 		int height = getHeight();
-		
+
 		canvas.setBounds( 0, 0, width, height );
 		overlay.setBounds( 0, 0, width, height );
 	}
-	
+
 	/**
 	 * Iterates over all known {@link GraphItem}s and asks for their 
 	 * {@link GraphItem#getCapability(CapabilityName) capability} to support <code>name</code>.
 	 * @param name the capability to search
 	 * @return all the available capabilities
 	 */
-	public <T> List<T> getCapabilities( CapabilityName<T> name ){ 
+	public <T> List<T> getCapabilities( CapabilityName<T> name ) {
 		List<T> result = new ArrayList<>();
-		for( GraphItem item : graph.getItems() ){
+		for( GraphItem item : graph.getItems() ) {
 			T capability = item.getCapability( name );
-			if( capability != null ){
+			if( capability != null ) {
 				result.add( capability );
 			}
 		}
 		return result;
 	}
-	
-	private void regraph(){
+
+	/**
+	 * Adds a new capability to this graph.
+	 * @param name the name of the capability
+	 * @param handler the new handler, may be <code>null</code> to remove an existing handler
+	 */
+	public <T> void setCapability( CapabilityName<T> name, CapabilityHandler<T> handler ) {
+		capabilityController.register( name, handler );
+	}
+
+	private void regraph() {
 		valid = false;
-		if( EventQueue.isDispatchThread() ){
+		if( EventQueue.isDispatchThread() ) {
 			EventQueue.invokeLater( new Runnable() {
 				@Override
 				public void run() {
-					if( !valid ){
+					if( !valid ) {
 						resetGraph();
 					}
 				}
-			});
+			} );
 		}
 	}
-	
-	private void resetGraph(){
+
+	private void resetGraph() {
 		valid = true;
-		
-		for( Regraphable regraphable : regraphables ){
+
+		for( Regraphable regraphable : regraphables ) {
 			regraphable.regraphed();
 		}
-		
+
 		repaint();
 	}
-	
-	private class DefaultGraphSite implements GraphSite{
+
+	private class DefaultGraphSite implements GraphSite {
 		@Override
 		public void addItem( GraphItem item ) {
 			graph.addItem( item );
 		}
-		
+
 		@Override
 		public void removeItem( GraphItem item ) {
 			graph.removeItem( item );
 		}
-		
+
 		@Override
 		public void addPaintable( GraphPaintable paintable ) {
 			paintables.add( paintable );
 			regraph();
 		}
-		
+
 		@Override
 		public void addComponent( JComponent component ) {
 			canvas.add( component );
 			regraph();
 		}
-		
+
 		@Override
 		public void addRegraphable( Regraphable regraphable ) {
-			regraphables.add( regraphable );	
+			regraphables.add( regraphable );
 		}
-		
+
 		@Override
 		public void removePaintable( GraphPaintable paintable ) {
 			paintables.remove( paintable );
 			regraph();
 		}
-		
+
 		@Override
 		public void removeComponent( JComponent component ) {
 			canvas.remove( component );
 			regraph();
 		}
-		
+
 		@Override
 		public void removeRegraphable( Regraphable regraphable ) {
 			regraphables.remove( regraphable );
 		}
-		
+
 		@Override
 		public void regraph() {
-			GraphPanel.this.regraph();	
+			GraphPanel.this.regraph();
 		}
 	}
 }

@@ -1,5 +1,6 @@
 package graph.uml.intern;
 
+import graph.items.ConnectionFlavor;
 import graph.items.PathedGraphConnection;
 import graph.items.connection.DirectLineConnection;
 import graph.items.connection.UndirectedEndPoint;
@@ -14,6 +15,8 @@ import java.awt.BasicStroke;
 import java.util.Arrays;
 
 public class CommentConnection extends AbstractConnection implements Connection {
+	public static final ConnectionFlavor COMMENT = new ConnectionFlavor( "comment" );
+	
 	private DirectLineConnection line;
 	private DefaultCommentBox comment;
 
@@ -78,5 +81,10 @@ public class CommentConnection extends AbstractConnection implements Connection 
 	@Override
 	public ConnectionType getConnectionType() {
 		return ConnectionType.COMMENT;
+	}
+	
+	@Override
+	public ConnectionFlavor getFlavor() {
+		return COMMENT;
 	}
 }

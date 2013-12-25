@@ -2,6 +2,7 @@ package graph.uml.intern;
 
 import java.awt.geom.Path2D;
 
+import graph.items.ConnectionFlavor;
 import graph.items.PathSelection;
 import graph.items.PathedGraphConnection;
 import graph.model.capability.CapabilityName;
@@ -106,6 +107,12 @@ public abstract class AbstractConnection extends DefaultItem<Connection> impleme
 	protected Iterable<Item> dependentItems() {
 		return null;
 	}
+	
+	/**
+	 * Gets the flavor of this connection type
+	 * @return the flavor
+	 */
+	public abstract ConnectionFlavor getFlavor();
 	
 	/**
 	 * Gets the internal representation of this connection.

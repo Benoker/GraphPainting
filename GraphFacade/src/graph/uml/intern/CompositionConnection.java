@@ -67,4 +67,9 @@ public class CompositionConnection extends AbstractConnection implements Connect
 	public ConnectionType getConnectionType() {
 		return ConnectionType.COMPOSITION;
 	}
+
+	@Override
+	public ConnectionFlavor getFlavor() {
+		return COMPOSITION;
+	}
 }

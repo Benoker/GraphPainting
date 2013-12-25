@@ -61,4 +61,9 @@ public class ExtendsConnection extends AbstractConnection implements Connection 
 	public ConnectionType getConnectionType() {
 		return ConnectionType.INHERITANCE;
 	}
+
+	@Override
+	public ConnectionFlavor getFlavor() {
+		return EXTENDS;
+	}
 }

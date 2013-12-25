@@ -66,4 +66,9 @@ public class ImplementsConnection extends AbstractConnection implements Connecti
 	public ConnectionType getConnectionType() {
 		return ConnectionType.IMPLEMENTATION;
 	}
+	
+	@Override
+	public ConnectionFlavor getFlavor() {
+		return IMPLEMENTS;
+	}
 }

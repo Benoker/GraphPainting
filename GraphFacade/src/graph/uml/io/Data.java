@@ -7,7 +7,7 @@ import graph.uml.ItemKey;
  * Data describing an {@link Item}, without being an {@link Item}.
  * @author Benjamin Sigg
  */
-public class Data<T extends Item> {
+public abstract class Data<T extends Item> {
 	private ItemKey<T> key;
 	
 	/**
@@ -38,4 +38,10 @@ public class Data<T extends Item> {
 			throw new IllegalStateException( "key is null" );
 		}
 	}
+	
+	/**
+	 * Visits <code>this</code> by <code>visitor</code>.
+	 * @param visitor the callback
+	 */
+	public abstract void visit( DataVisitor visitor );
 }

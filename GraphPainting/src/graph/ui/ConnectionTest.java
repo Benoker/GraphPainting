@@ -33,9 +33,12 @@ public class ConnectionTest {
 		ConnectionableCapabilityHandler connectability = new ConnectionableCapabilityHandler();
 		connectability.setOpenEnded( new OpenEndedLineConnectionStrategy() );
 		connectability.setFactory( factory() );
-		graph.setCapability( CapabilityName.CONNECTABLE, connectability );
 		
-		frame.add( graph.getView() );
+		GraphPanel panel = new GraphPanel();
+		
+		panel.setCapability( CapabilityName.CONNECTABLE, connectability );
+		
+		frame.add( panel );
 		frame.setVisible( true );
 	}
 
@@ -107,6 +110,16 @@ public class ConnectionTest {
 			@Override
 			public boolean allowSource( ConnectionableCapability item, ConnectionFlavor flavor ) {
 				return item != this;
+			}
+			
+			@Override
+			public ConnectionArray getSourceArray( ConnectionFlavor flavor ) {
+				return array;
+			}
+			
+			@Override
+			public ConnectionArray getTargetArray( ConnectionFlavor flavor ) {
+				return array;
 			}
 		};
 	}

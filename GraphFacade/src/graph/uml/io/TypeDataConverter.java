@@ -4,6 +4,7 @@ import graph.uml.ItemKey;
 import graph.uml.TypeBox;
 import graph.uml.intern.DefaultTypeBox;
 import graph.uml.intern.DefaultUmlDiagram;
+import graph.uml.intern.keys.TypeKey;
 
 /**
  * Converter for {@link DefaultTypeBox}es.
@@ -33,5 +34,15 @@ public class TypeDataConverter extends BoxDataConverter<TypeBox, TypeData, Defau
 	@Override
 	protected DefaultTypeBox createEmptyBox( ItemKey<TypeBox> key, DefaultUmlDiagram diagram ) {
 		return new DefaultTypeBox( diagram, key );
+	}
+	
+	@Override
+	public boolean isKey( String uniqueId ) {
+		return TypeKey.isKey( uniqueId );
+	}
+	
+	@Override
+	public ItemKey<TypeBox> readKey( String uniqueId ) {
+		return TypeKey.readKey( uniqueId );
 	}
 }

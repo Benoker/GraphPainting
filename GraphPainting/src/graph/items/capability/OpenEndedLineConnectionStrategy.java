@@ -55,13 +55,17 @@ public class OpenEndedLineConnectionStrategy implements OpenEndedConnectionStrat
 
 	@Override
 	public void handleNotOpenEnded( int x, int y ) {
-		parent.removeItem( line );
+		if( itemShown ){
+			parent.removeItem( line );
+		}
 		itemShown = false;
 	}
 
 	@Override
 	public void endConnecting() {
-		parent.removeItem( line );
+		if( itemShown ){
+			parent.removeItem( line );
+		}
 		itemShown = false;
 	}
 }

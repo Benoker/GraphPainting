@@ -30,4 +30,16 @@ public class UmlDiagramData implements Iterable<Data<?>>{
 	public Iterator<Data<?>> iterator() {
 		return data.iterator();
 	}
+	
+	/**
+	 * Visits all the data of this diagram.
+	 * @param visitor the visitor 
+	 */
+	public void visit( DataVisitor visitor ){
+		visitor.visit( this );
+		
+		for( Data<?> data : this ){
+			data.visit( visitor );
+		}
+	}
 }

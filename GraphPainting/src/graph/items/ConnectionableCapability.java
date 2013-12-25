@@ -73,6 +73,13 @@ public interface ConnectionableCapability {
 	public ConnectionArray getSourceArray( int x, int y, ConnectionFlavor flavor, boolean constructing );
 	
 	/**
+	 * Gets the {@link ConnectionArray} to which a new {@link EndPoint} is added.
+	 * @param flavor the flavor of the endpoint
+	 * @return the array, not <code>null</code>
+	 */
+	public ConnectionArray getSourceArray( ConnectionFlavor flavor );
+	
+	/**
 	 * Gets the {@link ConnectionArray} to which a new {@link EndPoint} is added during construction of a new
 	 * connection. This method will be called whenever the mouse is moved, and one time afterwards to find
 	 * the final resting point of the new connection.
@@ -84,4 +91,11 @@ public interface ConnectionableCapability {
 	 * @return the array to which the connection will be connected, must not be <code>null</code>
 	 */
 	public ConnectionArray getTargetArray( int x, int y, ConnectionFlavor flavor, boolean constructing );
+	
+	/**
+	 * Gets the {@link ConnectionArray} to which a new {@link EndPoint} is added.
+	 * @param flavor the flavor of the endpoint
+	 * @return the array, not <code>null</code>
+	 */
+	public ConnectionArray getTargetArray( ConnectionFlavor flavor );
 }
