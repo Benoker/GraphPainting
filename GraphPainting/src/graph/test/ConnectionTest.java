@@ -1,4 +1,4 @@
-package graph.ui;
+package graph.test;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -16,6 +16,8 @@ import graph.model.GraphItem;
 import graph.model.capability.CapabilityName;
 import graph.model.connection.ConnectionArray;
 import graph.model.connection.GraphConnection;
+import graph.ui.Graph;
+import graph.ui.GraphPanel;
 
 import javax.swing.JFrame;
 
