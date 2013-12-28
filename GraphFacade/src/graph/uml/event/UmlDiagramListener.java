@@ -1,4 +1,7 @@
-package graph.uml;
+package graph.uml.event;
+
+import graph.uml.Item;
+import graph.uml.UmlDiagram;
 
 /**
  * A listener that is added to an {@link UmlDiagram} and which will be invoked whenever {@link Item}s are

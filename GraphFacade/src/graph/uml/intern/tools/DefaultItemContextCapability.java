@@ -3,8 +3,8 @@ package graph.uml.intern.tools;
 import graph.model.capability.ContextCapability;
 import graph.model.capability.ContextSite;
 import graph.uml.Item;
-import graph.uml.ItemContextEvent;
-import graph.uml.ItemContextListener;
+import graph.uml.event.ItemContextEvent;
+import graph.uml.event.ItemContextListener;
 import graph.uml.intern.DefaultItem;
 import graph.uml.intern.DefaultUmlDiagram;
 

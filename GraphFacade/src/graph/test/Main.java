@@ -2,13 +2,15 @@ package graph.test;
 
 import graph.uml.CommentBox;
 import graph.uml.Item;
-import graph.uml.ItemContextEvent;
-import graph.uml.ItemContextListener;
 import graph.uml.TypeBox;
 import graph.uml.UmlDiagram;
 import graph.uml.UmlDiagramRepository;
 import graph.uml.UmlDiagramTools;
 import graph.uml.UmlDiagramView;
+import graph.uml.event.ItemContextEvent;
+import graph.uml.event.ItemContextListener;
+import graph.uml.event.ItemSelectionEvent;
+import graph.uml.event.ItemSelectionListener;
 import graph.uml.io.Format;
 
 import java.awt.GridBagConstraints;
@@ -81,6 +83,8 @@ public class Main {
 		}
 
 		diagram.addItemContextListener( disposingListener( diagram ) );
+		diagram.addItemSelectionListener( selectionListener() );
+
 		view.setDiagram( diagram );
 		frame.addWindowListener( writeOnClose( diagram, repository ) );
 		frame.setVisible( true );
@@ -121,6 +125,15 @@ public class Main {
 				List<JComponent> menu = new ArrayList<>();
 				menu.add( dispose.menuItem );
 				event.show( menu );
+			}
+		};
+	}
+
+	private static ItemSelectionListener selectionListener() {
+		return new ItemSelectionListener() {
+			@Override
+			public void itemSelectionChanged( ItemSelectionEvent event ) {
+				System.out.println( "Selection of " + event.getItem() + " is " + event.getSelection() );
 			}
 		};
 	}

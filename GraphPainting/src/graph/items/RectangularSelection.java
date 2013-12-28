@@ -15,33 +15,33 @@ import java.awt.Rectangle;
  * A border that is painted around a {@link Rectangular} when it is selected.
  * @author Benjamin Sigg
  */
-public class RectangularSelection extends AbstractGraphItem implements SelectableCapability, GraphPaintable{
+public class RectangularSelection extends AbstractGraphItem implements SelectableCapability, GraphPaintable {
 	private Rectangular parent;
-	private Selection selection = Selection.NO_SELECTION;
-	
+	private Selection selection = Selection.NOT_SELECTED;
+
 	private Color primary = new Color( 128, 128, 255 );
 	private Color secondary = new Color( 200, 200, 255 );
-	
-	public RectangularSelection( Rectangular parent ){
+
+	public RectangularSelection( Rectangular parent ) {
 		this.parent = parent;
 	}
-	
+
 	public void setPrimary( Color primary ) {
 		this.primary = primary;
 		regraph();
 	}
-	
+
 	public void setSecondary( Color secondary ) {
 		this.secondary = secondary;
 		regraph();
 	}
-	
+
 	@Override
 	public void setSelected( Selection selection ) {
 		this.selection = selection;
 		regraph();
 	}
-	
+
 	@Override
 	public Selection getSelected() {
 		return selection;
@@ -49,10 +49,9 @@ public class RectangularSelection extends AbstractGraphItem implements Selectabl
 
 	@Override
 	public float contains( int x, int y ) {
-		if( parent.getBoundaries().contains( x, y ) ){
+		if( parent.getBoundaries().contains( x, y ) ) {
 			return 1.f;
-		}
-		else{
+		} else {
 			return 0.f;
 		}
 	}
@@ -66,17 +65,17 @@ public class RectangularSelection extends AbstractGraphItem implements Selectabl
 	protected void addTo( GraphSite site ) {
 		site.addPaintable( this );
 	}
-	
+
 	@Override
 	public void paint( Graphics2D g ) {
 		// ignore
 	}
-	
+
 	@Override
 	public void paintOverlay( Graphics2D g ) {
-		if( selection.isSelected() ){	
+		if( selection.isSelected() ) {
 			Color color;
-			switch( selection.getImportance() ){
+			switch( selection ){
 				case PRIMARY:
 					color = primary;
 					break;
@@ -86,20 +85,20 @@ public class RectangularSelection extends AbstractGraphItem implements Selectabl
 				default:
 					return;
 			}
-			
+
 			Rectangle bounds = parent.getBoundaries();
 			int x = bounds.x;
 			int y = bounds.y;
 			int w = bounds.width;
 			int h = bounds.height;
-			
+
 			g.setColor( Color.RED );
-			g.drawRect( x, y, w-1, h-1 );
-			g.drawRect( x-1, y-1, w+1, h+1 );
-			
+			g.drawRect( x, y, w - 1, h - 1 );
+			g.drawRect( x - 1, y - 1, w + 1, h + 1 );
+
 			g.setColor( color );
 			g.setComposite( AlphaComposite.getInstance( AlphaComposite.SRC_ATOP, 0.5f ) );
-			g.fillRect( x+1, y+1, w-1, h-1 );
+			g.fillRect( x + 1, y + 1, w - 1, h - 1 );
 		}
 	}
 }

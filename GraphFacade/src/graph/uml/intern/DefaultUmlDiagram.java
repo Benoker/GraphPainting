@@ -1,23 +1,28 @@
 package graph.uml.intern;
 
 import graph.model.GraphItem;
+import graph.model.Selection;
 import graph.model.capability.CapabilityName;
 import graph.model.capability.SelectableCapability;
 import graph.ui.Graph;
 import graph.ui.GraphListener;
 import graph.uml.Box;
 import graph.uml.Item;
-import graph.uml.ItemContextListener;
 import graph.uml.ItemKey;
 import graph.uml.TypeBox;
 import graph.uml.UmlDiagram;
-import graph.uml.UmlDiagramListener;
 import graph.uml.UmlDiagramRepository;
+import graph.uml.event.ItemContextListener;
+import graph.uml.event.ItemSelectionListener;
+import graph.uml.event.UmlDiagramListener;
 import graph.uml.intern.keys.DefaultItemKey;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -27,6 +32,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class DefaultUmlDiagram implements UmlDiagram {
 	private Graph graph;
 	private DefaultItemContextListener itemContextListener;
+	private DefaultItemSelectionListener itemSelectionListener;
 	private List<UmlDiagramListener> umlDiagramListeners = new ArrayList<>();
 	private AtomicInteger nextUniqueId = new AtomicInteger( 1 );
 	private UmlDiagramRepository repository;
@@ -41,6 +47,7 @@ public class DefaultUmlDiagram implements UmlDiagram {
 		this.graph = graph;
 		graph.addGraphListener( graphListener() );
 		itemContextListener = new DefaultItemContextListener( this );
+		itemSelectionListener = new DefaultItemSelectionListener( this );
 	}
 
 	private GraphListener graphListener() {
@@ -86,7 +93,7 @@ public class DefaultUmlDiagram implements UmlDiagram {
 	public UmlDiagramRepository getRepository() {
 		return repository;
 	}
-	
+
 	@Override
 	public TypeBox createType() {
 		DefaultTypeBox result = new DefaultTypeBox( this );
@@ -150,13 +157,75 @@ public class DefaultUmlDiagram implements UmlDiagram {
 	}
 
 	@Override
+	public Item getSelectedItem() {
+		for( Item item : getItems() ) {
+			if( item.isPrimarySelected() ) {
+				return item;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public List<Item> getSelectedItems() {
+		List<Item> result = new LinkedList<>();
+		for( Item item : getItems() ) {
+			if( item.isPrimarySelected() ) {
+				result.add( 0, item );
+			} else if( item.isSecondarySelected() ) {
+				result.add( item );
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public void setSelectedItem( Item item ) {
+		List<Item> list = new ArrayList<>( 1 );
+		list.add( item );
+		setSelectedItems( list );
+	}
+
+	@Override
+	public void setSelectedItems( Iterable<Item> items ) {
+		Item primary = null;
+		Set<Item> selected = new HashSet<>();
+		for( Item item : items ) {
+			if( primary == null ) {
+				primary = item;
+			}
+			selected.add( item );
+		}
+
+		for( DefaultItem<?> item : getDefaultItems() ) {
+			if( item == primary ) {
+				item.setSelected( Selection.PRIMARY );
+			} else if( selected.contains( item ) ) {
+				item.setSelected( Selection.SECONDARY );
+			} else {
+				item.setSelected( Selection.NOT_SELECTED );
+			}
+		}
+	}
+
+	@Override
 	public void addItemContextListener( ItemContextListener listener ) {
-		itemContextListener.addItemContextListener( listener );
+		itemContextListener.addListener( listener );
 	}
 
 	@Override
 	public void removeItemContextListener( ItemContextListener listener ) {
-		itemContextListener.removeItemContextListener( listener );
+		itemContextListener.removeListener( listener );
+	}
+
+	@Override
+	public void addItemSelectionListener( ItemSelectionListener listener ) {
+		itemSelectionListener.addListener( listener );
+	}
+
+	@Override
+	public void removeItemSelectionListener( ItemSelectionListener listener ) {
+		itemSelectionListener.removeListener( listener );
 	}
 
 	@Override

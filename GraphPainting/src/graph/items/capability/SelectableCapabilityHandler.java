@@ -1,7 +1,6 @@
 package graph.items.capability;
 
 import graph.model.Selection;
-import graph.model.Selection.Importance;
 import graph.model.capability.CapabilityHandler;
 import graph.model.capability.CapabilityHandlerSite;
 import graph.model.capability.SelectableCapability;
@@ -23,89 +22,93 @@ public class SelectableCapabilityHandler implements CapabilityHandler<Selectable
 		this.site = site;
 		site.addMouseListener( mouseListener() );
 	}
-	
+
 	@Override
 	public void dispose() {
 		// ignore
 	}
-	
+
 	@Override
 	public void setEnabled( boolean enabled ) {
 		// ignore
 	}
-	
-	private SelectableCapability getSelectable( int x, int y ){
+
+	private SelectableCapability getSelectable( int x, int y ) {
 		float best = 0.f;
 		SelectableCapability result = null;
-		
-		for( SelectableCapability selectable : site.getCapabilities() ){
+
+		for( SelectableCapability selectable : site.getCapabilities() ) {
 			float contains = selectable.contains( x, y );
-			if( contains >= best && contains > 0 ){
+			if( contains >= best && contains > 0 ) {
 				best = contains;
 				result = selectable;
 			}
 		}
 		return result;
 	}
-	
-	private void deselectAll(){
-		for( SelectableCapability selectable : site.getCapabilities() ){
-			selectable.setSelected( Selection.NO_SELECTION );
-		}
-	}
-	
-	private void ensureNoPrimary(){
-		for( SelectableCapability selectable : site.getCapabilities() ){
-			if( selectable.getSelected().getImportance() == Importance.PRIMARY ){
-				selectable.setSelected( new Selection( true, Importance.SECONDARY ) );
+
+	private void deselectAll( SelectableCapability ignore ) {
+		for( SelectableCapability selectable : site.getCapabilities() ) {
+			if( selectable != ignore ) {
+				if( selectable.getSelected().isSelected() ) {
+					selectable.setSelected( Selection.NOT_SELECTED );
+				}
 			}
 		}
 	}
-	
-	private MouseListener mouseListener(){
+
+	private void ensureNoPrimary() {
+		for( SelectableCapability selectable : site.getCapabilities() ) {
+			if( selectable.getSelected().isPrimary() ) {
+				selectable.setSelected( Selection.SECONDARY );
+			}
+		}
+	}
+
+	private MouseListener mouseListener() {
 		return new MouseAdapter() {
 			@Override
 			public void mousePressed( MouseEvent e ) {
-				if( e.getButton() == MouseEvent.BUTTON1 || e.isPopupTrigger() ){
+				if( e.getButton() == MouseEvent.BUTTON1 || e.isPopupTrigger() ) {
 					newlySelected = null;
-					
+
 					SelectableCapability selectable = getSelectable( e.getX(), e.getY() );
-					
-					if( e.isControlDown() ){
-						if( selectable != null ){
-							if( !selectable.getSelected().isSelected() ){
-								ensureNoPrimary();
-								selectable.setSelected( new Selection( true, Importance.PRIMARY ) );
+
+					if( e.isControlDown() ) {
+						if( selectable != null ) {
+							if( !selectable.getSelected().isSelected() ) {
+								if( !selectable.getSelected().isPrimary() ) {
+									ensureNoPrimary();
+									selectable.setSelected( Selection.PRIMARY );
+								}
 								newlySelected = selectable;
 							}
 						}
-					}
-					else{
-						deselectAll();
-						if( selectable != null ){
-							selectable.setSelected( new Selection( true, Importance.PRIMARY ) );
+					} else {
+						deselectAll( selectable );
+						if( selectable != null && !selectable.getSelected().isPrimary() ) {
+							selectable.setSelected( Selection.PRIMARY );
 						}
 					}
-				}
-				else if( !e.isControlDown() ){
-					if( (e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) == 0 ){
-						deselectAll();
+				} else if( !e.isControlDown() ) {
+					if( (e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) == 0 ) {
+						deselectAll( null );
 					}
 				}
 			}
-			
+
 			@Override
 			public void mouseReleased( MouseEvent e ) {
-				if( e.isPopupTrigger() ){
+				if( e.isPopupTrigger() ) {
 					return;
 				}
-				
-				if( e.getButton() == MouseEvent.BUTTON1 ){
-					if( e.isControlDown() ){
+
+				if( e.getButton() == MouseEvent.BUTTON1 ) {
+					if( e.isControlDown() ) {
 						SelectableCapability selectable = getSelectable( e.getX(), e.getY() );
-						if( selectable != null && newlySelected != selectable ){
-							if( selectable.getSelected().isSelected() ){
-								selectable.setSelected( Selection.NO_SELECTION );
+						if( selectable != null && newlySelected != selectable ) {
+							if( selectable.getSelected().isSelected() ) {
+								selectable.setSelected( Selection.NOT_SELECTED );
 							}
 						}
 					}

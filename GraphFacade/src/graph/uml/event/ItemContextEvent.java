@@ -1,4 +1,6 @@
-package graph.uml;
+package graph.uml.event;
+
+import graph.uml.Item;
 
 import java.awt.Component;
 import java.util.List;

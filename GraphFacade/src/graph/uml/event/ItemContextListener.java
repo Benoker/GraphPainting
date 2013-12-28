@@ -1,4 +1,6 @@
-package graph.uml;
+package graph.uml.event;
+
+import graph.uml.Item;
 
 /**
  * A listener that can be added to an {@link Item} and receives an event if the user performs

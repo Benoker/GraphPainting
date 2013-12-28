@@ -1,11 +1,13 @@
 package graph.uml.intern;
 
 import graph.items.AbstractGraphItem;
+import graph.model.Selection;
 import graph.model.capability.CapabilityName;
+import graph.model.capability.SelectableCapability;
 import graph.ui.Graph;
 import graph.uml.Item;
-import graph.uml.ItemContextListener;
 import graph.uml.ItemKey;
+import graph.uml.event.ItemContextListener;
 import graph.uml.intern.tools.DefaultItemContextCapability;
 
 /**
@@ -93,6 +95,51 @@ public abstract class DefaultItem<T extends Item> extends AbstractGraphItem impl
 	@Override
 	public void removeItemContextListener( ItemContextListener listener ) {
 		contextCapability.removeListener( listener );
+	}
+
+	/**
+	 * Searches the {@link SelectableCapability} of this item and returns its {@link Selection}. If 
+	 * this item does not have any {@link SelectableCapability}, then {@link Selection#NOT_SELECTED}
+	 * is returned.
+	 * @return the selection state of this item
+	 */
+	public Selection getSelection() {
+		SelectableCapability selection = getCapability( CapabilityName.SELECTABLE );
+		if( selection == null ) {
+			return Selection.NOT_SELECTED;
+		} else {
+			return selection.getSelected();
+		}
+	}
+
+	@Override
+	public boolean isSelected() {
+		return getSelection().isSelected();
+	}
+
+	@Override
+	public boolean isPrimarySelected() {
+		return getSelection().isPrimary();
+	}
+
+	@Override
+	public boolean isSecondarySelected() {
+		return getSelection().isSecondary();
+	}
+
+	/**
+	 * Changes the selection state of this item to <code>selection</code>. The method fails silently
+	 * if this item does not support selection.
+	 * @param selection the new selection state
+	 */
+	public void setSelected( Selection selection ) {
+		SelectableCapability capability = getCapability( CapabilityName.SELECTABLE );
+		if( capability != null ) {
+			Selection old = capability.getSelected();
+			if( !old.equals( selection ) ) {
+				capability.setSelected( selection );
+			}
+		}
 	}
 
 	protected abstract Iterable<Item> dependentItems();
