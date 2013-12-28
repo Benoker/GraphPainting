@@ -190,11 +190,13 @@ public class DefaultUmlDiagram implements UmlDiagram {
 	public void setSelectedItems( Iterable<Item> items ) {
 		Item primary = null;
 		Set<Item> selected = new HashSet<>();
-		for( Item item : items ) {
-			if( primary == null ) {
-				primary = item;
+		if( items != null ) {
+			for( Item item : items ) {
+				if( primary == null ) {
+					primary = item;
+				}
+				selected.add( item );
 			}
-			selected.add( item );
 		}
 
 		for( DefaultItem<?> item : getDefaultItems() ) {
