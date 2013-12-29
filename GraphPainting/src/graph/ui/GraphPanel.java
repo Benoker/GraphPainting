@@ -17,6 +17,7 @@ import java.awt.Graphics2D;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JComponent;
@@ -177,6 +178,9 @@ public class GraphPanel extends JPanel {
 	 * @return all the available capabilities
 	 */
 	public <T> List<T> getCapabilities( CapabilityName<T> name ) {
+		if( graph == null ) {
+			return Collections.emptyList();
+		}
 		List<T> result = new ArrayList<>();
 		for( GraphItem item : graph.getItems() ) {
 			T capability = item.getCapability( name );
@@ -223,11 +227,17 @@ public class GraphPanel extends JPanel {
 	private class DefaultGraphSite implements GraphSite {
 		@Override
 		public void addItem( GraphItem item ) {
+			if( graph == null ){
+				throw new IllegalStateException( "cannot add items because there is no graph set" );
+			}
 			graph.addItem( item );
 		}
 
 		@Override
 		public void removeItem( GraphItem item ) {
+			if( graph == null ){
+				throw new IllegalStateException( "cannot remove items because there is no graph set" );
+			}
 			graph.removeItem( item );
 		}
 
