@@ -9,6 +9,7 @@ import graph.util.EnhancedPath2D;
 import graph.util.Geom;
 
 import java.awt.Color;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.font.LineMetrics;
 import java.awt.geom.Point2D;
@@ -28,7 +29,6 @@ import java.awt.geom.Point2D;
  */
 public abstract class AbstractConnectionText extends AbstractGraphItem implements GraphPaintable {
 	private String text;
-	private float position = 0.5f;
 	private Color backgroundColor = null;
 	private Color foregroundColor = Color.BLACK;
 
@@ -85,27 +85,29 @@ public abstract class AbstractConnectionText extends AbstractGraphItem implement
 
 	/**
 	 * Gets a point at <code>position</code>.
+	 * @param parameters information about the text and the path
 	 * @return the point at <code>position</code>
 	 */
-	protected Point2D getTextPosition() {
+	protected Point2D getTextPosition( Parameters parameters ) {
 		EnhancedPath2D path = getPath();
-		return path.getPointAt( getPosition() );
+		return path.getPointAt( getPosition( parameters ) );
 	}
 
 	/**
 	 * Gets the center of the text. This is the <code>position + distance * normal</code>, where
-	 * <code>normal</code> is the normal vector of the {@link #getPath() path} at <code>position</code>. 
+	 * <code>normal</code> is the normal vector of the {@link #getPath() path} at <code>position</code>.
+	 * @param parameters information about the text and the path 
 	 * @return the center of the text
 	 */
-	protected Point2D getTextCenter() {
-		Point2D base = getTextPosition();
-		double distance = getDistance();
+	protected Point2D getTextCenter( Parameters parameters ) {
+		Point2D base = getTextPosition( parameters );
+		double distance = getDistance( parameters );
 
 		if( distance == 0.0 ) {
 			return base;
 		}
 
-		Point2D normal = path.getNormalAt( getPosition() );
+		Point2D normal = path.getNormalAt( getPosition(parameters) );
 
 		double x = base.getX() + distance * normal.getX();
 		double y = base.getY() + distance * normal.getY();
@@ -116,19 +118,26 @@ public abstract class AbstractConnectionText extends AbstractGraphItem implement
 	@Override
 	public void paint( Graphics2D g ) {
 		char[] chars = text.toCharArray();
-		Point2D center = getTextCenter();
+		FontMetrics fontMetrics = g.getFontMetrics();
+		LineMetrics lineMetrics = fontMetrics.getLineMetrics( chars, 0, chars.length, g );
+		Parameters parameters = new Parameters( chars, fontMetrics, lineMetrics );
+		paint(g, parameters);
+	}
+	
+	protected void paint( Graphics2D g, Parameters parameters ){
+		LineMetrics lineMetrics = parameters.getLineMetrics();
+		char[] chars = parameters.getText();
+		
+		Point2D center = getTextCenter(parameters);
+		double translate = parameters.getCharsWidth() * getShift(parameters);
 
-		LineMetrics metrics = g.getFontMetrics().getLineMetrics( chars, 0, chars.length, g );
-		int charsWidth = g.getFontMetrics().charsWidth( chars, 0, chars.length );
-		double translate = charsWidth * getShift();
-
-		g.rotate( getAngle(), center.getX(), center.getY() );
-		g.translate( -translate, metrics.getAscent() / 2 );
+		g.rotate( getAngle(parameters), center.getX(), center.getY() );
+		g.translate( -translate, lineMetrics.getAscent() / 2 );
 		g.translate( center.getX(), center.getY() );
 
 		if( backgroundColor != null ) {
 			g.setColor( backgroundColor );
-			g.fillRect( 0, -Geom.round( metrics.getAscent() ), charsWidth, Geom.round( metrics.getHeight() ) );
+			g.fillRect( 0, -Geom.round( lineMetrics.getAscent() ), parameters.getCharsWidth(), Geom.round( lineMetrics.getHeight() ) );
 		}
 
 		g.setColor( foregroundColor );
@@ -138,26 +147,6 @@ public abstract class AbstractConnectionText extends AbstractGraphItem implement
 	@Override
 	public void paintOverlay( Graphics2D g ) {
 		// ignore	
-	}
-
-	/**
-	 * Sets the position of the text along the path. 
-	 * @param position the position, a value between <code>0</code> and <code>1</code>
-	 */
-	public void setPosition( float position ) {
-		if( position < 0 || position > 1 ) {
-			throw new IllegalArgumentException( "position out of bounds: " + position );
-		}
-		this.position = position;
-		regraph();
-	}
-
-	/**
-	 * Gets the position of the text.
-	 * @return the position, a value between <code>0</code> and <code>1</code>
-	 */
-	public float getPosition() {
-		return position;
 	}
 
 	/**
@@ -216,28 +205,74 @@ public abstract class AbstractConnectionText extends AbstractGraphItem implement
 	}
 
 	/**
+	 * Gets the position on the path, starting with <code>0</code> to <code>1</code>.
+	 * @param parameters some information about the text and the path
+	 * @return the position on the path
+	 */
+	protected abstract double getPosition( Parameters parameters );
+
+	/**
 	 * Gets the angle of the text, where a value of <code>0</code> means that the text is
 	 * displayed horizontally, a value of {@link Math#PI} means the text is on its head,
-	 * and the rotation is measured clockwise. 
+	 * and the rotation is measured clockwise.
+	 * @param parameters some information about the text and the path 
 	 * @return the angle of the text
 	 */
-	protected abstract double getAngle();
+	protected abstract double getAngle( Parameters parameters );
 
 	/**
 	 * Gets the distance from <code>position</code> along a normal vector to the path until
 	 * reaching the center of the text. Whether the normal vector points "upwards" or "downwards"
 	 * depends on the direction in which the connection points. If the connection is traveling from
 	 * "left" to "right", then a positive distance means that the text is above the connection.
+	 * @param parameters some information about the text and the path
 	 * @return the distance
 	 */
-	protected abstract double getDistance();
+	protected abstract double getDistance( Parameters parameters );
 
 	/**
 	 * Gets the shifting of text. A value of <code>0.5</code> means that the center of the
 	 * text hovers over <code>position</code>. A value of <code>0.0</code> means that the 
 	 * beginning of the first character hovers at <code>position</code>, and a value of
 	 * <code>1.0</code> means that the end of the last character hovers at <code>position</code>.
+	 * @param parameters some information about the text and the path
 	 * @return the shifting, should be between <code>0.0</code> and <code>1.0</code>
 	 */
-	protected abstract double getShift();
+	protected abstract double getShift( Parameters parameters );
+
+	protected class Parameters {
+		private char[] text;
+		private LineMetrics lineMetrics;
+		private FontMetrics fontMetrics;
+		private int charsWidth = -1;
+
+		public Parameters( char[] text, FontMetrics fontMetrics, LineMetrics lineMetrics ) {
+			this.text = text;
+			this.lineMetrics = lineMetrics;
+			this.fontMetrics = fontMetrics;
+		}
+		
+		public EnhancedPath2D getPath(){
+			return AbstractConnectionText.this.getPath();
+		}
+
+		public char[] getText() {
+			return text;
+		}
+
+		public LineMetrics getLineMetrics() {
+			return lineMetrics;
+		}
+
+		public FontMetrics getFontMetrics() {
+			return fontMetrics;
+		}
+
+		public int getCharsWidth() {
+			if( charsWidth == -1 ) {
+				charsWidth = fontMetrics.charsWidth( text, 0, text.length );
+			}
+			return charsWidth;
+		}
+	}
 }

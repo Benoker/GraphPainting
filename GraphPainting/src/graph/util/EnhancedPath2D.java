@@ -74,6 +74,14 @@ public class EnhancedPath2D {
 	}
 
 	/**
+	 * Gets the total length in pixel.
+	 * @return the total length
+	 */
+	public double getTotalLength() {
+		return totalLength;
+	}
+	
+	/**
 	 * Gets an iterator traveling along the path, returning some of the points of the path. The points may not
 	 * always line up exactly.
 	 * @param start the start (incl) of the iterator, at least <code>0</code>, not more than <code>end</code>
@@ -132,7 +140,7 @@ public class EnhancedPath2D {
 	 * @param position the position, between <code>0</code> and <code>1</code>
 	 * @return a point that is on the path, or closely on the path
 	 */
-	public Point2D getPointAt( float position ) {
+	public Point2D getPointAt( double position ) {
 		if( position < 0 || position > 1 ) {
 			throw new IllegalArgumentException( "position out of range: " + position );
 		}
@@ -158,7 +166,7 @@ public class EnhancedPath2D {
 	 * @return the normal direction at <code>position</code>, pointing 90 degrees clockwise to the
 	 * direction in which the path travels
 	 */
-	public Point2D getNormalAt( float position ){
+	public Point2D getNormalAt( double position ){
 		if( position < 0 || position > 1 ){
 			throw new IllegalArgumentException( "position out ouf range: " + position );
 		}
@@ -178,7 +186,7 @@ public class EnhancedPath2D {
 		return new Point2D.Double( dy, -dx );
 	}
 	
-	private int segmentAt( float position ) {
+	private int segmentAt( double position ) {
 		int result = Arrays.binarySearch( segmentLengthsSum, position * totalLength );
 		if( result >= 0 ) {
 			return result;
