@@ -13,7 +13,13 @@ public interface PathedGraphConnection extends GraphConnection{
 	 * Gets the path that represents this connection. The resulting path must be closed, 
 	 * otherwise the intersection algorithm automatically adds an additional line to 
 	 * close the path.
-	 * @return the shape of this connection, can be <code>null</code>
+	 * @return the shape of this connection, must not be <code>null</code>
 	 */
 	public Path2D getClosedConnectionPath();
+	
+	/**
+	 * Gets the path that represents this connection. The path can be open.
+	 * @return the shape of this connection, must not be <code>null</code>
+	 */
+	public Path2D getOpenConnectionPath();
 }

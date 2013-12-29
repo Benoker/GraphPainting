@@ -46,6 +46,12 @@ public class BezierLineConnection extends PaintableConnection implements PathedG
 		return closedPath;
 	}
 	
+	@Override
+	public Path2D getOpenConnectionPath() {
+		createPath();
+		return path;
+	}
+	
 	private void createPath(){
 		if( path == null ){
 			EndPointAttachement source = getSourceEndPoint().getAttachement();

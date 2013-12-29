@@ -134,7 +134,7 @@ public class EnhancedPath2D {
 	 */
 	public Point2D getPointAt( float position ) {
 		if( position < 0 || position > 1 ) {
-			throw new IllegalArgumentException( "positioin out of range: " + position );
+			throw new IllegalArgumentException( "position out of range: " + position );
 		}
 
 		int segment = segmentAt( position );
@@ -150,6 +150,34 @@ public class EnhancedPath2D {
 		return new Point2D.Double( x, y );
 	}
 
+	/**
+	 * Gets a vector of length <code>1</code> or <code>0</code>, describing the normal to the path at
+	 * position <code>position</code>. The vector of length <code>0</code> is returned if no direction can
+	 * be found.
+	 * @param position the position on the path, between <code>0</code> and <code>1</code>
+	 * @return the normal direction at <code>position</code>, pointing 90 degrees clockwise to the
+	 * direction in which the path travels
+	 */
+	public Point2D getNormalAt( float position ){
+		if( position < 0 || position > 1 ){
+			throw new IllegalArgumentException( "position out ouf range: " + position );
+		}
+		
+		int segment = segmentAt( position );
+		
+		Point2D start = segments[segment];
+		Point2D end = segments[segment + 1];
+		
+		double distance = segmentLengths[segment];
+		if( distance == 0 ){
+			return new Point2D.Double( 0, 0 );
+		}
+		double dx = (end.getX() - start.getX()) / distance;
+		double dy = (end.getY() - start.getY()) / distance;
+		
+		return new Point2D.Double( dy, -dx );
+	}
+	
 	private int segmentAt( float position ) {
 		int result = Arrays.binarySearch( segmentLengthsSum, position * totalLength );
 		if( result >= 0 ) {

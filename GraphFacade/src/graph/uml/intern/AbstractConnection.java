@@ -126,6 +126,11 @@ public abstract class AbstractConnection extends DefaultItem<Connection> impleme
 	public Path2D getClosedConnectionPath() {
 		return getGraphConnection().getClosedConnectionPath();
 	}
+	
+	@Override
+	public Path2D getOpenConnectionPath() {
+		return getGraphConnection().getOpenConnectionPath();
+	}
 
 	@Override
 	public EndPoint getSourceEndPoint() {
