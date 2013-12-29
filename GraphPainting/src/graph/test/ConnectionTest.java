@@ -37,6 +37,7 @@ public class ConnectionTest {
 		connectability.setFactory( factory() );
 		
 		GraphPanel panel = new GraphPanel();
+		panel.setGraph( graph );
 		
 		panel.setCapability( CapabilityName.CONNECTABLE, connectability );
 		

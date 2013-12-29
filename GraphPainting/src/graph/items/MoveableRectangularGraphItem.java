@@ -31,10 +31,12 @@ public abstract class MoveableRectangularGraphItem extends RectangularComposite 
 			SelectableCapability selectable = getCapability( CapabilityName.SELECTABLE );
 			if( selectable != null ){
 				return selectable.getSelected().isSelected();
+			} else {
+				return false;
 			}
+		} else {
+			return getBoundaries().contains( x, y );
 		}
-		
-		return getBoundaries().contains( x, y );
 	}
 
 	@Override

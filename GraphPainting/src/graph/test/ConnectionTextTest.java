@@ -2,11 +2,13 @@ package graph.test;
 
 import graph.items.ColoredRectangle;
 import graph.items.PathedGraphConnection;
+import graph.items.RectangularSelection;
 import graph.items.connection.AbstractConnectionText;
 import graph.items.connection.BezierLineConnection;
 import graph.items.connection.FluentRectangularConnectionArray;
 import graph.items.connection.text.ConfigurableConnectionText;
 import graph.items.connection.text.TextStrategyFactory;
+import graph.model.capability.CapabilityName;
 import graph.ui.Graph;
 import graph.ui.GraphPanel;
 import graph.util.Geom;
@@ -34,12 +36,16 @@ public class ConnectionTextTest {
 			rectA.setBoundaries( 50, 50 + i * 100, 50, 50 );
 			FluentRectangularConnectionArray arrayA = new FluentRectangularConnectionArray();
 			rectA.addChild( arrayA );
+			RectangularSelection selectionA = new RectangularSelection( rectA );
+			rectA.addCapability( CapabilityName.SELECTABLE, selectionA );
 			graph.addItem( rectA );
 
 			ColoredRectangle rectB = new ColoredRectangle( Color.GREEN );
 			rectB.setBoundaries( 800, 50 + i * 100, 50, 50 );
 			FluentRectangularConnectionArray arrayB = new FluentRectangularConnectionArray();
 			rectB.addChild( arrayB );
+			RectangularSelection selectionB = new RectangularSelection( rectB );
+			rectB.addCapability( CapabilityName.SELECTABLE, selectionB );
 			graph.addItem( rectB );
 
 			BezierLineConnection bezier = new BezierLineConnection();

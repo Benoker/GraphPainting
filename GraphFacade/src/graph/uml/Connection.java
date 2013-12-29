@@ -13,4 +13,6 @@ public interface Connection extends Item{
 	 * @return the kind of connection, not <code>null</code>
 	 */
 	public ConnectionType getConnectionType();
+	
+	
 }

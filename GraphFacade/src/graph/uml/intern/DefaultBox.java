@@ -41,7 +41,12 @@ public abstract class DefaultBox<T extends Box> extends DefaultItem<T> implement
 
 	public DefaultBox( DefaultUmlDiagram diagram, ItemKey<T> key ) {
 		super( diagram, key );
-		label = new GraphLabel( "" );
+		label = new GraphLabel( "" ){
+			@Override
+			public boolean isMovingEnabledAt( int x, int y ) {
+				return getSelection().isSelected();
+			}
+		};
 		label.setCapability( CapabilityName.SELECTABLE, null );
 
 		addChild( label );
