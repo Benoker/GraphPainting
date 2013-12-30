@@ -18,6 +18,9 @@ public class GraphLabel extends MoveableRectangularGraphItem implements GraphIte
 	public GraphLabel( String text ){
 		label = new JLabel();
 		
+        label.setMinimumSize(new Dimension(5, 5));
+        setBoundaries(0, 0, 5, 5);
+        
 		label.setText( text );
 		label.setOpaque( true );
 		label.setBackground( new Color( 128, 128, 255 ) );
