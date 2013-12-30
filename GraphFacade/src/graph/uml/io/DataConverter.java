@@ -11,6 +11,11 @@ import graph.uml.intern.DefaultUmlDiagram;
  * @author Benjamin Sigg
  */
 public interface DataConverter<I extends Item, D extends Data<I>, T extends DefaultItem<I>> {
+	/**
+	 * Converts <code>item</code> to some data that can be saved.
+	 * @param item the item to convert
+	 * @return the data to save, or <code>null</code> if the item should not be saved
+	 */
 	public D toData( T item );
 	
 	public T toItem( D data, DefaultUmlDiagram diagram );

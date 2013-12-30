@@ -23,6 +23,11 @@ import graph.uml.intern.keys.ConnectionKey;
 public class ConnectionDataConverter implements DataConverter<Connection, ConnectionData, AbstractConnection> {
 	@Override
 	public ConnectionData toData( AbstractConnection item ) {
+		if( item.getSourceItem() == null || item.getTargetItem() == null ){
+			// in such cases the user is still drawing the item - do not save it.
+			return null;
+		}
+		
 		ConnectionData data = new ConnectionData( item.getKey() );
 		data.setConnectionType( item.getConnectionType() );
 		data.setSource( item.getSourceItem().getKey() );

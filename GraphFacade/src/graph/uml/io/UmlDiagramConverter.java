@@ -75,8 +75,10 @@ public class UmlDiagramConverter {
 		for( DefaultItem<?> item : diagram.getDefaultItems() ) {
 			DataConverter<?, ?, DefaultItem<Item>> converter = getConverterFor( item.getKey() );
 			Data<?> data = converter.toData( (DefaultItem<Item>) item );
-			data.validate();
-			diagramData.addData( data );
+			if( data != null ){
+				data.validate();
+				diagramData.addData( data );
+			}
 		}
 
 		return diagramData;
