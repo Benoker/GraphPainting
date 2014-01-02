@@ -3,14 +3,16 @@ package graph.uml.io;
 import graph.ui.Graph;
 import graph.uml.CommentBox;
 import graph.uml.Connection;
+import graph.uml.ConnectionLabel;
 import graph.uml.Item;
 import graph.uml.ItemKey;
 import graph.uml.TypeBox;
-import graph.uml.UmlDiagramRepository;
 import graph.uml.intern.DefaultItem;
 import graph.uml.intern.DefaultUmlDiagram;
+import graph.uml.intern.DefaultUmlDiagramRepository;
 import graph.uml.intern.keys.CommentKey;
 import graph.uml.intern.keys.ConnectionKey;
+import graph.uml.intern.keys.ConnectionLabelKey;
 import graph.uml.intern.keys.TypeKey;
 
 import java.util.HashMap;
@@ -28,6 +30,7 @@ public class UmlDiagramConverter {
 	public UmlDiagramConverter() {
 		addConverter( CommentBox.class, CommentKey.class, new CommentDataConverter() );
 		addConverter( Connection.class, ConnectionKey.class, new ConnectionDataConverter() );
+		addConverter( ConnectionLabel.class, ConnectionLabelKey.class, new ConnectionLabelDataConverter() );
 		addConverter( TypeBox.class, TypeKey.class, new TypeDataConverter() );
 	}
 
@@ -85,7 +88,7 @@ public class UmlDiagramConverter {
 	}
 
 	@SuppressWarnings( "unchecked" )
-	public DefaultUmlDiagram toDiagram( UmlDiagramData data, UmlDiagramRepository repository ) {
+	public DefaultUmlDiagram toDiagram( UmlDiagramData data, DefaultUmlDiagramRepository repository ) {
 		Graph graph = new Graph();
 		DefaultUmlDiagram diagram = new DefaultUmlDiagram( graph, repository );
 		diagram.setCurrentUniqueId( data.getNextUnqiueId() );

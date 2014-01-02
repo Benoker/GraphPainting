@@ -1,6 +1,8 @@
 package graph.test;
 
 import graph.uml.CommentBox;
+import graph.uml.Connection;
+import graph.uml.ConnectionLabelConfiguration;
 import graph.uml.Item;
 import graph.uml.TypeBox;
 import graph.uml.UmlDiagram;
@@ -43,7 +45,7 @@ public class Main {
 		frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		frame.setBounds( 20, 20, 800, 600 );
 
-		final UmlDiagramRepository repository = new UmlDiagramRepository();
+		final UmlDiagramRepository repository = UmlDiagramRepository.createDefaultRepository();
 
 		UmlDiagramView view = repository.createView();
 
@@ -75,11 +77,15 @@ public class Main {
 			a.addInheritsFrom( b );
 			a.addImplementsFrom( c );
 
-			b.addAggregation( d );
+			Connection con = b.addAggregation( d );
 			c.addComposition( d );
 
 			CommentBox co = a.addComment( "some comment text" );
 			co.setLocation( 250, 170 );
+			
+			con.addLabel( ConnectionLabelConfiguration.SOURCE ).setText( "source" );
+			con.addLabel( ConnectionLabelConfiguration.MIDDLE ).setText( "middle" );
+			con.addLabel( ConnectionLabelConfiguration.TARGET ).setText( "target" );
 		}
 
 		diagram.addItemContextListener( disposingListener( diagram ) );

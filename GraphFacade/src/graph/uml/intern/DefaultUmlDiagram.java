@@ -11,7 +11,6 @@ import graph.uml.Item;
 import graph.uml.ItemKey;
 import graph.uml.TypeBox;
 import graph.uml.UmlDiagram;
-import graph.uml.UmlDiagramRepository;
 import graph.uml.event.ItemContextListener;
 import graph.uml.event.ItemSelectionListener;
 import graph.uml.event.UmlDiagramListener;
@@ -35,14 +34,14 @@ public class DefaultUmlDiagram implements UmlDiagram {
 	private DefaultItemSelectionListener itemSelectionListener;
 	private List<UmlDiagramListener> umlDiagramListeners = new ArrayList<>();
 	private AtomicInteger nextUniqueId = new AtomicInteger( 1 );
-	private UmlDiagramRepository repository;
+	private DefaultUmlDiagramRepository repository;
 
 	/**
 	 * Creates a new diagram.
 	 * @param graph the graph to which this diagram will add items
 	 * @param repository the repository that created and manages this diagram
 	 */
-	public DefaultUmlDiagram( Graph graph, UmlDiagramRepository repository ) {
+	public DefaultUmlDiagram( Graph graph, DefaultUmlDiagramRepository repository ) {
 		this.repository = repository;
 		this.graph = graph;
 		graph.addGraphListener( graphListener() );
@@ -90,7 +89,7 @@ public class DefaultUmlDiagram implements UmlDiagram {
 	 * Gets the repository that created and manages this diagram.
 	 * @return the repository, not <code>null</code>
 	 */
-	public UmlDiagramRepository getRepository() {
+	public DefaultUmlDiagramRepository getRepository() {
 		return repository;
 	}
 

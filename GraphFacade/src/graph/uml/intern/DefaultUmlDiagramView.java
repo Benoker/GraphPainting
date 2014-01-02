@@ -1,27 +1,26 @@
 package graph.uml.intern;
 
-import javax.swing.JComponent;
-
 import graph.items.ConnectionableCapability;
 import graph.items.capability.ConnectionableCapabilityHandler;
 import graph.model.capability.CapabilityName;
 import graph.ui.GraphPanel;
 import graph.uml.UmlDiagram;
-import graph.uml.UmlDiagramRepository;
 import graph.uml.UmlDiagramTools;
 import graph.uml.UmlDiagramView;
+
+import javax.swing.JComponent;
 
 /**
  * A view showing {@link DefaultUmlDiagram}s.
  * @author Benjamin Sigg
  */
 public class DefaultUmlDiagramView implements UmlDiagramView {
-	private UmlDiagramRepository repository;
+	private DefaultUmlDiagramRepository repository;
 	private GraphPanel panel;
 	private DefaultUmlDiagramTools tools;
 	private DefaultUmlDiagram diagram;
 
-	public DefaultUmlDiagramView( UmlDiagramRepository repository ) {
+	public DefaultUmlDiagramView( DefaultUmlDiagramRepository repository ) {
 		this.repository = repository;
 		panel = new GraphPanel();
 		tools = new DefaultUmlDiagramTools( this );

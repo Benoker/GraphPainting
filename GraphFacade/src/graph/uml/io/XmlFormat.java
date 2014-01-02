@@ -3,6 +3,7 @@ package graph.uml.io;
 import graph.uml.Box;
 import graph.uml.CommentBox;
 import graph.uml.Connection;
+import graph.uml.ConnectionLabel;
 import graph.uml.ConnectionType;
 import graph.uml.ItemKey;
 import graph.uml.TypeBox;
@@ -31,6 +32,9 @@ public class XmlFormat implements Format {
 				case "connection":
 					diagram.addData( readConnection( xdata, converter ) );
 					break;
+				case "connectionLabel":
+					diagram.addData( readConnectionLabel( xdata, converter ) );
+					break;
 				case "comment":
 					diagram.addData( readComment( xdata, converter ) );
 					break;
@@ -51,6 +55,15 @@ public class XmlFormat implements Format {
 		return connection;
 	}
 
+	private ConnectionLabelData readConnectionLabel( XElement xlabel, UmlDiagramConverter converter ) {
+		ItemKey<ConnectionLabel> key = converter.readKey( xlabel.getString( "key" ), ConnectionLabel.class );
+		ConnectionLabelData label = new ConnectionLabelData( key );
+		label.setText( xlabel.getElement( "text" ).getString() );
+		label.setConfigurationId( xlabel.getElement( "configuration" ).getString() );
+		label.setConnection( converter.readKey( xlabel.getElement( "connection" ).getString(), Connection.class ) );
+		return label;
+	}
+
 	private CommentData readComment( XElement xcomment, UmlDiagramConverter converter ) {
 		ItemKey<CommentBox> key = converter.readKey( xcomment.getString( "key" ), CommentBox.class );
 		CommentData data = new CommentData( key );
@@ -58,16 +71,16 @@ public class XmlFormat implements Format {
 		data.setText( xcomment.getElement( "text" ).getString() );
 		return data;
 	}
-	
-	private TypeData readType( XElement xtype, UmlDiagramConverter converter ){
+
+	private TypeData readType( XElement xtype, UmlDiagramConverter converter ) {
 		ItemKey<TypeBox> key = converter.readKey( xtype.getString( "key" ), TypeBox.class );
 		TypeData data = new TypeData( key );
 		readBounds( data, xtype );
 		data.setText( xtype.getElement( "text" ).getString() );
 		return data;
 	}
-	
-	private void readBounds( BoxData<?> data, XElement xparent ){
+
+	private void readBounds( BoxData<?> data, XElement xparent ) {
 		XElement xbounds = xparent.getElement( "bounds" );
 		data.setX( xbounds.getElement( "x" ).getInt() );
 		data.setY( xbounds.getElement( "y" ).getInt() );
@@ -107,6 +120,15 @@ public class XmlFormat implements Format {
 			xconnection.addString( "type", connection.getConnectionType().getPersistentName() );
 			xconnection.addElement( "source" ).setString( connection.getSource().toUniqueString() );
 			xconnection.addElement( "target" ).setString( connection.getTarget().toUniqueString() );
+		}
+
+		@Override
+		public void visit( ConnectionLabelData label ) {
+			XElement xlabel = xitems.addElement( "connectionLabel" );
+			addKey( label, xlabel );
+			xlabel.addElement( "text" ).setString( label.getText() );
+			xlabel.addElement( "configuration" ).setString( label.getConfigurationId() );
+			xlabel.addElement( "connection" ).setString( label.getConnection().toUniqueString() );
 		}
 
 		@Override

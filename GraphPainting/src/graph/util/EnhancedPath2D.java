@@ -41,13 +41,22 @@ public class EnhancedPath2D {
 		PathIterator iterator = path.getPathIterator( null, 1 );
 		double[] coords = new double[6];
 		List<Point2D> segments = new ArrayList<>();
+		Point2D previous = null;
 
 		while( !iterator.isDone() ) {
 			int type = iterator.currentSegment( coords );
 			if( type == PathIterator.SEG_MOVETO || type == PathIterator.SEG_LINETO ) {
-				segments.add( new Point2D.Double( coords[0], coords[1] ) );
+				Point2D point = new Point2D.Double( coords[0], coords[1] );
+				if( previous == null || !previous.equals( point ) ) {
+					segments.add( point );
+					previous = point;
+				}
 			}
 			iterator.next();
+		}
+
+		if( segments.size() == 1 ) {
+			segments.add( previous );
 		}
 
 		this.segments = segments.toArray( new Point2D[segments.size()] );
@@ -80,7 +89,7 @@ public class EnhancedPath2D {
 	public double getTotalLength() {
 		return totalLength;
 	}
-	
+
 	/**
 	 * Gets an iterator traveling along the path, returning some of the points of the path. The points may not
 	 * always line up exactly.
@@ -154,7 +163,7 @@ public class EnhancedPath2D {
 
 		double x = start.getX() + delta * (end.getX() - start.getX());
 		double y = start.getY() + delta * (end.getY() - start.getY());
-		
+
 		return new Point2D.Double( x, y );
 	}
 
@@ -166,32 +175,32 @@ public class EnhancedPath2D {
 	 * @return the normal direction at <code>position</code>, pointing 90 degrees clockwise to the
 	 * direction in which the path travels
 	 */
-	public Point2D getNormalAt( double position ){
-		if( position < 0 || position > 1 ){
+	public Point2D getNormalAt( double position ) {
+		if( position < 0 || position > 1 ) {
 			throw new IllegalArgumentException( "position out ouf range: " + position );
 		}
-		
+
 		int segment = segmentAt( position );
-		
+
 		Point2D start = segments[segment];
 		Point2D end = segments[segment + 1];
-		
+
 		double distance = segmentLengths[segment];
-		if( distance == 0 ){
+		if( distance == 0 ) {
 			return new Point2D.Double( 0, 0 );
 		}
 		double dx = (end.getX() - start.getX()) / distance;
 		double dy = (end.getY() - start.getY()) / distance;
-		
+
 		return new Point2D.Double( dy, -dx );
 	}
-	
+
 	private int segmentAt( double position ) {
 		int result = Arrays.binarySearch( segmentLengthsSum, position * totalLength );
 		if( result >= 0 ) {
 			return result;
 		} else {
-			return -2-result;
+			return -2 - result;
 		}
 	}
 }

@@ -8,12 +8,16 @@ import graph.model.connection.ConnectionArray;
 import graph.model.connection.EndPoint;
 import graph.model.connection.GraphConnection;
 import graph.uml.Connection;
+import graph.uml.ConnectionLabel;
+import graph.uml.ConnectionLabelConfiguration;
 import graph.uml.Item;
 import graph.uml.ItemKey;
 import graph.uml.event.ItemSelectionListener;
 import graph.uml.intern.keys.ConnectionKey;
 
 import java.awt.geom.Path2D;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Describes a connection between two boxes.
@@ -106,8 +110,8 @@ public abstract class AbstractConnection extends DefaultItem<Connection> impleme
 	}
 
 	@Override
-	protected Iterable<Item> dependentItems() {
-		return null;
+	protected Iterable<? extends Item> dependentItems() {
+		return getLabels();
 	}
 
 	/**
@@ -140,6 +144,30 @@ public abstract class AbstractConnection extends DefaultItem<Connection> impleme
 	@Override
 	public EndPoint getTargetEndPoint() {
 		return getGraphConnection().getTargetEndPoint();
+	}
+	
+	@Override
+	public ConnectionLabel addLabel( ConnectionLabelConfiguration configuration ) {
+		DefaultConnectionLabel label = new DefaultConnectionLabel( getDiagram(), this );
+		label.setConfiguration( configuration );
+		label.makeVisible();
+		return label;
+	}
+	
+	@Override
+	public List<ConnectionLabel> getLabels() {
+		List<ConnectionLabel> result = new ArrayList<>();
+		
+		for( Item item : getDiagram().getItems()){
+			if( item instanceof ConnectionLabel ){
+				ConnectionLabel label = (ConnectionLabel)item;
+				if( label.getConnection() == this ){
+					result.add( label );
+				}
+			}
+		}
+		
+		return result;
 	}
 
 	@Override

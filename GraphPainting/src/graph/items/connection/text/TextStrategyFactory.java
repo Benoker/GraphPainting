@@ -128,6 +128,16 @@ public final class TextStrategyFactory {
 			}
 		};
 	}
+	
+	public static TextDistanceStrategy distanceAscent() {
+		return new TextDistanceStrategy() {
+			@Override
+			public double getDistance( TextStrategyParameters parameters ) {
+				FontMetrics metrics = parameters.getFontMetrics();
+				return metrics.getAscent()/2;
+			}
+		};
+	}
 
 	public static TextDistanceStrategy distanceInverted( final TextDistanceStrategy strategy ) {
 		return new TextDistanceStrategy() {

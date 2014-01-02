@@ -142,13 +142,13 @@ public abstract class DefaultItem<T extends Item> extends AbstractGraphItem impl
 		}
 	}
 
-	protected abstract Iterable<Item> dependentItems();
+	protected abstract Iterable<? extends Item> dependentItems();
 
 	/**
 	 * Calls {@link #dispose()} on all the items that depend on this item.
 	 */
 	protected void disposeDependentItems() {
-		Iterable<Item> items = dependentItems();
+		Iterable<? extends Item> items = dependentItems();
 		if( items != null ) {
 			for( Item item : items ) {
 				if( item != null ) {

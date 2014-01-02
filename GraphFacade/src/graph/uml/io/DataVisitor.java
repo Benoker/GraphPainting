@@ -6,10 +6,12 @@ package graph.uml.io;
  */
 public interface DataVisitor {
 	public void visit( UmlDiagramData diagram );
-	
+
 	public void visit( ConnectionData connection );
-	
+
 	public void visit( CommentData comment );
-	
+
 	public void visit( TypeData type );
+
+	public void visit( ConnectionLabelData label );
 }
