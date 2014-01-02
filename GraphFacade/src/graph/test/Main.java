@@ -9,6 +9,8 @@ import graph.uml.UmlDiagram;
 import graph.uml.UmlDiagramRepository;
 import graph.uml.UmlDiagramTools;
 import graph.uml.UmlDiagramView;
+import graph.uml.config.ConnectionConfiguration.PathShape;
+import graph.uml.config.EndPointConfiguration.Direction;
 import graph.uml.event.ItemContextEvent;
 import graph.uml.event.ItemContextListener;
 import graph.uml.event.ItemSelectionEvent;
@@ -46,6 +48,8 @@ public class Main {
 		frame.setBounds( 20, 20, 800, 600 );
 
 		final UmlDiagramRepository repository = UmlDiagramRepository.createDefaultRepository();
+		repository.getConfiguration().getComment().setPathShape( PathShape.CURVED );
+		repository.getConfiguration().getComment().source().setDirection( Direction.ORTHOGONAL );
 
 		UmlDiagramView view = repository.createView();
 

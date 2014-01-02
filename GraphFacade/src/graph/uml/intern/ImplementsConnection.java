@@ -2,15 +2,11 @@ package graph.uml.intern;
 
 import graph.items.ConnectionFlavor;
 import graph.items.PathedGraphConnection;
-import graph.items.connection.CuttingEdgeLineConnection;
-import graph.items.uml.FilledArrow;
-import graph.model.GraphSite;
 import graph.model.connection.ConnectionArray;
 import graph.uml.Connection;
 import graph.uml.ConnectionType;
 import graph.uml.ItemKey;
-
-import java.awt.BasicStroke;
+import graph.uml.intern.config.DefaultUmlConfiguration;
 
 /**
  * A connection between a class that implements an interface.
@@ -18,13 +14,9 @@ import java.awt.BasicStroke;
  */
 public class ImplementsConnection extends AbstractConnection implements Connection {
 	public static ConnectionFlavor IMPLEMENTS = new ConnectionFlavor( "implements" );
-	private CuttingEdgeLineConnection line;
 
 	public ImplementsConnection( DefaultUmlDiagram diagram, DefaultBox<?> sourceBox, ConnectionArray source, DefaultBox<?> targetBox, ConnectionArray target ) {
-		super( diagram, sourceBox, targetBox, null );
-		initLine();
-		source.add( line.getSourceEndPoint() );
-		target.add( line.getTargetEndPoint() );
+		super( diagram, sourceBox, source, targetBox, target, null );
 	}
 
 	public ImplementsConnection( DefaultUmlDiagram diagram ) {
@@ -32,41 +24,19 @@ public class ImplementsConnection extends AbstractConnection implements Connecti
 	}
 
 	public ImplementsConnection( DefaultUmlDiagram diagram, ItemKey<Connection> key ) {
-		super( diagram, null, null, key );
-		initLine();
-	}
-
-	private void initLine() {
-		line = new CuttingEdgeLineConnection();
-
-		float[] dash = { 8.0f };
-		line.setStroke( new BasicStroke( 1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER, 1.0f, dash, 0.0f ) );
-		addChild( line );
-
-		FilledArrow arrow = new FilledArrow( line.getTargetEndPoint() );
-		addChild( arrow );
+		super( diagram, null, null, null, null, key );
 	}
 
 	@Override
-	protected void removeFrom( GraphSite site ) {
-		// ignore
-	}
-
-	@Override
-	protected void addTo( GraphSite site ) {
-		// ignore
-	}
-
-	@Override
-	public PathedGraphConnection getGraphConnection() {
-		return line;
+	protected PathedGraphConnection createLine( DefaultUmlConfiguration configuration ) {
+		return configuration.getImplementation().buildLine();
 	}
 
 	@Override
 	public ConnectionType getConnectionType() {
 		return ConnectionType.IMPLEMENTATION;
 	}
-	
+
 	@Override
 	public ConnectionFlavor getFlavor() {
 		return IMPLEMENTS;

@@ -5,6 +5,7 @@ import graph.uml.ConnectionLabelConfiguration;
 import graph.uml.UmlDiagram;
 import graph.uml.UmlDiagramRepository;
 import graph.uml.UmlDiagramView;
+import graph.uml.intern.config.DefaultUmlConfiguration;
 import graph.uml.io.Format;
 import graph.uml.io.UmlDiagramConverter;
 import graph.uml.io.UmlDiagramData;
@@ -25,6 +26,7 @@ import java.nio.file.Path;
 public class DefaultUmlDiagramRepository extends UmlDiagramRepository {
 	private UmlDiagramConverter converter;
 	private DefaultConnectionLabelConfigurations labelConfigurations = new DefaultConnectionLabelConfigurations();
+	private DefaultUmlConfiguration configuration = new DefaultUmlConfiguration();
 
 	/**
 	 * Constructs a new repository
@@ -58,13 +60,13 @@ public class DefaultUmlDiagramRepository extends UmlDiagramRepository {
 	public void putLabelConfiguration( ConnectionLabelConfiguration name, DefaultConnectionLabelConfiguration config ) {
 		labelConfigurations.putLabelConfiguration( name, config );
 	}
-	
+
 	/**
 	 * Gets the configuration for a {@link DefaultConnectionLabel}.
 	 * @param name the key of the configuration
 	 * @return the configuration, may be <code>null</code>
 	 */
-	public DefaultConnectionLabelConfiguration getLabelConfiguration( ConnectionLabelConfiguration name ){
+	public DefaultConnectionLabelConfiguration getLabelConfiguration( ConnectionLabelConfiguration name ) {
 		return labelConfigurations.getLabelConfiguration( name );
 	}
 
@@ -136,6 +138,11 @@ public class DefaultUmlDiagramRepository extends UmlDiagramRepository {
 
 		UmlDiagramData data = format.read( bufferedIn, converter );
 		return converter.toDiagram( data, this );
+	}
+
+	@Override
+	public DefaultUmlConfiguration getConfiguration() {
+		return configuration;
 	}
 
 	public DefaultUmlDiagram toDefault( UmlDiagram diagram ) {

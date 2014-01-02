@@ -1,5 +1,6 @@
 package graph.uml;
 
+import graph.uml.config.UmlConfiguration;
 import graph.uml.intern.DefaultUmlDiagramRepository;
 import graph.uml.io.Format;
 
@@ -72,4 +73,11 @@ public abstract class UmlDiagramRepository {
 	 * @throws IOException if reading fails
 	 */
 	public abstract UmlDiagram read( Format format, InputStream in ) throws IOException;
+	
+	/**
+	 * Gets the mutable configuration of all the diagrams. Changes in the configuration may or may not
+	 * affect existing {@link Item}s.
+	 * @return the mutable configuration
+	 */
+	public abstract UmlConfiguration getConfiguration();
 }

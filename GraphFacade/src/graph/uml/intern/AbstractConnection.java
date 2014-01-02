@@ -2,6 +2,7 @@ package graph.uml.intern;
 
 import graph.items.ConnectionFlavor;
 import graph.items.PathedGraphConnection;
+import graph.model.GraphSite;
 import graph.model.capability.CapabilityName;
 import graph.model.capability.SelectableCapability;
 import graph.model.connection.ConnectionArray;
@@ -13,6 +14,7 @@ import graph.uml.ConnectionLabelConfiguration;
 import graph.uml.Item;
 import graph.uml.ItemKey;
 import graph.uml.event.ItemSelectionListener;
+import graph.uml.intern.config.DefaultUmlConfiguration;
 import graph.uml.intern.keys.ConnectionKey;
 
 import java.awt.geom.Path2D;
@@ -28,8 +30,9 @@ public abstract class AbstractConnection extends DefaultItem<Connection> impleme
 	private DefaultBox<?> targetItem;
 
 	private ConnectionSelectionCapability selection;
+	private PathedGraphConnection line;
 
-	public AbstractConnection( DefaultUmlDiagram diagram, DefaultBox<?> sourceItem, DefaultBox<?> targetItem, ItemKey<Connection> key ) {
+	public AbstractConnection( DefaultUmlDiagram diagram, DefaultBox<?> sourceItem, ConnectionArray source, DefaultBox<?> targetItem, ConnectionArray target, ItemKey<Connection> key ) {
 		super( diagram, key );
 
 		setSourceItem( sourceItem );
@@ -37,7 +40,19 @@ public abstract class AbstractConnection extends DefaultItem<Connection> impleme
 
 		selection = new ConnectionSelectionCapability( this );
 		addCapability( CapabilityName.SELECTABLE, selection );
+
+		line = createLine( diagram.getRepository().getConfiguration() );
+		addChild( line );
+		
+		if( source != null ) {
+			source.add( line.getSourceEndPoint() );
+		}
+		if( target != null ) {
+			target.add( line.getTargetEndPoint() );
+		}
 	}
+
+	protected abstract PathedGraphConnection createLine( DefaultUmlConfiguration configuration );
 
 	@Override
 	protected ItemKey<Connection> createKey( DefaultUmlDiagram diagram ) {
@@ -124,13 +139,25 @@ public abstract class AbstractConnection extends DefaultItem<Connection> impleme
 	 * Gets the internal representation of this connection.
 	 * @return the internal representation, not <code>null</code>
 	 */
-	public abstract PathedGraphConnection getGraphConnection();
+	public PathedGraphConnection getGraphConnection() {
+		return line;
+	}
+
+	@Override
+	protected void removeFrom( GraphSite site ) {
+		// ignore
+	}
+
+	@Override
+	protected void addTo( GraphSite site ) {
+		// ignore
+	}
 
 	@Override
 	public Path2D getClosedConnectionPath() {
 		return getGraphConnection().getClosedConnectionPath();
 	}
-	
+
 	@Override
 	public Path2D getOpenConnectionPath() {
 		return getGraphConnection().getOpenConnectionPath();
@@ -145,7 +172,7 @@ public abstract class AbstractConnection extends DefaultItem<Connection> impleme
 	public EndPoint getTargetEndPoint() {
 		return getGraphConnection().getTargetEndPoint();
 	}
-	
+
 	@Override
 	public ConnectionLabel addLabel( ConnectionLabelConfiguration configuration ) {
 		DefaultConnectionLabel label = new DefaultConnectionLabel( getDiagram(), this );
@@ -153,20 +180,20 @@ public abstract class AbstractConnection extends DefaultItem<Connection> impleme
 		label.makeVisible();
 		return label;
 	}
-	
+
 	@Override
 	public List<ConnectionLabel> getLabels() {
 		List<ConnectionLabel> result = new ArrayList<>();
-		
-		for( Item item : getDiagram().getItems()){
-			if( item instanceof ConnectionLabel ){
-				ConnectionLabel label = (ConnectionLabel)item;
-				if( label.getConnection() == this ){
+
+		for( Item item : getDiagram().getItems() ) {
+			if( item instanceof ConnectionLabel ) {
+				ConnectionLabel label = (ConnectionLabel) item;
+				if( label.getConnection() == this ) {
 					result.add( label );
 				}
 			}
 		}
-		
+
 		return result;
 	}
 

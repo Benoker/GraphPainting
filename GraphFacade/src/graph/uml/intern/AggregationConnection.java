@@ -2,16 +2,11 @@ package graph.uml.intern;
 
 import graph.items.ConnectionFlavor;
 import graph.items.PathedGraphConnection;
-import graph.items.connection.CuttingEdgeLineConnection;
-import graph.items.uml.Diamond;
-import graph.items.uml.OpenArrow;
-import graph.model.GraphSite;
 import graph.model.connection.ConnectionArray;
 import graph.uml.Connection;
 import graph.uml.ConnectionType;
 import graph.uml.ItemKey;
-
-import java.awt.Color;
+import graph.uml.intern.config.DefaultUmlConfiguration;
 
 /**
  * Describes an aggregation between two types
@@ -19,13 +14,9 @@ import java.awt.Color;
  */
 public class AggregationConnection extends AbstractConnection implements Connection {
 	public static final ConnectionFlavor AGGREGATION = new ConnectionFlavor( "aggregation" );
-	private CuttingEdgeLineConnection line;
 
 	public AggregationConnection( DefaultUmlDiagram diagram, DefaultBox<?> sourceBox, ConnectionArray source, DefaultBox<?> targetBox, ConnectionArray target ) {
-		super( diagram, sourceBox, targetBox, null );
-		initLine();
-		source.add( line.getSourceEndPoint() );
-		target.add( line.getTargetEndPoint() );
+		super( diagram, sourceBox, source, targetBox, target, null );
 	}
 
 	public AggregationConnection( DefaultUmlDiagram diagram ) {
@@ -33,34 +24,12 @@ public class AggregationConnection extends AbstractConnection implements Connect
 	}
 
 	public AggregationConnection( DefaultUmlDiagram diagram, ItemKey<Connection> key ) {
-		super( diagram, null, null, key );
-		initLine();
-	}
-
-	private void initLine() {
-		line = new CuttingEdgeLineConnection();
-		addChild( line );
-
-		Diamond diamond = new Diamond( line.getTargetEndPoint(), Color.WHITE );
-		addChild( diamond );
-
-		OpenArrow arrow = new OpenArrow( line.getSourceEndPoint() );
-		addChild( arrow );
+		super( diagram, null, null, null, null, key );
 	}
 
 	@Override
-	protected void removeFrom( GraphSite site ) {
-		// ignore
-	}
-
-	@Override
-	protected void addTo( GraphSite site ) {
-		// ignore
-	}
-
-	@Override
-	public PathedGraphConnection getGraphConnection() {
-		return line;
+	protected PathedGraphConnection createLine( DefaultUmlConfiguration configuration ) {
+		return configuration.getAggregation().buildLine();
 	}
 
 	@Override
