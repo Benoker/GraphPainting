@@ -32,6 +32,17 @@ public class CommentConnection extends AbstractConnection implements Connection 
 		super.setSourceItem( sourceItem );
 	}
 
+	@Override
+	public void setTargetItem( DefaultBox<?> targetItem ) {
+		if( comment == null ) {
+			super.setTargetItem( targetItem );
+		} else {
+			comment.setConnection( null );
+			super.setTargetItem( targetItem );
+			comment.setConnection( this );
+		}
+	}
+
 	public CommentConnection( DefaultUmlDiagram diagram ) {
 		this( diagram, null );
 	}

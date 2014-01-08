@@ -14,7 +14,6 @@ import java.awt.Color;
  * @author Benjamin Sigg
  */
 public class DefaultCommentBox extends DefaultBox<CommentBox> implements CommentBox {
-	private DefaultBox<?> type;
 	private CommentConnection connection;
 	private SimpleRectangularConnectionArray connectionArray;
 
@@ -35,7 +34,6 @@ public class DefaultCommentBox extends DefaultBox<CommentBox> implements Comment
 		getLabel().addChild( connectionArray );
 
 		if( type != null ) {
-			this.type = type;
 			connection = new CommentConnection( diagram, this, connectionArray, type, type.getCommentConnections() );
 			type.addDependent( this );
 		}
@@ -46,13 +44,18 @@ public class DefaultCommentBox extends DefaultBox<CommentBox> implements Comment
 	}
 
 	public void setConnection( CommentConnection connection ) {
-		if( connection.getTargetItem() != null ) {
-			if( this.connection != null ) {
-				throw new IllegalStateException( "connection is already set" );
+		if( this.connection != null ) {
+			if( this.connection.getTargetItem() != null ) {
+				this.connection.getTargetItem().removeDependent( this );
 			}
-			this.connection = connection;
-			this.type = connection.getTargetItem();
-			this.type.addDependent( this );
+		}
+
+		this.connection = connection;
+
+		if( connection != null ) {
+			if( connection.getTargetItem() != null ) {
+				connection.getTargetItem().addDependent( this );
+			}
 		}
 	}
 
@@ -72,6 +75,8 @@ public class DefaultCommentBox extends DefaultBox<CommentBox> implements Comment
 	@Override
 	public void dispose() {
 		super.dispose();
-		type.removeDependent( this );
+		if( connection != null && connection.getTargetItem() != null ) {
+			connection.getTargetItem().removeDependent( this );
+		}
 	}
 }
