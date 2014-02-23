@@ -73,10 +73,13 @@ public class SelectableCapabilityHandler implements CapabilityHandler<Selectable
 					newlySelected = null;
 
 					SelectableCapability selectable = getSelectable( e.getX(), e.getY() );
-
-					if( e.isControlDown() ) {
+					
+					if( e.isShiftDown() ) {
 						if( selectable != null ) {
-							if( !selectable.getSelected().isSelected() ) {
+							if( selectable.getSelected().isSelected() ){
+								selectable.setSelected( Selection.NOT_SELECTED );
+							}
+							else{
 								if( !selectable.getSelected().isPrimary() ) {
 									ensureNoPrimary();
 									selectable.setSelected( Selection.PRIMARY );
@@ -84,19 +87,29 @@ public class SelectableCapabilityHandler implements CapabilityHandler<Selectable
 								newlySelected = selectable;
 							}
 						}
-					} else {
+					} else if( !isPopupTriggerSelection( selectable, e )) {
 						deselectAll( selectable );
 						if( selectable != null && !selectable.getSelected().isPrimary() ) {
 							selectable.setSelected( Selection.PRIMARY );
 						}
 					}
-				} else if( !e.isControlDown() ) {
+				} else if( !e.isShiftDown() ) {
 					if( (e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) == 0 ) {
 						deselectAll( null );
 					}
 				}
 			}
 
+			private boolean isPopupTriggerSelection( SelectableCapability selectable, MouseEvent e ){
+				if( !e.isPopupTrigger() ){
+					return false;
+				}
+				if( selectable == null ){
+					return false;
+				}
+				return selectable.getSelected().isSelected();
+			}
+			
 			@Override
 			public void mouseReleased( MouseEvent e ) {
 				if( e.isPopupTrigger() ) {

@@ -13,8 +13,7 @@ import java.util.List;
  */
 public interface UmlDiagram {
 	/**
-	 * Creates a new {@link TypeBox}, the box has neither content, nor location, nor connections, not is
-	 * it visible.
+	 * Creates a new {@link TypeBox}, the box has neither content, nor location, nor connections.
 	 * @return the new, empty, invisible typebox
 	 */
 	public TypeBox createType();
