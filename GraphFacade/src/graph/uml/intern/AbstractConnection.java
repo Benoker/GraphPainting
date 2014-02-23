@@ -2,6 +2,7 @@ package graph.uml.intern;
 
 import graph.items.ConnectionFlavor;
 import graph.items.PathedGraphConnection;
+import graph.items.PathedGraphConnectionSelectionBorder;
 import graph.model.GraphSite;
 import graph.model.capability.CapabilityName;
 import graph.model.capability.SelectableCapability;
@@ -17,6 +18,7 @@ import graph.uml.event.ItemSelectionListener;
 import graph.uml.intern.config.DefaultUmlConfiguration;
 import graph.uml.intern.keys.ConnectionKey;
 
+import java.awt.Stroke;
 import java.awt.geom.Path2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,7 @@ public abstract class AbstractConnection extends DefaultItem<Connection> impleme
 
 	private ConnectionSelectionCapability selection;
 	private PathedGraphConnection line;
+	private PathedGraphConnectionSelectionBorder selectionBorder;
 
 	public AbstractConnection( DefaultUmlDiagram diagram, DefaultBox<?> sourceItem, ConnectionArray source, DefaultBox<?> targetItem, ConnectionArray target, ItemKey<Connection> key ) {
 		super( diagram, key );
@@ -41,7 +44,12 @@ public abstract class AbstractConnection extends DefaultItem<Connection> impleme
 		selection = new ConnectionSelectionCapability( this );
 		addCapability( CapabilityName.SELECTABLE, selection );
 
-		line = createLine( diagram.getRepository().getConfiguration() );
+		DefaultUmlConfiguration configuration = diagram.getRepository().getConfiguration();
+		
+		line = createLine( configuration );
+		selectionBorder = new PathedGraphConnectionSelectionBorder( line, getSelectionStroke( configuration ) );
+		
+		addChild( selectionBorder );
 		addChild( line );
 		
 		if( source != null ) {
@@ -52,6 +60,8 @@ public abstract class AbstractConnection extends DefaultItem<Connection> impleme
 		}
 	}
 
+	protected abstract Stroke getSelectionStroke( DefaultUmlConfiguration configuration );
+	
 	protected abstract PathedGraphConnection createLine( DefaultUmlConfiguration configuration );
 
 	@Override
@@ -59,6 +69,10 @@ public abstract class AbstractConnection extends DefaultItem<Connection> impleme
 		return new ConnectionKey( diagram );
 	}
 
+	public void updateSelection(){
+		selectionBorder.setSelection( selection.getSelected() );
+	}
+	
 	/**
 	 * Sets the source of this connection
 	 * @param sourceItem the source, may be <code>null</code>

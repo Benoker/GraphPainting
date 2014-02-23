@@ -9,6 +9,7 @@ import graph.uml.Item;
 import graph.uml.ItemKey;
 import graph.uml.intern.config.DefaultUmlConfiguration;
 
+import java.awt.Stroke;
 import java.util.Arrays;
 
 public class CommentConnection extends AbstractConnection implements Connection {
@@ -59,6 +60,11 @@ public class CommentConnection extends AbstractConnection implements Connection 
 	@Override
 	protected PathedGraphConnection createLine( DefaultUmlConfiguration configuration ) {
 		return configuration.getComment().buildLine();
+	}
+	
+	@Override
+	protected Stroke getSelectionStroke( DefaultUmlConfiguration configuration ) {
+		return configuration.getComment().getSelectionStroke();
 	}
 
 	@Override

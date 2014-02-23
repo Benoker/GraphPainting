@@ -2,6 +2,7 @@ package graph.uml.intern;
 
 import graph.items.GraphLabel;
 import graph.items.MoveableItemCapability;
+import graph.items.RectangularSelectionBorder;
 import graph.model.GraphSite;
 import graph.model.Selection;
 import graph.model.capability.CapabilityName;
@@ -28,6 +29,8 @@ public abstract class DefaultBox<T extends Box> extends DefaultItem<T> implement
 
 	private BoxSelectionCapability selection;
 
+	private RectangularSelectionBorder selectionBorder;
+	
 	/** all the dependent items that are to be disposed together with this box */
 	private List<Item> dependent = new ArrayList<>();
 
@@ -48,7 +51,10 @@ public abstract class DefaultBox<T extends Box> extends DefaultItem<T> implement
 			}
 		};
 		label.setCapability( CapabilityName.SELECTABLE, null );
+		
+		selectionBorder = new RectangularSelectionBorder( label );
 
+		addChild( selectionBorder );
 		addChild( label );
 
 		selection = new BoxSelectionCapability( this );
@@ -57,6 +63,7 @@ public abstract class DefaultBox<T extends Box> extends DefaultItem<T> implement
 		MoveableItemCapability moveable = new MoveableItemCapability( label );
 		label.setMoveableIfSelected( true );
 		setCapability( CapabilityName.MOVEABLE, moveable );
+		
 
 		updateSelected();
 	}
@@ -95,8 +102,9 @@ public abstract class DefaultBox<T extends Box> extends DefaultItem<T> implement
 				label.getLabel().setBackground( background );
 				break;
 		}
+		selectionBorder.setSelection( selected );
 	}
-
+	
 	/**
 	 * Gets the label that actually paints the text.
 	 * @return the label that paints the code

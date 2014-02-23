@@ -279,5 +279,10 @@ public class GraphPanel extends JPanel {
 		public void regraph() {
 			GraphPanel.this.regraph();
 		}
+		
+		@Override
+		public void repaint() {
+			GraphPanel.this.repaint();
+		}
 	}
 }

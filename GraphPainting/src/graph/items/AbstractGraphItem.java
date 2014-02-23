@@ -105,6 +105,15 @@ public abstract class AbstractGraphItem implements GraphItem {
 	}
 
 	/**
+	 * Calls {@link GraphSite#repaint()} ont he {@link #getSite() current site}.
+	 */
+	protected void repaint(){
+		if( site != null ){
+			site.repaint();
+		}
+	}
+	
+	/**
 	 * Calls {@link GraphSite#regraph()} on the {@link #getSite() current site}.
 	 */
 	protected void regraph() {

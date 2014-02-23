@@ -40,6 +40,7 @@ public class ConnectionSelectionCapability extends PathSelection{
 	@Override
 	public void setSelected( Selection selection ) {
 		super.setSelected( selection );
+		connection.updateSelection();
 		
 		ItemSelectionEvent event = new ItemSelectionEvent( connection, selection );
 		for( ItemSelectionListener listener : listeners()){

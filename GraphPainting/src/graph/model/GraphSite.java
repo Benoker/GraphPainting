@@ -32,6 +32,11 @@ public interface GraphSite extends GraphItemParent{
 	public void removeRegraphable( Regraphable regraphable );
 	
 	/**
+	 * Repaints the entire graph.
+	 */
+	public void repaint();
+	
+	/**
 	 * Recalculates and repaints the entire graph (asynchronous)
 	 */
 	public void regraph();

@@ -18,8 +18,13 @@ public class DefaultConnectionConfiguration implements ConnectionConfiguration {
 	private DefaultEndPointConfiguration target = new DefaultEndPointConfiguration();
 
 	private Stroke stroke;
+	private Stroke selectionStroke;
 	private PathShape path;
 
+	public DefaultConnectionConfiguration(){
+		withContinuousLine();
+	}
+	
 	@Override
 	public EndPointConfiguration source() {
 		return source;
@@ -41,14 +46,26 @@ public class DefaultConnectionConfiguration implements ConnectionConfiguration {
 	}
 
 	@Override
+	public void setSelectionStroke( Stroke selectionStroke ) {
+		this.selectionStroke = selectionStroke;	
+	}
+	
+	@Override
+	public Stroke getSelectionStroke() {
+		return selectionStroke;
+	}
+	
+	@Override
 	public void withContinuousLine() {
 		setStroke( null );
+		setSelectionStroke( new BasicStroke( 3.0f ) );
 	}
 
 	@Override
 	public void withDottedLine() {
 		float[] dash = { 8.0f };
 		setStroke( new BasicStroke( 1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER, 1.0f, dash, 0.0f ) );
+		setSelectionStroke( new BasicStroke( 3.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER, 1.0f, dash, 0.0f ) );
 	}
 
 	@Override

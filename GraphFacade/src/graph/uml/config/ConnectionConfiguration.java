@@ -47,6 +47,18 @@ public interface ConnectionConfiguration {
 	public Stroke getStroke();
 	
 	/**
+	 * Sets the {@link Stroke} with which selected lines are underlined.
+	 * @param stroke the new stroke, may be <code>null</code>
+	 */
+	public void setSelectionStroke( Stroke stroke );
+	
+	/**
+	 * Gets the {@link Stroke} with which selected lines are underlined.
+	 * @return the stroke, may be <code>null</code>
+	 */
+	public Stroke getSelectionStroke();
+	
+	/**
 	 * The line is drawn continuously.
 	 */
 	public void withContinuousLine();

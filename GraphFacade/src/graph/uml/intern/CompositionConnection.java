@@ -1,5 +1,7 @@
 package graph.uml.intern;
 
+import java.awt.Stroke;
+
 import graph.items.ConnectionFlavor;
 import graph.items.PathedGraphConnection;
 import graph.model.connection.ConnectionArray;
@@ -30,6 +32,11 @@ public class CompositionConnection extends AbstractConnection implements Connect
 	@Override
 	protected PathedGraphConnection createLine( DefaultUmlConfiguration configuration ) {
 		return configuration.getComposition().buildLine();
+	}
+	
+	@Override
+	protected Stroke getSelectionStroke( DefaultUmlConfiguration configuration ) {
+		return configuration.getComposition().getSelectionStroke();
 	}
 
 	@Override
