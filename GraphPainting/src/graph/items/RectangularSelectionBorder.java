@@ -6,6 +6,7 @@ import graph.model.Selection;
 import graph.model.connection.Rectangular;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
@@ -64,5 +65,10 @@ public class RectangularSelectionBorder extends AbstractGraphItem implements Gra
 	@Override
 	protected void addTo( GraphSite site ) {
 		site.addPaintable( this );
+	}
+	
+	@Override
+	public Rectangle getVisibleBoundaries( Graphics g ) {
+		return null;
 	}
 }

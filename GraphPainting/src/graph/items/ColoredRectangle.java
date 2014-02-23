@@ -6,6 +6,7 @@ import graph.model.GraphSite;
 import graph.model.connection.Rectangular;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
@@ -39,5 +40,10 @@ public class ColoredRectangle extends MoveableRectangularGraphItem implements Gr
 		
 		g.setColor( color );
 		g.fillRect( bounds.x, bounds.y, bounds.width, bounds.height );
+	}
+	
+	@Override
+	public Rectangle getVisibleBoundaries( Graphics g ) {
+		return getBoundaries();
 	}
 }

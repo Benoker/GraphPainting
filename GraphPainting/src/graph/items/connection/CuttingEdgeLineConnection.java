@@ -6,8 +6,10 @@ import graph.model.Regraphable;
 import graph.model.connection.EndPointAttachement;
 import graph.util.Geom;
 
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.util.ArrayList;
@@ -53,7 +55,12 @@ public class CuttingEdgeLineConnection extends PaintableConnection implements Re
 		createPaths();
 		return path;
 	}
-
+	
+	@Override
+	public Rectangle getVisibleBoundaries( Graphics g ) {
+		return getOpenConnectionPath().getBounds();
+	}
+	
 	private void createPaths() {
 		if( path == null ) {
 			path = new Path2D.Float();

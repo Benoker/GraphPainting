@@ -5,8 +5,10 @@ import graph.model.GraphItem;
 import graph.model.GraphPaintable;
 import graph.model.GraphSite;
 
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 
 public abstract class EndPointPaintable extends AbstractGraphItem implements GraphItem, GraphPaintable{
 	private EndPoint endPoint;
@@ -45,5 +47,10 @@ public abstract class EndPointPaintable extends AbstractGraphItem implements Gra
 	@Override
 	protected void removeFrom( GraphSite site ) {
 		site.removePaintable( this );
+	}
+	
+	@Override
+	public Rectangle getVisibleBoundaries( Graphics g ) {
+		return null;
 	}
 }

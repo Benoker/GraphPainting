@@ -22,7 +22,9 @@ public interface UmlDiagram {
 	 * Gets the current selection in an unmutable list. Changes in the selection may or may not be
 	 * reflected by this list.
 	 * @return the list of selected items
+	 * @deprecated please use {@link #getSelectedItems()} instead
 	 */
+	@Deprecated
 	public List<Item> getSelection();
 
 	/**

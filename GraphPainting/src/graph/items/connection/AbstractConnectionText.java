@@ -10,8 +10,11 @@ import graph.util.Geom;
 
 import java.awt.Color;
 import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.font.LineMetrics;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 
 /*
@@ -147,6 +150,44 @@ public abstract class AbstractConnectionText extends AbstractGraphItem implement
 	@Override
 	public void paintOverlay( Graphics2D g ) {
 		// ignore	
+	}
+	
+	@Override
+	public Rectangle getVisibleBoundaries( Graphics g ) {
+		char[] chars = text.toCharArray();
+		FontMetrics fontMetrics = g.getFontMetrics();
+		LineMetrics lineMetrics = fontMetrics.getLineMetrics( chars, 0, chars.length, g );
+		Parameters parameters = new Parameters( chars, fontMetrics, lineMetrics );
+	
+		Point2D center = getTextCenter(parameters);
+		double translate = parameters.getCharsWidth() * getShift(parameters);
+
+		AffineTransform transformation = new AffineTransform();
+		
+		transformation.rotate( getAngle(parameters), center.getX(), center.getY() );
+		transformation.translate( -translate, lineMetrics.getAscent() / 2 );
+		transformation.translate( center.getX(), center.getY() );
+
+		int x = 0;
+		int y = -Geom.round( lineMetrics.getAscent() );
+		int w = parameters.getCharsWidth();
+		int h = Geom.round( lineMetrics.getHeight() );
+		
+		
+		double[] pts = {
+			x, y,
+			x, y+h,
+			x+w, y,
+			x+w, y+h
+		};
+		transformation.transform( pts, 0, pts, 0, 4 );
+		
+		double minx = Math.min( Math.min( pts[0], pts[2] ), Math.min( pts[4], pts[6] ) );
+		double maxx = Math.max( Math.max( pts[0], pts[2] ), Math.max( pts[4], pts[6] ) );
+		double miny = Math.min( Math.min( pts[1], pts[3] ), Math.min( pts[5], pts[7] ) );
+		double maxy = Math.max( Math.max( pts[1], pts[3] ), Math.max( pts[5], pts[7] ) );
+		
+		return new Rectangle( Geom.round( minx ), Geom.round( miny ), Geom.round( maxx-minx ), Geom.round( maxy-miny ));
 	}
 
 	/**

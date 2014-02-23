@@ -8,6 +8,7 @@ import graph.model.connection.Rectangular;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
@@ -100,5 +101,10 @@ public class RectangularSelection extends AbstractGraphItem implements Selectabl
 			g.setComposite( AlphaComposite.getInstance( AlphaComposite.SRC_ATOP, 0.5f ) );
 			g.fillRect( x + 1, y + 1, w - 1, h - 1 );
 		}
+	}
+	
+	@Override
+	public Rectangle getVisibleBoundaries( Graphics g ) {
+		return null;
 	}
 }

@@ -5,7 +5,9 @@ import graph.model.GraphSite;
 import graph.model.Selection;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.awt.geom.Path2D;
 
@@ -52,5 +54,10 @@ public class PathedGraphConnectionSelectionBorder extends AbstractGraphItem impl
 	@Override
 	protected void removeFrom( GraphSite site ) {
 		site.removePaintable( this );
+	}
+	
+	@Override
+	public Rectangle getVisibleBoundaries( Graphics g ) {
+		return null;
 	}
 }

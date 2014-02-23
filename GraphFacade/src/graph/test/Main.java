@@ -26,6 +26,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,9 +34,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
@@ -46,12 +50,19 @@ public class Main {
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 		frame.setBounds( 20, 20, 800, 600 );
-
+		
 		final UmlDiagramRepository repository = UmlDiagramRepository.createDefaultRepository();
 		repository.getConfiguration().getComment().setPathShape( PathShape.CURVED );
 		repository.getConfiguration().getComment().source().setDirection( Direction.ORTHOGONAL );
 
 		UmlDiagramView view = repository.createView();
+		
+		JMenu menu = new JMenu( "Actions" );
+		menu.add( saveImage( view ) );
+		
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.add( menu );
+		frame.setJMenuBar( menuBar );
 
 		frame.setLayout( new GridBagLayout() );
 		Insets insets = new Insets( 0, 0, 0, 0 );
@@ -160,12 +171,35 @@ public class Main {
 
 		@Override
 		public void actionPerformed( ActionEvent e ) {
-			for( Item item : diagram.getSelection() ) {
+			for( Item item : diagram.getSelectedItems() ) {
 				item.dispose();
 			}
 		}
 	}
 
+	private static JMenuItem saveImage( final UmlDiagramView view ){
+		JMenuItem menuItem = new JMenuItem( "Save image" );
+		menuItem.addActionListener( new ActionListener() {
+			@Override
+			public void actionPerformed( ActionEvent e ) {
+				Path path = Paths.get( "test-image.png" );
+				int index = 1;
+				while( Files.exists( path ) ){
+					path = Paths.get( "test-image-" + (index++) + ".png" );
+				}
+				
+				BufferedImage image = view.paintImage();
+				try {
+					ImageIO.write( image, "png", path.toFile() );
+				} catch( IOException e1 ) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		} );
+		return menuItem;
+	}
+	
 	private static JPanel createTools( final UmlDiagramTools tools ) {
 		JPanel panel = new JPanel( new GridLayout( 1, 5 ) );
 		JToggleButton applyDefaultTool = new JToggleButton( "Default" );

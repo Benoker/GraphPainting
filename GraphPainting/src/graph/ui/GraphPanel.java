@@ -11,9 +11,11 @@ import graph.model.capability.CapabilityHandler;
 import graph.model.capability.CapabilityName;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
@@ -162,6 +164,40 @@ public class GraphPanel extends JPanel {
 		return items.toArray( new GraphItem[items.size()] );
 	}
 
+	/**
+	 * Calculates the area in which this panel actually paints stuff.
+	 * @param g the graphics context that will paint the panel, not <code>null</code>
+	 * @return the boundaries, never <code>null</code> 
+	 */
+	public Rectangle getVisibleBoundaries( Graphics g ){
+		Rectangle result = null;
+		
+		for( GraphPaintable paintable : paintables ){
+			Rectangle boundaries = paintable.getVisibleBoundaries( g );
+			result = union( result, boundaries );
+		}
+		
+		for( Component child : canvas.getComponents() ){
+			Rectangle boundaries = child.getBounds();
+			result = union( result, boundaries );
+		}
+		
+		if( result == null ){
+			result = new Rectangle( 0, 0, 50, 50 );
+		}
+		return result;
+	}
+	
+	private Rectangle union( Rectangle a, Rectangle b ){
+		if( a == null ){
+			return b;
+		}
+		if( b == null ){
+			return a;
+		}
+		return a.union( b );
+	}
+	
 	@Override
 	public void doLayout() {
 		int width = getWidth();

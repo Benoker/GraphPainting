@@ -6,8 +6,10 @@ import graph.model.Regraphable;
 import graph.model.connection.ConnectionArray;
 import graph.model.connection.EndPointAttachement;
 
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 
@@ -63,7 +65,12 @@ public class DirectLineConnection extends PaintableConnection implements PathedG
 		createPath();
 		return path;
 	}
-
+	
+	@Override
+	public Rectangle getVisibleBoundaries( Graphics g ) {
+		return getOpenConnectionPath().getBounds();
+	}
+	
 	private void createPath() {
 		if( path == null ) {
 			EndPointAttachement source = getSourceEndPoint().getAttachement();

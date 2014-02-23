@@ -6,8 +6,10 @@ import graph.model.Regraphable;
 import graph.model.connection.EndPointAttachement;
 import graph.util.Geom;
 
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
@@ -50,6 +52,11 @@ public class BezierLineConnection extends PaintableConnection implements PathedG
 	public Path2D getOpenConnectionPath() {
 		createPath();
 		return path;
+	}
+	
+	@Override
+	public Rectangle getVisibleBoundaries( Graphics g ) {
+		return getOpenConnectionPath().getBounds();
 	}
 	
 	private void createPath(){

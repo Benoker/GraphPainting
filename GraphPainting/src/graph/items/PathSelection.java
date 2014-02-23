@@ -6,8 +6,10 @@ import graph.model.Selection;
 import graph.model.capability.SelectableCapability;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.geom.Path2D;
 
 /**
@@ -104,5 +106,10 @@ public class PathSelection extends AbstractGraphItem implements SelectableCapabi
 			g.drawOval( p1.x - 3, p1.y - 3, 7, 7 );
 			g.drawOval( p2.x - 3, p2.y - 3, 7, 7 );
 		}
+	}
+	
+	@Override
+	public Rectangle getVisibleBoundaries( Graphics g ) {
+		return null;
 	}
 }

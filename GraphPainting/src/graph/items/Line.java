@@ -5,7 +5,9 @@ import graph.model.GraphSite;
 import graph.ui.Graph;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 
 /**
  * A very simple line painted on the {@link Graph}
@@ -52,5 +54,15 @@ public class Line extends AbstractGraphItem implements GraphPaintable{
 	@Override
 	protected void addTo( GraphSite site ) {
 		site.addPaintable( this );
-	}	
+	}
+	
+	@Override
+	public Rectangle getVisibleBoundaries( Graphics g ) {
+		int minx = Math.min( x1, x2 );
+		int maxx = Math.max( x1, x2 );
+		int miny = Math.min( y1, y2 );
+		int maxy = Math.max( y1, y2 );
+		
+		return new Rectangle( minx, miny, maxx-minx, maxy-miny );
+	}
 }

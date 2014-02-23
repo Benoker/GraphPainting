@@ -2,8 +2,6 @@ package graph.uml.intern;
 
 import graph.model.GraphItem;
 import graph.model.Selection;
-import graph.model.capability.CapabilityName;
-import graph.model.capability.SelectableCapability;
 import graph.ui.Graph;
 import graph.ui.GraphListener;
 import graph.uml.Box;
@@ -102,18 +100,7 @@ public class DefaultUmlDiagram implements UmlDiagram {
 
 	@Override
 	public List<Item> getSelection() {
-		List<Item> result = new ArrayList<>();
-		for( GraphItem item : graph.getItems() ) {
-			SelectableCapability selectable = item.getCapability( CapabilityName.SELECTABLE );
-			if( selectable != null ) {
-				if( selectable.getSelected().isSelected() ) {
-					if( item instanceof Item ) {
-						result.add( (Item) item );
-					}
-				}
-			}
-		}
-		return result;
+		return Collections.unmodifiableList( getSelectedItems() );
 	}
 
 	@Override

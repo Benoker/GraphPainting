@@ -1,5 +1,7 @@
 package graph.uml;
 
+import java.awt.image.BufferedImage;
+
 import javax.swing.JComponent;
 
 /**
@@ -27,4 +29,19 @@ public interface UmlDiagramView {
 	 * @return the component, never <code>null</code>, always the same object
 	 */
 	public JComponent getComponent();
+	
+	/**
+	 * Paints the contents of this view onto a new {@link BufferedImage}, the size of the image is just big enough to
+	 * fit the entire graph plus a little bit of empty space on all sides.
+	 * @return the newly painted image
+	 */
+	public BufferedImage paintImage();
+	
+	/**
+	 * Paints the contents of this view onto a new {@link BufferedImage}, the size of the image is just big enough to
+	 * fit the entire graph plus a little bit of empty space on all sides.
+	 * @param imageType one of the image types that {@link BufferedImage#BufferedImage(int, int, int)} requires.
+	 * @return the newly painted image
+	 */
+	public BufferedImage paintImage( int imageType );
 }
