@@ -69,33 +69,27 @@ public class SelectableCapabilityHandler implements CapabilityHandler<Selectable
 		return new MouseAdapter() {
 			@Override
 			public void mousePressed( MouseEvent e ) {
-				if( e.getButton() == MouseEvent.BUTTON1 || e.isPopupTrigger() ) {
-					newlySelected = null;
+				newlySelected = null;
 
-					SelectableCapability selectable = getSelectable( e.getX(), e.getY() );
-					
-					if( e.isShiftDown() ) {
-						if( selectable != null ) {
-							if( selectable.getSelected().isSelected() ){
-								selectable.setSelected( Selection.NOT_SELECTED );
-							}
-							else{
-								if( !selectable.getSelected().isPrimary() ) {
-									ensureNoPrimary();
-									selectable.setSelected( Selection.PRIMARY );
-								}
-								newlySelected = selectable;
-							}
+				SelectableCapability selectable = getSelectable( e.getX(), e.getY() );
+				
+				if( e.isShiftDown() ) {
+					if( selectable != null ) {
+						if( selectable.getSelected().isSelected() ){
+							selectable.setSelected( Selection.NOT_SELECTED );
 						}
-					} else if(isLeftClick(e) && !isPopupTriggerSelection( selectable, e )) {
-						deselectAll( selectable );
-						if( selectable != null && !selectable.getSelected().isPrimary() ) {
-							selectable.setSelected( Selection.PRIMARY );
+						else{
+							if( !selectable.getSelected().isPrimary() ) {
+								ensureNoPrimary();
+								selectable.setSelected( Selection.PRIMARY );
+							}
+							newlySelected = selectable;
 						}
 					}
-				} else if( !e.isShiftDown() ) {
-					if( (e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) == 0 ) {
-						deselectAll( null );
+				} else if( !isPopupTriggerSelection( selectable, e )) {
+					deselectAll( selectable );
+					if( selectable != null && !selectable.getSelected().isPrimary() ) {
+						selectable.setSelected( Selection.PRIMARY );
 					}
 				}
 			}
@@ -108,10 +102,6 @@ public class SelectableCapabilityHandler implements CapabilityHandler<Selectable
 					return false;
 				}
 				return selectable.getSelected().isSelected();
-			}
-			
-			private boolean isLeftClick( MouseEvent e ){
-				return e.getButton() == MouseEvent.BUTTON1;
 			}
 			
 			@Override
