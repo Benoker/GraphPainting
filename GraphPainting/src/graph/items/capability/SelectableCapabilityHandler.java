@@ -87,7 +87,7 @@ public class SelectableCapabilityHandler implements CapabilityHandler<Selectable
 								newlySelected = selectable;
 							}
 						}
-					} else if( !isPopupTriggerSelection( selectable, e )) {
+					} else if(isLeftClick(e) && !isPopupTriggerSelection( selectable, e )) {
 						deselectAll( selectable );
 						if( selectable != null && !selectable.getSelected().isPrimary() ) {
 							selectable.setSelected( Selection.PRIMARY );
@@ -108,6 +108,10 @@ public class SelectableCapabilityHandler implements CapabilityHandler<Selectable
 					return false;
 				}
 				return selectable.getSelected().isSelected();
+			}
+			
+			private boolean isLeftClick( MouseEvent e ){
+				return e.getButton() == MouseEvent.BUTTON1;
 			}
 			
 			@Override
