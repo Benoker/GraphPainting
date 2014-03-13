@@ -4,6 +4,7 @@ import graph.items.ConnectionFlavor;
 import graph.items.ConnectionableCapability;
 import graph.model.capability.CapabilityHandler;
 import graph.model.capability.CapabilityHandlerSite;
+import graph.model.capability.CapabilityName;
 import graph.model.connection.ConnectionArray;
 import graph.model.connection.GraphConnection;
 
@@ -53,9 +54,13 @@ public class ConnectionableCapabilityHandler implements CapabilityHandler<Connec
 				site.listening();
 			}
 			else{
-				site.triggered();
+				trigger();
 			}
 		}
+	}
+	
+	private void trigger(){
+		site.triggered( CapabilityName.CONTEXT_MENU, CapabilityName.SELECTABLE );
 	}
 	
 	/**
@@ -91,7 +96,7 @@ public class ConnectionableCapabilityHandler implements CapabilityHandler<Connec
 		site.addKeyListener( keyListener() );
 		
 		if( factory != null ){
-			site.triggered();
+			trigger();
 		}
 		openEnded.setParent( site );
 	}

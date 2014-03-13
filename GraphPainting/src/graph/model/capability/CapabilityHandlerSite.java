@@ -26,8 +26,10 @@ public interface CapabilityHandlerSite<T> extends GraphItemParent{
 	 * Informs the application that the owning {@link CapabilityHandler} has been triggered. All the other
 	 * capabilities are disabled, and any {@link InputEvent}s are forwarded exclusively to the owning handler.<br>
 	 * Please note that the user cannot change the selection while a handler is triggered.
+	 * @param allowHandlersFor handlers that work upon <code>allowHandlersFor</code> do still receive events,
+	 * nothing happens if they call {@link #triggered(Class...)}
 	 */
-	public void triggered();
+	public void triggered(CapabilityName<?>... allowHandlersFor);
 	
 	/**
 	 * Informs the application that the owning {@link CapabilityHandler} is no longer triggered. All the other

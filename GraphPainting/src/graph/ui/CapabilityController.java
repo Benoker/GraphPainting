@@ -8,8 +8,10 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.EventListener;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.event.EventListenerList;
 
@@ -32,6 +34,9 @@ public class CapabilityController {
 	
 	/** The site that is currently triggered */
 	private Site<?> triggeredSite;
+	
+	/** The classes whose handlers are still allowed to work, may not be <code>null</code> */
+	private Set<CapabilityName<?>> handlersAllowed = new HashSet<>();
 	
 	/**
 	 * Creates a new controller.
@@ -198,7 +203,7 @@ public class CapabilityController {
 				
 				while( (listeners == null || index >= listeners.length) && sites.hasNext() ){
 					Site<?> site = sites.next();
-					if( triggeredSite == site || triggeredSite == null ){
+					if( site.isEnabled() ){
 						listeners = site.getListeners( type );
 						index = 0;
 					}
@@ -242,14 +247,21 @@ public class CapabilityController {
 			return eventListeners.getListeners( type );
 		}
 		
+		public boolean isEnabled(){
+			return triggeredSite == null || triggeredSite == this || handlersAllowed.contains( name );
+		}
+		
 		public void updateEnabled(){
-			handler.setEnabled( triggeredSite == this );
+			handler.setEnabled( isEnabled() );
 		}
 
 		@Override
-		public void triggered() {
+		public void triggered( CapabilityName<?>... allowHandlersFor ) {
 			if( triggeredSite == null ){
 				triggeredSite = this;
+				for(CapabilityName<?> allowHandlerFor : allowHandlersFor ){
+					handlersAllowed.add( allowHandlerFor );
+				}
 				updateAllEnabled();
 			}
 		}
@@ -258,6 +270,7 @@ public class CapabilityController {
 		public void listening() {
 			if( triggeredSite == this ){
 				triggeredSite = null;
+				handlersAllowed.clear();
 				updateAllEnabled();
 			}
 		}
