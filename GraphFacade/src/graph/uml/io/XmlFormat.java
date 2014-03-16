@@ -23,6 +23,10 @@ public class XmlFormat implements Format {
 	@Override
 	public UmlDiagramData read( InputStream in, UmlDiagramConverter converter ) throws IOException {
 		XElement xdiagram = XIO.readUTF( in );
+		return readXml( xdiagram, converter );
+	}
+	
+	public UmlDiagramData readXml( XElement xdiagram, UmlDiagramConverter converter ){
 		UmlDiagramData diagram = new UmlDiagramData();
 		diagram.setNextUnqiueId( xdiagram.getElement( "next-unique-id" ).getInt() );
 
@@ -90,9 +94,13 @@ public class XmlFormat implements Format {
 
 	@Override
 	public void write( UmlDiagramData data, OutputStream out ) throws IOException {
+		XIO.writeUTF( writeXml( data ), out );
+	}
+	
+	public XElement writeXml( UmlDiagramData data ){
 		WriteVisitor visitor = new WriteVisitor();
 		data.visit( visitor );
-		XIO.writeUTF( visitor.getXdiagram(), out );
+		return visitor.getXdiagram();
 	}
 
 	private static class WriteVisitor implements DataVisitor {

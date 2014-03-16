@@ -3,6 +3,7 @@ package graph.uml;
 import graph.uml.config.UmlConfiguration;
 import graph.uml.intern.DefaultUmlDiagramRepository;
 import graph.uml.io.Format;
+import graph.uml.xml.XElement;
 
 import java.awt.Component;
 import java.io.IOException;
@@ -56,6 +57,13 @@ public abstract class UmlDiagramRepository {
 	public abstract void write( UmlDiagram diagram, Format format, OutputStream out ) throws IOException;
 
 	/**
+	 * Converts <code>diagram</code> into xml using the {@link Format#XML xml format}.
+	 * @param diagram the diagram to convert
+	 * @return <code>diagram</code> as xml
+	 */
+	public abstract XElement writeXml( UmlDiagram diagram );
+	
+	/**
 	 * Reads an {@link UmlDiagram} from <code>file</code>.
 	 * @param format the format of the data
 	 * @param file the file to read from
@@ -73,6 +81,13 @@ public abstract class UmlDiagramRepository {
 	 * @throws IOException if reading fails
 	 */
 	public abstract UmlDiagram read( Format format, InputStream in ) throws IOException;
+	
+	/**
+	 * Reads an {@link UmlDiagram} from <code>element</code>, using the {@link Format#XML xml format}.
+	 * @param element the data to read
+	 * @return the diagram that was read 
+	 */
+	public abstract UmlDiagram readXml( XElement element ); 
 	
 	/**
 	 * Gets the mutable configuration of all the diagrams. Changes in the configuration may or may not

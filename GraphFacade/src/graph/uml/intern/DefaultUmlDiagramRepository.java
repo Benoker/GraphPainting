@@ -9,6 +9,8 @@ import graph.uml.intern.config.DefaultUmlConfiguration;
 import graph.uml.io.Format;
 import graph.uml.io.UmlDiagramConverter;
 import graph.uml.io.UmlDiagramData;
+import graph.uml.io.XmlFormat;
+import graph.uml.xml.XElement;
 
 import java.awt.Component;
 import java.io.BufferedInputStream;
@@ -107,6 +109,16 @@ public class DefaultUmlDiagramRepository extends UmlDiagramRepository {
 		bufferedOut.flush();
 	}
 
+	@Override
+	public XElement writeXml( UmlDiagram diagram ) {
+		DefaultUmlDiagram umlDiagram = toDefault( diagram );
+
+		UmlDiagramData data = converter.toData( umlDiagram );
+
+		XmlFormat format = new XmlFormat();
+		return format.writeXml( data );
+	}
+	
 	/**
 	 * Reads an {@link UmlDiagram} from <code>file</code>.
 	 * @param format the format of the data
@@ -137,6 +149,13 @@ public class DefaultUmlDiagramRepository extends UmlDiagramRepository {
 		};
 
 		UmlDiagramData data = format.read( bufferedIn, converter );
+		return converter.toDiagram( data, this );
+	}
+	
+	@Override
+	public UmlDiagram readXml( XElement element ) {
+		XmlFormat format = new XmlFormat();
+		UmlDiagramData data = format.readXml( element, converter );
 		return converter.toDiagram( data, this );
 	}
 
