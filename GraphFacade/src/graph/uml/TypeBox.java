@@ -20,7 +20,14 @@ public interface TypeBox extends Box{
 	 * @return the connection 
 	 */
 	public Connection addImplementsFrom( TypeBox interfaceType );
-	
+
+	/**
+	 * Adds a connection between this box and <code>parentType</code> describing an assoziation.
+	 * @param parentType the parent
+	 * @return the connection
+	 */
+	public Connection addAssoziation( TypeBox parentType );
+
 	/**
 	 * Adds a connection between this box and <code>parentType</code> describing a composition.
 	 * @param parentType the parent 

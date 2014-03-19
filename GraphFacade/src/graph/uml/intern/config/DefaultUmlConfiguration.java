@@ -1,13 +1,14 @@
 package graph.uml.intern.config;
 
-import graph.uml.config.EndPointConfiguration.Direction;
-import graph.uml.config.UmlConfiguration;
 import graph.uml.config.ConnectionConfiguration.PathShape;
 import graph.uml.config.EndPointConfiguration.Decoration;
+import graph.uml.config.EndPointConfiguration.Direction;
+import graph.uml.config.UmlConfiguration;
 
 public class DefaultUmlConfiguration implements UmlConfiguration {
 	private DefaultConnectionConfiguration implementation = new DefaultConnectionConfiguration();
 	private DefaultConnectionConfiguration inheritance = new DefaultConnectionConfiguration();
+	private DefaultConnectionConfiguration assoziation = new DefaultConnectionConfiguration();
 	private DefaultConnectionConfiguration composition = new DefaultConnectionConfiguration();
 	private DefaultConnectionConfiguration aggregation = new DefaultConnectionConfiguration();
 	private DefaultConnectionConfiguration comment = new DefaultConnectionConfiguration();
@@ -15,7 +16,8 @@ public class DefaultUmlConfiguration implements UmlConfiguration {
 	public DefaultUmlConfiguration(){
 		initImplementation();
 		initInheritance();
-		
+
+		initAssoziation();
 		initAggregation();
 		initComposition();
 		
@@ -35,6 +37,14 @@ public class DefaultUmlConfiguration implements UmlConfiguration {
 		inheritance.source().setDirection( Direction.DIRECT );
 		inheritance.target().setDirection( Direction.DIRECT );
 		inheritance.target().setDecoration( Decoration.CLOSE_ARROW);		
+	}
+	
+	private void initAssoziation(){
+		assoziation.setPathShape( PathShape.EDGED );
+		assoziation.source().setDirection( Direction.ORTHOGONAL );
+		assoziation.source().setDecoration( Decoration.OPEN_ARROW );
+		assoziation.target().setDirection( Direction.ORTHOGONAL );
+		assoziation.target().setDecoration( Decoration.NONE );
 	}
 	
 	private void initComposition(){
@@ -71,6 +81,11 @@ public class DefaultUmlConfiguration implements UmlConfiguration {
 		return inheritance;
 	}
 
+	@Override
+	public DefaultConnectionConfiguration getAssoziation() {
+		return assoziation;
+	}
+	
 	@Override
 	public DefaultConnectionConfiguration getComposition() {
 		return composition;

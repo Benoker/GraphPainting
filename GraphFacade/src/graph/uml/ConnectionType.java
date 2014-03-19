@@ -10,6 +10,8 @@ public enum ConnectionType {
 	/** extending a class */
 	INHERITANCE( "inherit" ),
 
+	/** some type with a "has a" relationship */
+	ASSOZIATION( "assoziation" ),
 	/** some type owning another type */
 	COMPOSITION( "composition" ),
 	/** some type using another type */

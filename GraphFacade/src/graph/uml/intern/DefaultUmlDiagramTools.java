@@ -9,6 +9,7 @@ import graph.uml.Connection;
 import graph.uml.UmlDiagramTools;
 import graph.uml.intern.tools.AbstractUmlConnectionFactory;
 import graph.uml.intern.tools.AggregationConnectionFactory;
+import graph.uml.intern.tools.AssoziationConnectionFactory;
 import graph.uml.intern.tools.CompositionConnectionFactory;
 import graph.uml.intern.tools.ExtendsConnectionFactory;
 import graph.uml.intern.tools.ImplementsConnectionFactory;
@@ -53,6 +54,11 @@ public class DefaultUmlDiagramTools implements UmlDiagramTools {
 	@Override
 	public void applyAddImplementsFromTool() {
 		setFactory( new ImplementsConnectionFactory() );
+	}
+	
+	@Override
+	public void applyAssoziationTool() {
+		setFactory( new AssoziationConnectionFactory() );	
 	}
 
 	@Override

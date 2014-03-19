@@ -81,6 +81,16 @@ public class DefaultTypeBox extends DefaultBox<TypeBox> implements TypeBox {
 	}
 	
 	@Override
+	public Connection addAssoziation( TypeBox parentType ) {
+		ConnectionArray target = ((DefaultTypeBox)parentType).getUmlDiagramConnections();
+		ConnectionArray source = getUmlDiagramConnections();
+		
+		AssoziationConnection result = new AssoziationConnection( getDiagram(), this, source, (DefaultTypeBox)parentType, target );
+		result.makeVisible();
+		return result;
+	}
+	
+	@Override
 	public Connection addAggregation( TypeBox parentType ) {
 		ConnectionArray target = ((DefaultTypeBox)parentType).getUmlDiagramConnections();
 		ConnectionArray source = getUmlDiagramConnections();

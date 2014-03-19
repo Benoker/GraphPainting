@@ -201,16 +201,18 @@ public class Main {
 	}
 	
 	private static JPanel createTools( final UmlDiagramTools tools ) {
-		JPanel panel = new JPanel( new GridLayout( 1, 5 ) );
+		JPanel panel = new JPanel( new GridLayout( 1, 6 ) );
 		JToggleButton applyDefaultTool = new JToggleButton( "Default" );
 		JToggleButton applyAddInheritsFromTool = new JToggleButton( "Inherits" );
 		JToggleButton applyAddImplementsFromTool = new JToggleButton( "Implements" );
+		JToggleButton applyAssozaitionTool = new JToggleButton( "Assoziation" );
 		JToggleButton applyAggregationTool = new JToggleButton( "Aggregation" );
 		JToggleButton applyCompositionTool = new JToggleButton( "Composition" );
 
 		panel.add( applyDefaultTool );
 		panel.add( applyAddInheritsFromTool );
 		panel.add( applyAddImplementsFromTool );
+		panel.add( applyAssozaitionTool );
 		panel.add( applyAggregationTool );
 		panel.add( applyCompositionTool );
 
@@ -221,6 +223,7 @@ public class Main {
 		group.add( applyDefaultTool );
 		group.add( applyAddInheritsFromTool );
 		group.add( applyAddImplementsFromTool );
+		group.add( applyAssozaitionTool );
 		group.add( applyAggregationTool );
 		group.add( applyCompositionTool );
 
@@ -245,6 +248,13 @@ public class Main {
 			}
 		} );
 
+		applyAssozaitionTool.addActionListener( new ActionListener() {
+			@Override
+			public void actionPerformed( ActionEvent e ) {
+				tools.applyAssoziationTool();
+			}
+		} );
+		
 		applyAggregationTool.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed( ActionEvent e ) {

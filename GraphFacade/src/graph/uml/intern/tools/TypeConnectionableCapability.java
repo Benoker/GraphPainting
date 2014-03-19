@@ -5,6 +5,7 @@ import graph.items.ConnectionableCapability;
 import graph.model.connection.ConnectionArray;
 import graph.uml.TypeBox;
 import graph.uml.intern.AggregationConnection;
+import graph.uml.intern.AssoziationConnection;
 import graph.uml.intern.CompositionConnection;
 import graph.uml.intern.DefaultTypeBox;
 import graph.uml.intern.ExtendsConnection;
@@ -29,6 +30,9 @@ public class TypeConnectionableCapability extends UmlConnectionableCapability {
 		if( flavor.equals( ImplementsConnection.IMPLEMENTS ) ) {
 			return true;
 		}
+		if( flavor.equals( AssoziationConnection.ASSOZIATION ) ){
+			return true;
+		}
 		if( flavor.equals( CompositionConnection.COMPOSITION ) ) {
 			return true;
 		}
@@ -39,6 +43,10 @@ public class TypeConnectionableCapability extends UmlConnectionableCapability {
 	}
 
 	private boolean allowSelfReference( ConnectionFlavor flavor ) {
+		if( flavor.equals( AssoziationConnection.ASSOZIATION ) ) {
+			return true;
+		}
+		
 		if( flavor.equals( CompositionConnection.COMPOSITION ) ) {
 			return true;
 		}

@@ -12,21 +12,27 @@ public interface UmlDiagramTools {
 	public void applyDefaultTool();
 	
 	/**
-	 * Applies a tool that creates new {@link Connection}s between {@link TypeBox}, just 
+	 * Applies a tool that creates new {@link Connection}s between {@link TypeBox}es, just 
 	 * as if a call to {@link TypeBox#addInheritsFrom(TypeBox)} was made. The tool prevents
 	 * self references.
 	 */
 	public void applyAddInheritsFromTool();
 	
 	/**
-	 * Applies a tool that creates new {@link Connection}s between {@link TypeBox}, just 
+	 * Applies a tool that creates new {@link Connection}s between {@link TypeBox}es, just 
 	 * as if a call to {@link TypeBox#addImplementsFrom(TypeBox)} was made. The tool prevents
 	 * self references.
 	 */
 	public void applyAddImplementsFromTool();
 	
 	/**
-	 * Applies a tool that creates new {@link Connection}s between {@link TypeBox}, just 
+	 * Applies a tool that creates new {@link Connection}s between {@link TypeBox}es, just
+	 * as if a call to {@link TypeBox#addAssoziation(TypeBox)} was made.
+	 */
+	public void applyAssoziationTool();
+	
+	/**
+	 * Applies a tool that creates new {@link Connection}s between {@link TypeBox}es, just 
 	 * as if a call to {@link TypeBox#addAggregation(TypeBox)} was made.
 	 */
 	public void applyAggregationTool();

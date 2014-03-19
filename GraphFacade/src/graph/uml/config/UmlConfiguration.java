@@ -22,6 +22,12 @@ public interface UmlConfiguration {
 	public ConnectionConfiguration getInheritance();
 
 	/**
+	 * Allows access to the configuration of {@link Connection}s of type {@link ConnectionType#ASSOZIATION}
+	 * @return the configuration
+	 */
+	public ConnectionConfiguration getAssoziation();
+	
+	/**
 	 * Allows access to the configuration of {@link Connection}s of type {@link ConnectionType#COMPOSITION}.
 	 * @return the configuration
 	 */

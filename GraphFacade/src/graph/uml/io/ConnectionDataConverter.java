@@ -8,6 +8,7 @@ import graph.uml.ConnectionType;
 import graph.uml.ItemKey;
 import graph.uml.intern.AbstractConnection;
 import graph.uml.intern.AggregationConnection;
+import graph.uml.intern.AssoziationConnection;
 import graph.uml.intern.CommentConnection;
 import graph.uml.intern.CompositionConnection;
 import graph.uml.intern.DefaultBox;
@@ -69,6 +70,8 @@ public class ConnectionDataConverter implements DataConverter<Connection, Connec
 				return new ImplementsConnection( diagram, key );
 			case INHERITANCE:
 				return new ExtendsConnection( diagram, key );
+			case ASSOZIATION:
+				return new AssoziationConnection( diagram, key );
 			default:
 				throw new IllegalStateException( "unknown enumeration constant: " + type );
 		}
