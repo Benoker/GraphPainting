@@ -82,8 +82,8 @@ public class DefaultTypeBox extends DefaultBox<TypeBox> implements TypeBox {
 	
 	@Override
 	public Connection addAssoziation( TypeBox parentType ) {
-		ConnectionArray target = ((DefaultTypeBox)parentType).getUmlDiagramConnections();
-		ConnectionArray source = getUmlDiagramConnections();
+		ConnectionArray source = ((DefaultTypeBox)parentType).getUmlDiagramConnections();
+		ConnectionArray target = getUmlDiagramConnections();
 		
 		AssoziationConnection result = new AssoziationConnection( getDiagram(), this, source, (DefaultTypeBox)parentType, target );
 		result.makeVisible();
@@ -92,8 +92,8 @@ public class DefaultTypeBox extends DefaultBox<TypeBox> implements TypeBox {
 	
 	@Override
 	public Connection addAggregation( TypeBox parentType ) {
-		ConnectionArray target = ((DefaultTypeBox)parentType).getUmlDiagramConnections();
-		ConnectionArray source = getUmlDiagramConnections();
+		ConnectionArray source = ((DefaultTypeBox)parentType).getUmlDiagramConnections();
+		ConnectionArray target = getUmlDiagramConnections();
 		
 		AggregationConnection result = new AggregationConnection( getDiagram(), this, source, (DefaultTypeBox)parentType, target );
 		result.makeVisible();
@@ -102,8 +102,8 @@ public class DefaultTypeBox extends DefaultBox<TypeBox> implements TypeBox {
 	
 	@Override
 	public Connection addComposition( TypeBox parentType ) {
-		ConnectionArray target = ((DefaultTypeBox)parentType).getUmlDiagramConnections();
-		ConnectionArray source = getUmlDiagramConnections();
+		ConnectionArray source = ((DefaultTypeBox)parentType).getUmlDiagramConnections();
+		ConnectionArray target = getUmlDiagramConnections();
 		
 		CompositionConnection result = new CompositionConnection( getDiagram(), this, source, (DefaultTypeBox)parentType, target );
 		result.makeVisible();

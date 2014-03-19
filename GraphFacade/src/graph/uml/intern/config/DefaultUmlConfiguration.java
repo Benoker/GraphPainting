@@ -42,25 +42,25 @@ public class DefaultUmlConfiguration implements UmlConfiguration {
 	private void initAssoziation(){
 		assoziation.setPathShape( PathShape.EDGED );
 		assoziation.source().setDirection( Direction.ORTHOGONAL );
-		assoziation.source().setDecoration( Decoration.OPEN_ARROW );
+		assoziation.source().setDecoration( Decoration.NONE );
 		assoziation.target().setDirection( Direction.ORTHOGONAL );
-		assoziation.target().setDecoration( Decoration.NONE );
+		assoziation.target().setDecoration( Decoration.OPEN_ARROW );
 	}
 	
 	private void initComposition(){
 		composition.setPathShape( PathShape.EDGED );
 		composition.source().setDirection( Direction.ORTHOGONAL );
-		composition.source().setDecoration( Decoration.OPEN_ARROW );
+		composition.source().setDecoration( Decoration.FILLED_DIAMOND );
 		composition.target().setDirection( Direction.ORTHOGONAL );
-		composition.target().setDecoration( Decoration.FILLED_DIAMOND );
+		composition.target().setDecoration( Decoration.OPEN_ARROW );
 	}
 	
 	private void initAggregation(){
 		aggregation.setPathShape( PathShape.EDGED );
 		aggregation.source().setDirection( Direction.ORTHOGONAL );
-		aggregation.source().setDecoration( Decoration.OPEN_ARROW );
+		aggregation.source().setDecoration( Decoration.DIAMOND );
 		aggregation.target().setDirection( Direction.ORTHOGONAL );
-		aggregation.target().setDecoration( Decoration.DIAMOND );
+		aggregation.target().setDecoration( Decoration.OPEN_ARROW );
 	}
 	
 	private void initComment(){
