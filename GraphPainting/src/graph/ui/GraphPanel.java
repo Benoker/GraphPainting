@@ -83,6 +83,14 @@ public class GraphPanel extends JPanel {
 			}
 		} );
 	}
+	
+	@Override
+	public void setBackground( Color bg ) {
+		super.setBackground( bg );
+		if( canvas != null ){
+			canvas.setBackground( bg );
+		}
+	}
 
 	private GraphListener graphListener() {
 		return new GraphListener() {

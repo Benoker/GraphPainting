@@ -119,7 +119,7 @@ public final class TextStrategyFactory {
 		return distanceInverted( distanceUpdwards( strategy ) );
 	}
 
-	public static TextDistanceStrategy distanceBaslineFloating() {
+	public static TextDistanceStrategy distanceBaselineFloating() {
 		return new TextDistanceStrategy() {
 			@Override
 			public double getDistance( TextStrategyParameters parameters ) {

@@ -133,7 +133,7 @@ public class ConnectionTextTest {
 			text.setPosition( TextStrategyFactory.positionNearSource() );
 			text.setAngle( TextStrategyFactory.angleParallel() );
 			text.setShift( TextStrategyFactory.shiftInvardsByPosition() );
-			text.setDistance( TextStrategyFactory.distanceDownwards( TextStrategyFactory.distanceBaslineFloating() ) );
+			text.setDistance( TextStrategyFactory.distanceDownwards( TextStrategyFactory.distanceBaselineFloating() ) );
 			return text;
 		} else if( j == 1 ) {
 			ConfigurableConnectionText text = new ConfigurableConnectionText( connection );
@@ -141,7 +141,7 @@ public class ConnectionTextTest {
 			text.setPosition( TextStrategyFactory.positionNearTarget() );
 			text.setAngle( TextStrategyFactory.angleParallel() );
 			text.setShift( TextStrategyFactory.shiftInvardsByPosition() );
-			text.setDistance( TextStrategyFactory.distanceDownwards( TextStrategyFactory.distanceBaslineFloating() ) );
+			text.setDistance( TextStrategyFactory.distanceDownwards( TextStrategyFactory.distanceBaselineFloating() ) );
 			return text;
 		} else {
 			return null;
