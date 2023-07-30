@@ -1,0 +1,5 @@
+
+rootProject.name = "Graph Painting"
+
+include ':GraphPainting'
+include ':GraphFacade'
