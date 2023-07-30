@@ -14,7 +14,6 @@ import java.awt.event.MouseListener;
  * @author Benjamin Sigg
  */
 public class SelectableCapabilityHandler implements CapabilityHandler<SelectableCapability> {
-	private boolean enabled = true;
 	private CapabilityHandlerSite<SelectableCapability> site;
 	private SelectableCapability newlySelected;
 	private MouseListener mouseListener;
@@ -33,10 +32,7 @@ public class SelectableCapabilityHandler implements CapabilityHandler<Selectable
 
 	@Override
 	public void setEnabled( boolean enabled ) {
-		if( !enabled ){
-			deselectAll( null );
-		}
-		this.enabled = enabled;
+		// ignore
 	}
 
 	private SelectableCapability getSelectable( int x, int y ) {
@@ -75,10 +71,6 @@ public class SelectableCapabilityHandler implements CapabilityHandler<Selectable
 		return new MouseAdapter() {
 			@Override
 			public void mousePressed( MouseEvent e ) {
-				if( !enabled ){
-					return;
-				}
-
 				newlySelected = null;
 
 				SelectableCapability selectable = getSelectable( e.getX(), e.getY() );
@@ -116,10 +108,6 @@ public class SelectableCapabilityHandler implements CapabilityHandler<Selectable
 			
 			@Override
 			public void mouseReleased( MouseEvent e ) {
-				if( !enabled ){
-					return;
-				}
-
 				if( e.isPopupTrigger() ) {
 					return;
 				}
